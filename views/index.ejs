@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="/javascripts/jq.js"></script>
+    <script type="text/javascript" src="/javascripts//handle.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery-ui-1.11.4.custom/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="/javascripts/jquery-ui-1.11.4.custom/jquery-ui-1.11.4.custom/jquery-ui.css">
+  </head>
+  <body>
+  <div id="header">
+    <div id="logo"></div>
+  </div>
+  <ul id="menu">
+    <li mode="user">Оператор</li>
+    <li mode="admin">Администратор</li>
+  </ul>
+  <div id="main">
+    <div id="user" class="workarea">
+      <div class="production_wrapper">
+        <div class="elev_1"></div>
+        <div class="elev_2">
+          <div class="arrow"></div>
+        </div>
+        <div class="elev_3"></div>
+        <input type="button" class="animate" state="0" value="start"/>
+      </div>
+      <div id="main_bunker"></div>
+      <div class="production_wrapper">
+        <div class="elev_1"></div>
+        <div class="elev_2">
+          <div class="arrow"></div>
+        </div>
+        <div class="elev_3"></div>
+        <input type="button" class="animate" state="0" value="start"/>
+      </div>
+    </div>
+    <div id="admin" class="workarea">
+      <div id="admin_menu" class="column">
+        <ul>
+          <li mode="shalabuhen">Шалабухи</li>
+          <li mode="logs">Логи</li>
+        </ul>
+      </div>
+      <div id="admin_info" class="column">
+        <div id="shalabuhen" class="admin_stuff">
+          <table>
+            <tr>
+              <th>№</th>
+              <th>MAC-адрес</th>
+              <th>№ частотника</th>
+              <th>Версия прошивки</th>
+              <th>Статус</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>11:A2:BF:C7:D3:AA</td>
+              <td>1</td>
+              <td>1.0</td>
+              <td>on</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>46:A6:BB:C2:D3:AA</td>
+              <td>2</td>
+              <td>1.0</td>
+              <td>off</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>1A:02:9F:C7:43:AC</td>
+              <td>3</td>
+              <td>1.0</td>
+              <td>off</td>
+            </tr>
+          </table>
+        </div>
+        <div id="logs" class="admin_stuff"></div>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>
