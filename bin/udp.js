@@ -55,7 +55,7 @@ console.log("Current IP: "+ip_arr[0]);
 /*=======================================================================================*/
 udp_server.on('message', function(message, remote){
     console.log(remote.address + ":" + remote.port + " - " + message);
-    var message_to_send = new Buffer(ip[0]);
+    var message_to_send = new Buffer(ip_arr[0]);
     udp_server.send(message_to_send, 0, message_to_send.length, remote.port, remote.address, function (err, bytes) {
         if (err) throw err;
         //console.log('Send to:' + remote.host + ":" + remote.port);

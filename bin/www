@@ -7,9 +7,12 @@
 var app = require('../app');
 var debug = require('debug')('Kriv_test:server');
 var http = require('http');
+var events = require('events');
 
 
 var udp = require('./udp.js');
+var ws = require('./ws.js');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -22,6 +25,12 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/**
+ * Create Socket.io
+ */
+
+var io = require('socket.io').listen(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -90,3 +99,44 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+var eventEmitter = new events.EventEmitter();
+var shalabuhen = new events.EventEmitter();
+var ws1 = function ws1(str){
+    io.emit('ws', {data: str});
+};
+
+var ws2 = function ws2(str){
+    io.emit('shalabuhi', '{data:str}');
+};
+
+io.on('connection', function(socket){
+    console.log('User connected!');
+    //io.emit('shalabuhi', '{data:str}');
+    socket.emit('on_connect', { 'data': 'data'});
+
+    socket.on('ready', function(){
+        console.log('Client ready!');
+        db.data_for_chart('scale1_log', function(ret){
+            //socket.emit('chart_data', {'data_1': ret});
+            scales1 = ret;
+        });
+        db.data_for_chart('scale2_log', function(ret){
+            //socket.emit('chart_data', {'data_2': ret});
+            scales2 = ret;
+        });
+        socket.emit('chart_data', {'data_1': scales1, 'data_2': scales2});
+    });
+
+    socket.on('disconnect', function(){
+        console.log('User disconnected!');
+    })
+});
+
+
+eventEmitter.addListener('ws', ws1);
+shalabuhen.addListener('ws2', ws2);
+
+exports.eventEmitter = eventEmitter;
+exports.shalabuhen = shalabuhen;
