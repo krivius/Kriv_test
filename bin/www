@@ -8,6 +8,8 @@ var app = require('../app');
 var debug = require('debug')('Kriv_test:server');
 var http = require('http');
 
+
+var udp = require('./udp.js');
 /**
  * Get port from environment and store in Express.
  */
