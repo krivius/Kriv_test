@@ -24,21 +24,31 @@
   <div id="main">
     <div id="user" class="workarea">
       <div class="production_wrapper">
+        <div id="small_bunker" title="Загрузочный бункер">
+          <div class="led red_led" style="top:5px"></div>
+        </div>
         <div class="elev_1"></div>
-        <div class="elev_2">
+        <div class="elev_2" title="Нория">
           <div class="arrow"></div>
         </div>
         <div class="elev_3"></div>
-        <input type="button" class="animate" state="0" value="start"/>
+        <input num="1" type="button" class="animate" state="0" value="start"/>
       </div>
-      <div id="main_bunker"></div>
+
+      <div id="main_bunker" title="Главный бункер">
+        <div class="led red_led" style="top:5px"></div>
+        <div class="led red_led" style="bottom:10px"></div>
+        <div id="bunker_filler"></div>
+      </div>
+      <input type="button" class="animate_bunker" state="0" value="start">
+
       <div class="production_wrapper">
         <div class="elev_1"></div>
         <div class="elev_2">
           <div class="arrow"></div>
         </div>
         <div class="elev_3"></div>
-        <input type="button" class="animate" state="0" value="start"/>
+        <input num="2" type="button" class="animate" state="0" value="start"/>
       </div>
     </div>
     <div id="admin" class="workarea">
@@ -85,6 +95,5 @@
       </div>
     </div>
   </div>
-
   </body>
 </html>
