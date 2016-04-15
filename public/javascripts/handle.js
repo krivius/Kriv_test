@@ -41,15 +41,18 @@ $(document).ready(function(){
             wrapper.find(".arrow").addClass("animated");
             if(num == "1"){
                 wrapper.find(".led").removeClass("red_led").addClass("green_led");
+            }else{
+                wrapper.find(".rotor").addClass("rotate_knives");
             }
         }else{
             $(this).attr('state', '0').val('start');
             wrapper.find(".arrow").removeClass("animated");
             if(num == "1"){
                 wrapper.find(".led").removeClass("green_led").addClass("red_led");
+            }else{
+                wrapper.find(".rotor").removeClass("rotate_knives");
             }
         }
-
     });
 
     $(".animate_bunker").on("click",  function(){
@@ -57,9 +60,26 @@ $(document).ready(function(){
         if(state == '0'){
             $(this).attr('state', '1').val('stop');
             $("#bunker_filler").addClass("fill");
+            $("#main_bunker .led").addClass("blink_led");
         }else{
             $(this).attr('state', '0').val('start');
             $("#bunker_filler").removeClass("fill");
+            $("#main_bunker .led").removeClass("blink_led");
+        }
+    });
+
+    $(".animate_blanshir").on("click",  function(){
+        var state = $(this).attr("state");
+        if(state == '0'){
+            $(this).attr('state', '1').val('stop');
+            $(".wheel:nth-child(odd)").addClass("rotate_slow");
+            $(".wheel:nth-child(even)").addClass("rotate_fast");
+            $("#bunker_vibro").addClass("vibrate");
+        }else{
+            $(this).attr('state', '0').val('start');
+            $(".wheel:nth-child(odd)").removeClass("rotate_slow");
+            $(".wheel:nth-child(even)").removeClass("rotate_fast");
+            $("#bunker_vibro").removeClass("vibrate");
         }
     });
 });

@@ -62,7 +62,7 @@ udp_server.on('message', function(message, remote){
     });
 });
 
-udp_server.bind(PORT);
+// udp_server.bind(PORT);
 
 module.exports = add_member;
 module.exports = ret_clients_data;

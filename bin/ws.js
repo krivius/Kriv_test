@@ -14,6 +14,7 @@ function decimalToHex(d, padding) {
 
     return hex;
 }
+/*
 
 var server = ws.createServer(function(conn){
     console.log("New connection!");
@@ -40,3 +41,4 @@ var server = ws.createServer(function(conn){
         console.log("connection close");
     });
 }).listen(81);
+*/
