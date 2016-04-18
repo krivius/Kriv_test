@@ -84,4 +84,12 @@ $(document).ready(function(){
             $("#bunker_vibro").removeClass("vibrate");
         }
     });
+
+    $(".scales").on("mousedown", function(){
+       $(this).find(".led").removeClass("red_led").addClass("green_led");
+    });
+
+    $(".scales").on("mouseup", function(){
+        $(this).find(".led").removeClass("green_led").addClass("red_led");
+    });
 });
