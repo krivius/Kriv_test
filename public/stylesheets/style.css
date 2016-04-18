@@ -168,6 +168,7 @@ body{
   position: relative;
   right: 177px;
   width: 170px;
+  background: rgba(194, 249, 255, 0.6) none repeat scroll 0 0;
 }
 #main_bunker:after{
   content: "";
@@ -225,6 +226,7 @@ body{
   width: 100%;
   height: 0;
   background: #dd9b58 url("/images/filler.png") repeat;
+  z-index: -1;
 }
 .fill{
   animation: fill_bunker 4s linear infinite;
@@ -545,4 +547,23 @@ body{
 .scales .led{
   top: 8px;
   border: 2px solid #CAC3B9;
+}
+
+@font-face {
+  font-family: calc;
+  src: url("POCKC___.ttf");
+}
+
+.informer {
+  background: #2b2b2c none repeat scroll 0 0;
+  border: 4px ridge #525050;
+  color: #6eb42b;
+  cursor: pointer;
+  font-family: "calc";
+  height: 25px;
+  position: absolute;
+  width: 65px;
+  font-size: 20px;
+  letter-spacing: 4px;
+  overflow: hidden;
 }
