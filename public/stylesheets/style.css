@@ -497,40 +497,37 @@ body{
 }
 
 .screen{
-  background: #525050;
-  bottom: 156px;
-  height: 55px;
+  background: url("/images/screen.png") no-repeat center center;
+  background-size: contain;
+  display: block;
+  height: 200px;
   left: 150px;
   position: absolute;
-  transform: skewY(30deg);
-  width: 205px;
+  top: 135px;
+  width: 210px;
 }
 
-.vibrate_screens:nth-child(odd){
+.vibrate_screens{
   animation: vibrate_screens 0.1s linear infinite;
-  transform: rotate(25deg);
 }
-.vibrate_screens:nth-child(even){
-  animation: vibrate_screens 0.1s 0.1s linear infinite;
-  transform: rotate(25deg);
-}
+
 @keyframes vibrate_screens {
-  0%{bottom:156px}
-  25%{bottom:158px}
-  75%{bottom:154px}
-  100%{bottom:156px}
+  0%{top:135px}
+  25%{top:133px}
+  75%{top:137px}
+  100%{top:135px}
 }
 @-moz-keyframes vibrate_screens {
-  0%{bottom:156px}
-  25%{bottom:158px}
-  75%{bottom:154px}
-  100%{bottom:156px}
+  0%{top:135px}
+  25%{top:133px}
+  75%{top:137px}
+  100%{top:135px}
 }
 @-webkit-keyframes vibrate_screens {
-  0%{bottom:156px}
-  25%{bottom:158px}
-  75%{bottom:154px}
-  100%{bottom:156px}
+  0%{top:135px}
+  25%{top:133px}
+  75%{top:137px}
+  100%{top:135px}
 }
 .scales{
   background: #525050 ;

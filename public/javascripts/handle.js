@@ -43,6 +43,7 @@ $(document).ready(function(){
                 wrapper.find(".led").removeClass("red_led").addClass("green_led");
             }else{
                 wrapper.find(".rotor").addClass("rotate_knives");
+                wrapper.find(".screen").addClass("vibrate_screens");
             }
         }else{
             $(this).attr('state', '0').val('start');
@@ -51,6 +52,7 @@ $(document).ready(function(){
                 wrapper.find(".led").removeClass("green_led").addClass("red_led");
             }else{
                 wrapper.find(".rotor").removeClass("rotate_knives");
+                wrapper.find(".screen").removeClass("vibrate_screens");
             }
         }
     });
