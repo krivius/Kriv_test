@@ -108,7 +108,8 @@ var ws1 = function ws1(str){
 };
 
 var ws2 = function ws2(str){
-    io.emit('shalabuhi', '{data:str}');
+    io.emit('shalabuhi', str);
+    
 };
 
 io.on('connection', function(socket){
@@ -127,6 +128,10 @@ io.on('connection', function(socket){
             scales2 = ret;
         });
         socket.emit('chart_data', {'data_1': scales1, 'data_2': scales2});
+    });
+
+    socket.on('iv_run', function () {
+        ws.event_1.emit('ev_1');
     });
 
     socket.on('disconnect', function(){

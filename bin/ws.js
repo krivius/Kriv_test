@@ -3,6 +3,15 @@
  */
 var www = require('./www');
 var ws = require("nodejs-websocket");
+var events = require('events');
+
+var global_conn;
+
+var event_1 = new events.EventEmitter();
+var event_run = function event_run(str){
+    var command = {phase:"command", command:"start"};
+    global_conn.sendText(JSON.stringify(command));
+}
 
 function decimalToHex(d, padding) {
     var hex = Number(d).toString(16);
@@ -14,31 +23,40 @@ function decimalToHex(d, padding) {
 
     return hex;
 }
-/*
+
 
 var server = ws.createServer(function(conn){
     console.log("New connection!");
+    global_conn = conn;
     conn.on("text", function(str){
         var obj = JSON.parse(str);
-        var dec_mac = obj.mac.split(":");
-        var mac = [];
-        dec_mac.forEach(function(dec){
-            mac.push(decimalToHex(dec));
-        });
-        console.log(mac.join(":").toUpperCase());
+        console.log("Phase: "+obj.phase);
 
-        var send = {phase:"setup", iv_id:"146", pin:"1488"};
+        if(obj.phase == "setup"){
 
+            var dec_mac = obj.mac.split(":");
+            var mac = [];
+            dec_mac.forEach(function(dec){
+                mac.push(decimalToHex(dec));
+            });
+            var setup = {phase:"setup", iv_id:"1", pin:"2"};
+            conn.sendText(JSON.stringify(setup));
 
-            www.eventEmitter.emit('ws', str);
-            www.shalabuhen.emit('ws2', str);
-        //console.log("Received: " + str);
-        //conn.sendText("Ok!");
-        conn.sendText(JSON.stringify(send));
-        
+        }else if(obj.phase == "setup_done"){
+
+            var command = {phase:"command", command:"start"};
+            conn.sendText(JSON.stringify(command));
+
+        }
+        www.eventEmitter.emit('ws', str);
+        www.shalabuhen.emit('ws2', str);
     });
+    
+
     conn.on("close", function(code, reason){
         console.log("connection close");
     });
 }).listen(81);
-*/
+
+event_1.addListener("ev_1", event_run);
+exports.event_1 = event_1;

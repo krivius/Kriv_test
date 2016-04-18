@@ -23,15 +23,16 @@
   </ul>
   <div id="main">
     <div id="user" class="workarea">
+      <input type="button" id="run" value="run" state="0">
       <div class="production_wrapper">
 
-        <div id="small_bunker" title="Загрузочный бункер">
+        <div id="small_bunker">
           <div class="led red_led" style="top:5px"></div>
-          <div class="informer" style="bottom: 125px; right: 0">623</div>
+          <div class="informer" style="bottom: 125px; right: 0"  title="Загрузочный бункер">623</div>
         </div>
 
         <div class="elev_1"></div>
-        <div class="elev_2" title="Нория">
+        <div class="elev_2" >
           <div class="arrow"></div>
 
         </div>
@@ -40,9 +41,9 @@
 
       </div>
 
-      <div id="main_bunker" title="Главный бункер">
-        <div class="informer" style="bottom: 185px; right: 0">456</div>
-        <div class="informer" style="bottom: 237px; right: 100px">345</div>
+      <div id="main_bunker" >
+        <div class="informer" style="bottom: 185px; right: 0" title="Главный бункер">456</div>
+        <div class="informer" style="bottom: 237px; right: 100px" title="Нория">345</div>
         <div class="led red_led" style="top:5px"></div>
         <div class="led red_led" style="bottom:10px"></div>
         <div id="bunker_filler"></div>
@@ -52,8 +53,8 @@
 
       <div class="production_wrapper"  style="position: relative; top: 72px;">
         <div id="blanshir_enter"></div>
-        <div id="blanshir" title="Бланшир">
-          <div class="informer" style="bottom: 105px; right: 47px">961</div>
+        <div id="blanshir" >
+          <div class="informer" style="bottom: 105px; right: 47px" title="Бланшир">961</div>
           <div id="glass">
             <div class="wheel"></div>
             <div class="wheel"></div>
@@ -68,27 +69,27 @@
 
       <div class="production_wrapper" style="position: relative; right: 252px;">
         <div class="elev_1"></div>
-        <div class="elev_2" title="Нория">
+        <div class="elev_2" >
           <div class="arrow"></div>
         </div>
         <div class="elev_3"></div>
-        <div class="informer" style="bottom: 422px; right: 92px">452</div>
-        <div id="knives" title="Ножи">
-          <div class="informer" style="top:20px; left: 126px">4563</div>
+        <div class="informer" style="bottom: 422px; right: 92px" title="Нория">452</div>
+        <div id="knives" >
+          <div class="informer" style="top:20px; left: 126px" title="Ножи">4563</div>
           <div id="knives_glass">
             <div class="rotor"></div>
             <div class="rotor"></div>
           </div>
         </div>
-        <div class="screen" title="Решетки">
+        <div class="screen">
         </div>
-        <div class="informer" style="bottom:124px; left:160px">142</div>
-        <div class="scales" title="Весы">
-          <div class="informer" style="bottom:1px; left:85px">345</div>
+        <div class="informer" style="bottom:124px; left:160px"  title="Решетки">142</div>
+        <div class="scales">
+          <div class="informer" style="bottom:1px; left:85px" title="Весы">345</div>
           <div class="led red_led"></div>
         </div>
-        <div class="scales" title="Весы">
-          <div class="informer" style="bottom:1px; left:85px">123</div>
+        <div class="scales">
+          <div class="informer" style="bottom:1px; left:85px" title="Весы">123</div>
           <div class="led red_led"></div>
         </div>
         <input num="2" type="button" class="animate" state="0" value="start"/>
@@ -107,31 +108,12 @@
             <tr>
               <th>№</th>
               <th>MAC-адрес</th>
+              <th>IP-адрес</th>
               <th>№ частотника</th>
               <th>Версия прошивки</th>
               <th>Статус</th>
             </tr>
-            <tr>
-              <td>1</td>
-              <td>11:A2:BF:C7:D3:AA</td>
-              <td>1</td>
-              <td>1.0</td>
-              <td>on</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>46:A6:BB:C2:D3:AA</td>
-              <td>2</td>
-              <td>1.0</td>
-              <td>off</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>1A:02:9F:C7:43:AC</td>
-              <td>3</td>
-              <td>1.0</td>
-              <td>off</td>
-            </tr>
+
           </table>
         </div>
         <div id="logs" class="admin_stuff"></div>
