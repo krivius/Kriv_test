@@ -11,7 +11,10 @@ var event_1 = new events.EventEmitter();
 var event_run = function event_run(str){
     console.log("Yo!");
     var command = {phase:"command", command:"start"};
-    server.socket.sendText(JSON.stringify(command));
+    //server.socket.sendText(JSON.stringify(command));
+    server.connections.forEach(function(conn){
+        conn.sendText(command);
+    })
 };
 
 function decimalToHex(d, padding) {
