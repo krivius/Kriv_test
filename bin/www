@@ -132,7 +132,12 @@ io.on('connection', function(socket){
 
     socket.on('iv_status', function (data) {
         console.log("IV_STATUS: "+data);
-        ws.event_1.emit('ev_1');
+        if(data == 'iv_run'){
+            ws.event_1.emit('ev_1');    
+        }else if(data == 'iv_stop'){
+            ws.event_2.emit('ev_2');
+        }
+        
 
     });
 
