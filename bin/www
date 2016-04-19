@@ -130,8 +130,10 @@ io.on('connection', function(socket){
         socket.emit('chart_data', {'data_1': scales1, 'data_2': scales2});
     });
 
-    socket.on('iv_run', function () {
+    socket.on('iv_status', function (data) {
+        console.log("IV_STATUS: "+data);
         ws.event_1.emit('ev_1');
+
     });
 
     socket.on('disconnect', function(){

@@ -9,9 +9,10 @@ var global_conn;
 
 var event_1 = new events.EventEmitter();
 var event_run = function event_run(str){
+    console.log("Yo!");
     var command = {phase:"command", command:"start"};
-    global_conn.sendText(JSON.stringify(command));
-}
+    server.socket.sendText(JSON.stringify(command));
+};
 
 function decimalToHex(d, padding) {
     var hex = Number(d).toString(16);
@@ -51,7 +52,7 @@ var server = ws.createServer(function(conn){
         www.eventEmitter.emit('ws', str);
         www.shalabuhen.emit('ws2', str);
     });
-    
+
 
     conn.on("close", function(code, reason){
         console.log("connection close");
