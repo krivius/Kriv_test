@@ -568,6 +568,7 @@ body{
   overflow: hidden;
 }
 
-#run{
+#run, #stop{
   width: 80px;
+  background: #1280B4;
 }

@@ -41,18 +41,11 @@ socket.on('shalabuhi', function(data){
 
 });
 
-// $(document).ready(function(){
-    $("#run").on("click",  function(){
-        var state = $(this).attr("state");
-
-        if(state == '0'){
-            $(this).attr("state", "1").val('stop');
-            console.log("iv_run");
-            socket.emit("iv_status", "iv_run");
-        }else{
-            $(this).attr("state", "0").val('run');
-            console.log("iv_stop");
-            socket.emit("iv_status", "iv_stop");
-        }
-    });
-// });
+$("#run").on("click",  function(){
+        console.log("iv_run");
+        socket.emit("iv_status", "iv_run");
+});
+$("#stop").on("click",  function(){
+    console.log("iv_stop");
+    socket.emit("iv_status", "iv_stop");
+});

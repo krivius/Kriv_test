@@ -7,15 +7,7 @@ var events = require('events');
 
 var global_conn;
 
-var event_1 = new events.EventEmitter();
-var event_run = function event_run(str){
-    console.log("Yo!");
-    var command = {phase:"command", command:"start"};
-    //server.socket.sendText(JSON.stringify(command));
-    server.connections.forEach(function(conn){
-        conn.sendText(command);
-    })
-};
+
 
 function decimalToHex(d, padding) {
     var hex = Number(d).toString(16);
@@ -48,8 +40,8 @@ var server = ws.createServer(function(conn){
 
         }else if(obj.phase == "setup_done"){
 
-            var command = {phase:"command", command:"start"};
-            conn.sendText(JSON.stringify(command));
+            // var command = {phase:"command", command:"start"};
+            // conn.sendText(JSON.stringify(command));
 
         }
         www.eventEmitter.emit('ws', str);
@@ -62,5 +54,27 @@ var server = ws.createServer(function(conn){
     });
 }).listen(81);
 
+var event_1 = new events.EventEmitter();
+var event_run = function event_run(str){
+    console.log("==START==");
+    var command = {phase:"command", command:"start"};
+    //server.socket.sendText(JSON.stringify(command));
+    server.connections.forEach(function(conn){
+        conn.sendText(JSON.stringify(command));
+    });
+};
+var event_2 = new events.EventEmitter();
+var event_stop = function event_stop(str){
+    console.log("==STOP==");
+    var command = {phase:"command", command:"stop"};
+    //server.socket.sendText(JSON.stringify(command));
+    server.connections.forEach(function(conn){
+        conn.sendText(JSON.stringify(command));
+    });
+};
+
 event_1.addListener("ev_1", event_run);
 exports.event_1 = event_1;
+
+event_2.addListener("ev_2", event_stop);
+exports.event_1 = event_2;
