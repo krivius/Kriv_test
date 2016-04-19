@@ -136,6 +136,8 @@ io.on('connection', function(socket){
             ws.event_1.emit('ev_1');    
         }else if(data == 'iv_stop'){
             ws.event_2.emit('ev_2');
+        }else if(data == 'get_speed'){
+            ws.event_3.emit('ev_3');
         }
         
 

@@ -19,26 +19,25 @@ function decimalToHex(d, padding) {
 socket.on('shalabuhi', function(data){
    console.log(data);
    var obj = JSON.parse(data);
-   var num = $("#shalabuhen table").find("tr:last-child").find("td:first-child").text();
+   if(obj.phase == "setup"){
+       var num = $("#shalabuhen table").find("tr:last-child").find("td:first-child").text();
+       var dec_mac = obj.mac.split(":");
+       var mac = [];
+       dec_mac.forEach(function(dec){
+           mac.push(decimalToHex(dec));
+       });
+       mac = mac.join(":").toUpperCase();
 
-
-   var dec_mac = obj.mac.split(":");
-   var mac = [];
-   dec_mac.forEach(function(dec){
-      mac.push(decimalToHex(dec));
-   });
-   mac = mac.join(":").toUpperCase();
-
-   var row =   '<tr>'+
-                  '<td>'+(+num+1)+'</td>'+
-                  '<td>'+mac+'</td>'+
-                  '<td>'+obj.ip+'</td>'+
-                  '<td>'+(+num+1)+'</td>'+
-                  '<td>'+obj.version+'</td>'+
-                  '<td>on</td>'+
-               '</tr>';
-   $("#shalabuhen table").append(row);
-
+       var row =   '<tr>'+
+           '<td>'+(+num+1)+'</td>'+
+           '<td>'+mac+'</td>'+
+           '<td>'+obj.ip+'</td>'+
+           '<td>'+(+num+1)+'</td>'+
+           '<td>'+obj.version+'</td>'+
+           '<td>on</td>'+
+           '</tr>';
+       $("#shalabuhen table").append(row);
+   }
 });
 
 $("#run").on("click",  function(){
@@ -48,4 +47,8 @@ $("#run").on("click",  function(){
 $("#stop").on("click",  function(){
     console.log("iv_stop");
     socket.emit("iv_status", "iv_stop");
+});
+
+$("#get_speed").on("click", function(){
+    socket.emit("iv_status", "get_speed");
 });

@@ -25,6 +25,8 @@ body{
   background: url("/images/agro_logo.png") no-repeat left center;
   background-size: contain;
   cursor: pointer;
+  display: inline-block;
+  float: left;
 }
 #main{
   width: 100%;
@@ -571,4 +573,10 @@ body{
 #run, #stop{
   width: 80px;
   background: #1280B4;
+  margin:40px 0 0 40px;
+}
+#get_speed{
+  width:120px;
+  background: #1280B4;
+  margin:40px 0 0 40px;
 }

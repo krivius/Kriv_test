@@ -43,6 +43,19 @@ var server = ws.createServer(function(conn){
             // var command = {phase:"command", command:"start"};
             // conn.sendText(JSON.stringify(command));
 
+        }else if(obj.phase == "iv_reply"){
+            console.log(str);
+            var reply = JSON.parse(str);
+
+            var reply_hex = decimalToHex(reply.msg_b0)+' '+
+                decimalToHex(reply.msg_b1)+' '+
+                decimalToHex(reply.msg_b2)+' '+
+                decimalToHex(reply.msg_b3)+' '+
+                decimalToHex(reply.msg_b4)+' '+
+                decimalToHex(reply.msg_b5)+' '+
+                decimalToHex(reply.msg_b6)+' '+
+                decimalToHex(reply.msg_b7);
+            console.log("REPLY: "+reply_hex.toUpperCase());
         }
         www.eventEmitter.emit('ws', str);
         www.shalabuhen.emit('ws2', str);
@@ -73,8 +86,21 @@ var event_stop = function event_stop(str){
     });
 };
 
+var event_3 = new events.EventEmitter();
+var event_gspeed = function event_gspeed(str){
+    console.log("==GSPEED==");
+    var command = {phase:"command", command:"gspeed"};
+    //server.socket.sendText(JSON.stringify(command));
+    server.connections.forEach(function(conn){
+        conn.sendText(JSON.stringify(command));
+    });
+};
+
 event_1.addListener("ev_1", event_run);
 exports.event_1 = event_1;
 
 event_2.addListener("ev_2", event_stop);
-exports.event_1 = event_2;
+exports.event_2 = event_2;
+
+event_3.addListener("ev_3", event_gspeed);
+exports.event_3 = event_3;
