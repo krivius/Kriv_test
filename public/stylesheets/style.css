@@ -575,8 +575,21 @@ body{
   background: #1280B4;
   margin:40px 0 0 40px;
 }
-#get_speed{
+#get_speed, #set_speed{
   width:120px;
   background: #1280B4;
   margin:40px 0 0 40px;
+}
+#speed{
+  position: relative;
+  top: 20px;
+  width: 40px;
+}
+#curr_freq{
+  display: inline-block;
+  left: 40px;
+  margin-right: 40px;
+  position: relative;
+  top: 32px;
+  cursor: default;
 }

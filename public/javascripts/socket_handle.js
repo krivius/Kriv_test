@@ -11,8 +11,14 @@ function decimalToHex(d, padding) {
    while (hex.length < padding) {
       hex = "0" + hex;
    }
-
    return hex;
+}
+
+function zeroFill(string){
+    while(string.length < 4){
+        string = '0'+string;
+    }
+    return string;
 }
 
 
@@ -40,15 +46,55 @@ socket.on('shalabuhi', function(data){
    }
 });
 
+var qwe;
 $("#run").on("click",  function(){
-        console.log("iv_run");
-        socket.emit("iv_status", "iv_run");
+    console.log("iv_run");
+    var obj = {
+        command: "start"
+    };
+    socket.emit("iv_status", JSON.stringify(obj));
+    qwe = setInterval(function(){
+        var obj = {
+            command: "gspeed"
+        };
+        socket.emit("iv_status", JSON.stringify(obj));
+    }, 1000);
 });
 $("#stop").on("click",  function(){
     console.log("iv_stop");
-    socket.emit("iv_status", "iv_stop");
+    var obj = {
+        command: "stop"
+    };
+    socket.emit("iv_status", JSON.stringify(obj));
+    clearInterval(qwe);
+    $("#curr_freq").text('');
 });
 
 $("#get_speed").on("click", function(){
-    socket.emit("iv_status", "get_speed");
+    var obj = {
+        command: "gspeed"
+    };
+    socket.emit("iv_status", JSON.stringify(obj));
+});
+
+$("#set_speed").on("click",  function(){
+    var speed = $("#speed").val() || '0000';
+    if(speed != '0000'){
+        speed = decimalToHex(speed);
+        speed = zeroFill(speed);
+    }
+    var obj = {
+        command: "sspeed",
+        sb1: parseInt(speed[0]+speed[1], 16).toString(),
+        sb2: parseInt(speed[2]+speed[3], 16).toString()
+    };
+    console.log(speed);
+    socket.emit("iv_status", JSON.stringify(obj));
+});
+
+
+
+socket.on("iv_info", function(data){
+    console.log("RPM: "+data);
+    $("#curr_freq").text(data);
 });

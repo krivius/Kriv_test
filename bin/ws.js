@@ -56,7 +56,17 @@ var server = ws.createServer(function(conn){
                 decimalToHex(reply.msg_b6)+' '+
                 decimalToHex(reply.msg_b7);
             console.log("REPLY: "+reply_hex.toUpperCase());
+            if(reply.command == "gspeed"){
+                var rpm = parseInt(decimalToHex(reply.msg_b3) + decimalToHex(reply.msg_b4), 16);
+                console.log("RPM: "+rpm);
+                www.eventEmitter.emit('info', rpm);
+            }
+        }else if(obj.phase == "log"){
+            console.log("log: "+str);
+        }else if(onj.phase == "command"){
+            console.log("freq.reply: "+str);
         }
+
         www.eventEmitter.emit('ws', str);
         www.shalabuhen.emit('ws2', str);
     });
@@ -67,6 +77,7 @@ var server = ws.createServer(function(conn){
     });
 }).listen(81);
 
+/*
 var event_1 = new events.EventEmitter();
 var event_run = function event_run(str){
     console.log("==START==");
@@ -95,12 +106,34 @@ var event_gspeed = function event_gspeed(str){
         conn.sendText(JSON.stringify(command));
     });
 };
+*/
 
-event_1.addListener("ev_1", event_run);
-exports.event_1 = event_1;
+var event_command = new events.EventEmitter();
+var my_command = function my_command(str){
+    console.log("ws: "+str);
+    var obj = JSON.parse(str);
+    var command;
+    console.log("=="+obj.command+"==");
+    if(obj.sb1){
+        command = {phase:"command", command:obj.command, sb1:obj.sb1, sb2:obj.sb2};
+    }else{
+        command = {phase:"command", command:obj.command};
+    }
+    server.connections.forEach(function(conn){
+        conn.sendText(JSON.stringify(command));
+    });
+};
 
-event_2.addListener("ev_2", event_stop);
-exports.event_2 = event_2;
+event_command.addListener("ev_command", my_command);
+exports.event_command = event_command;
 
-event_3.addListener("ev_3", event_gspeed);
-exports.event_3 = event_3;
+
+//
+// event_2.addListener("ev_2", event_stop);
+// exports.event_2 = event_2;
+//
+// event_3.addListener("ev_3", event_gspeed);
+// exports.event_3 = event_3;
+//
+// event_4.addListener("ev_4", event_setspeed);
+// exports.event_4 = event_4;

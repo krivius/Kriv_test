@@ -111,6 +111,9 @@ var ws2 = function ws2(str){
     io.emit('shalabuhi', str);
     
 };
+var ws_info = function info(str){
+    io.emit("iv_info",  str)
+};
 
 io.on('connection', function(socket){
     console.log('User connected!');
@@ -130,7 +133,7 @@ io.on('connection', function(socket){
         socket.emit('chart_data', {'data_1': scales1, 'data_2': scales2});
     });
 
-    socket.on('iv_status', function (data) {
+    /*socket.on('iv_status', function (data) {
         console.log("IV_STATUS: "+data);
         if(data == 'iv_run'){
             ws.event_1.emit('ev_1');    
@@ -139,9 +142,13 @@ io.on('connection', function(socket){
         }else if(data == 'get_speed'){
             ws.event_3.emit('ev_3');
         }
-        
-
+    });*/
+    socket.on('iv_status', function (data) {
+        console.log("IV_STATUS: "+data);
+        ws.event_command.emit("ev_command", data);
     });
+    
+    
 
     socket.on('disconnect', function(){
         console.log('User disconnected!');
@@ -151,6 +158,7 @@ io.on('connection', function(socket){
 
 eventEmitter.addListener('ws', ws1);
 shalabuhen.addListener('ws2', ws2);
+eventEmitter.addListener('info', ws_info);
 
 exports.eventEmitter = eventEmitter;
 exports.shalabuhen = shalabuhen;
