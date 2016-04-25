@@ -91,13 +91,16 @@ body{
 #shalabuhen{
   display: block;
 }
-#shalabuhen table{
+#shalabuhen table,
+#logs table{
   margin: 20px auto;
   border-collapse: collapse;
 }
 
 #shalabuhen td,
-#shalabuhen th{
+#shalabuhen th,
+#logs td,
+#logs th{
   border:1px solid;
   padding: 2px 5px;
   text-align: center;
@@ -575,7 +578,9 @@ body{
   background: #1280B4;
   margin:40px 0 0 40px;
 }
-#get_speed, #set_speed{
+#get_speed, #set_speed,
+#stop_speed_interval, #sys_log,
+#update_fw{
   width:120px;
   background: #1280B4;
   margin:40px 0 0 40px;
@@ -593,3 +598,10 @@ body{
   top: 32px;
   cursor: default;
 }
+#debug, #debug + label{
+  left: 20px;
+  position: relative;
+  top: 25px;
+}
+
+

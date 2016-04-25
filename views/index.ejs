@@ -20,8 +20,11 @@
     <input type="button" id="stop" value="stop">
     <input type="button" id="get_speed" value="get speed">
     <div class="informer" id="curr_freq"></div>
-    <!--<input type="button" id="set_speed" value="set speed">-->
-    <!--<input type="text" id="speed" maxlength="4">-->
+    <input type="button" id="set_speed" value="set speed">
+    <input type="text" id="speed" maxlength="4">
+    <input type="button" id="sys_log" value="sys log">
+    <input type="checkbox" id="debug" name="debug" value="debug_on"> <label for="debug">debug</label>
+    <input type="button" id="update_fw" value="update fw">
   </div>
   <ul id="menu">
     <li mode="user">Оператор</li>
@@ -122,7 +125,16 @@
 
           </table>
         </div>
-        <div id="logs" class="admin_stuff"></div>
+        <div id="logs" class="admin_stuff">
+          <table>
+            <tr>
+              <th>Тип</th>
+              <th>Сообщение</th>
+              <th>Дата / время</th>
+            </tr>
+
+          </table>
+        </div>
       </div>
     </div>
   </div>

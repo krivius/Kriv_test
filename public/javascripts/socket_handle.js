@@ -77,6 +77,7 @@ $("#get_speed").on("click", function(){
     socket.emit("iv_status", JSON.stringify(obj));
 });
 
+
 $("#set_speed").on("click",  function(){
     var speed = $("#speed").val() || '0000';
     if(speed != '0000'){
@@ -94,7 +95,38 @@ $("#set_speed").on("click",  function(){
 
 
 
+
 socket.on("iv_info", function(data){
     console.log("RPM: "+data);
     $("#curr_freq").text(data);
+});
+
+socket.on("sys_log",  function(data){
+   var obj = JSON.parse(data);
+    var phase = obj.phase;
+
+    if(phase == "log"){
+        var d = new Date(),
+            now = d.getDate()+'.'+d.getMonth()+'.'+d.getFullYear()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+        var row = '<tr><td>'+obj.from+'</td><td>'+obj.log_string+'</td><td>'+now+'</td></tr>';
+        $("#logs table").append(row);
+    }
+    console.log(obj);
+});
+
+$("#sys_log").on("click", function(){
+    var debug = $("#debug:checked").val() || 'debug_off';
+    // console.log(debug);
+    var obj ={
+        phase: "sys_command",
+        command: debug
+    };
+    socket.emit('iv_status', JSON.stringify(obj));
+});
+$("#update_fw").on("click",  function(){
+    var obj ={
+        phase: "sys_command",
+        command: "fw_update"
+    };
+    socket.emit('iv_status', JSON.stringify(obj));
 });

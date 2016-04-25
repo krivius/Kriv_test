@@ -103,6 +103,18 @@ function onListening() {
 
 var eventEmitter = new events.EventEmitter();
 var shalabuhen = new events.EventEmitter();
+
+var emit_func = function emit_func(channel, str, wrap){
+    if(!wrap){
+        wrap = false;
+    }
+    if(wrap){
+      io.emit(channel, {data:str});
+    }else{
+      io.emit(channel, str);
+    }
+};
+
 var ws1 = function ws1(str){
     io.emit('ws', {data: str});
 };
@@ -115,8 +127,12 @@ var ws_info = function info(str){
     io.emit("iv_info",  str)
 };
 
+var sys_log = function(str){
+  io.emit("sys_log",  str);
+};
+
 io.on('connection', function(socket){
-    console.log('User connected!');
+    console.log('User <<' + this.id + '>> connected!');
     //io.emit('shalabuhi', '{data:str}');
     socket.emit('on_connect', { 'data': 'data'});
 
@@ -147,18 +163,24 @@ io.on('connection', function(socket){
         console.log("IV_STATUS: "+data);
         ws.event_command.emit("ev_command", data);
     });
-    
-    
+
 
     socket.on('disconnect', function(){
-        console.log('User disconnected!');
-    })
+        try {
+            console.log('User <<' + this.id + '>> disconnected!');
+            socket.disconnect();
+        }catch(err){
+            console.log("Error: "+err);
+        }
+
+    });
 });
 
 
 eventEmitter.addListener('ws', ws1);
 shalabuhen.addListener('ws2', ws2);
 eventEmitter.addListener('info', ws_info);
+eventEmitter.addListener('sys_log', sys_log);
 
 exports.eventEmitter = eventEmitter;
 exports.shalabuhen = shalabuhen;

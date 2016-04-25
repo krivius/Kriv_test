@@ -20,11 +20,17 @@ function decimalToHex(d, padding) {
     return hex;
 }
 
+var clients = [];
 
 var server = ws.createServer(function(conn){
+
+
+    clients.push(conn);
     console.log("New connection!");
     global_conn = conn;
+    console.log("clients: "+clients[0].id);
     conn.on("text", function(str){
+
         var obj = JSON.parse(str);
         console.log("Phase: "+obj.phase);
 
@@ -37,11 +43,6 @@ var server = ws.createServer(function(conn){
             });
             var setup = {phase:"setup", iv_id:"1", pin:"2"};
             conn.sendText(JSON.stringify(setup));
-
-        }else if(obj.phase == "setup_done"){
-
-            // var command = {phase:"command", command:"start"};
-            // conn.sendText(JSON.stringify(command));
 
         }else if(obj.phase == "iv_reply"){
             console.log(str);
@@ -58,13 +59,15 @@ var server = ws.createServer(function(conn){
             console.log("REPLY: "+reply_hex.toUpperCase());
             if(reply.command == "gspeed"){
                 var rpm = parseInt(decimalToHex(reply.msg_b3) + decimalToHex(reply.msg_b4), 16);
-                console.log("RPM: "+rpm);
                 www.eventEmitter.emit('info', rpm);
             }
         }else if(obj.phase == "log"){
             console.log("log: "+str);
-        }else if(onj.phase == "command"){
+            www.eventEmitter.emit('sys_log', str);
+        }else if(obj.phase == "command"){
             console.log("freq.reply: "+str);
+        }else if(obj.phase == "debug"){
+            console.log("debug "+str);
         }
 
         www.eventEmitter.emit('ws', str);
@@ -73,7 +76,8 @@ var server = ws.createServer(function(conn){
 
 
     conn.on("close", function(code, reason){
-        console.log("connection close");
+        console.log("Connection closed: "+reason);
+        conn.close();
     });
 }).listen(81);
 
@@ -114,10 +118,13 @@ var my_command = function my_command(str){
     var obj = JSON.parse(str);
     var command;
     console.log("=="+obj.command+"==");
-    if(obj.sb1){
-        command = {phase:"command", command:obj.command, sb1:obj.sb1, sb2:obj.sb2};
-    }else{
+    if(obj.sb1) {
+        command = {phase: "command", command: obj.command, sb1: obj.sb1, sb2: obj.sb2};
+    }else if(obj.phase == "sys_command") {
+        command = {phase: "sys_command", command: obj.command};
+       }else{
         command = {phase:"command", command:obj.command};
+        // command = {phase:"sys_command", command:"restart"};
     }
     server.connections.forEach(function(conn){
         conn.sendText(JSON.stringify(command));
