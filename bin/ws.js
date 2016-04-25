@@ -20,20 +20,39 @@ function decimalToHex(d, padding) {
     return hex;
 }
 
-var clients = {};
-var clients_array = [];
+var clients = [];
 
 var server = ws.createServer(function(conn){
 
-    clients[conn.id] = [];
-    clients[conn.id].conn = conn;
-    clients[conn.id].data = {};
 
-    clients_array.push(conn);
     console.log("New connection!");
+    clients.push(conn);
     global_conn = conn;
-    console.log("clients: "+clients[conn.id].conn);
-    console.log("clients_array: "+clients_array);
+    console.log("clients_array: "+clients);
+
+    var heartBeat = setInterval(function(){
+        console.log("Total connections: "+clients.length);
+        for(var i = 0; i < clients.length; i++) {
+            try{
+                console.log("heartbeat try");
+                clients[i].sendPing();
+            }catch(err){
+                console.log("heartbeat catch");
+                console.log(err);
+                clients[i].close();
+                clients.splice(i, 1);
+                break;
+            }
+            // # Remove from our connections list so we don't send
+            // # to a dead socket
+            // if(clients[i] == conn) {
+            //     clients.splice(i);
+            //     break;
+            // }
+        }
+    }, 5000);
+
+
     conn.on("text", function(str){
 
         var obj = JSON.parse(str);
@@ -80,42 +99,25 @@ var server = ws.createServer(function(conn){
     });
 
 
-    conn.on("close", function(code, reason){
+   /* conn.on("close", function(code, reason){
+
+        for(var i = 0; i < clients.length; i++) {
+            // # Remove from our connections list so we don't send
+            // # to a dead socket
+            if(clients[i] == conn) {
+                clients.splice(i);
+                break;
+            }
+        }
+
         console.log("Connection closed: "+reason);
         conn.close();
-    });
+        console.log("Total connections: "+clients.length);
+    });*/
+}).addListener("close",  function(){
+    console.log("===CLOSED===");
 }).listen(81);
 
-/*
-var event_1 = new events.EventEmitter();
-var event_run = function event_run(str){
-    console.log("==START==");
-    var command = {phase:"command", command:"start"};
-    //server.socket.sendText(JSON.stringify(command));
-    server.connections.forEach(function(conn){
-        conn.sendText(JSON.stringify(command));
-    });
-};
-var event_2 = new events.EventEmitter();
-var event_stop = function event_stop(str){
-    console.log("==STOP==");
-    var command = {phase:"command", command:"stop"};
-    //server.socket.sendText(JSON.stringify(command));
-    server.connections.forEach(function(conn){
-        conn.sendText(JSON.stringify(command));
-    });
-};
-
-var event_3 = new events.EventEmitter();
-var event_gspeed = function event_gspeed(str){
-    console.log("==GSPEED==");
-    var command = {phase:"command", command:"gspeed"};
-    //server.socket.sendText(JSON.stringify(command));
-    server.connections.forEach(function(conn){
-        conn.sendText(JSON.stringify(command));
-    });
-};
-*/
 
 var event_command = new events.EventEmitter();
 var my_command = function my_command(str){
@@ -139,13 +141,3 @@ var my_command = function my_command(str){
 event_command.addListener("ev_command", my_command);
 exports.event_command = event_command;
 
-
-//
-// event_2.addListener("ev_2", event_stop);
-// exports.event_2 = event_2;
-//
-// event_3.addListener("ev_3", event_gspeed);
-// exports.event_3 = event_3;
-//
-// event_4.addListener("ev_4", event_setspeed);
-// exports.event_4 = event_4;
