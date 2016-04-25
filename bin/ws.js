@@ -20,15 +20,20 @@ function decimalToHex(d, padding) {
     return hex;
 }
 
-var clients = [];
+var clients = {};
+var clients_array = [];
 
 var server = ws.createServer(function(conn){
 
+    clients[conn.id] = [];
+    clients[conn.id].conn = conn;
+    clients[conn.id].data = {};
 
-    clients.push(conn);
+    clients_array.push(conn);
     console.log("New connection!");
     global_conn = conn;
-    console.log("clients: "+clients[0].id);
+    console.log("clients: "+clients[conn.id].conn);
+    console.log("clients_array: "+clients_array);
     conn.on("text", function(str){
 
         var obj = JSON.parse(str);

@@ -121,7 +121,6 @@ var ws1 = function ws1(str){
 
 var ws2 = function ws2(str){
     io.emit('shalabuhi', str);
-    
 };
 var ws_info = function info(str){
     io.emit("iv_info",  str)
@@ -131,9 +130,12 @@ var sys_log = function(str){
   io.emit("sys_log",  str);
 };
 
+
 io.on('connection', function(socket){
-    console.log('User <<' + this.id + '>> connected!');
+
+    // console.log('User <<' + this.id + '>> connected!');
     //io.emit('shalabuhi', '{data:str}');
+
     socket.emit('on_connect', { 'data': 'data'});
 
     socket.on('ready', function(){
