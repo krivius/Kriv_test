@@ -1,9 +1,13 @@
 /**
  * Created by adm_kriv on 12.04.2016.
  */
+
+'use strict'
+
 var www = require('./www');
 var ws = require("nodejs-websocket");
 var events = require('events');
+
 
 var global_conn;
 
@@ -21,21 +25,42 @@ function decimalToHex(d, padding) {
 }
 
 var clients = [];
-
+var mac_array = [];
 var server = ws.createServer(function(conn){
 
 
-    console.log("New connection!");
-    clients.push(conn);
-    global_conn = conn;
-    console.log("clients_array: "+clients);
 
-    var heartBeat = setInterval(function(){
+    // conn.on('connect', function(){
+        console.log("New connection!");
+        var client_obj = {};
+        client_obj.conn = conn;
+
+        clients.push(client_obj);
+
+        global_conn = conn;
+        //console.log("clients_array: "+clients);
+
+      /*  for(var i = 0; i < clients.length; i++) {
+            try {
+                var ping = {phase: 'sys_command', command: 'ping'};
+                clients[i].sendText(JSON.stringify(ping));
+            } catch (err) {
+                // clients.splice(i);
+                console.log("PING ERR: " + err);
+            }
+        }*/
+    // });
+
+
+   /* var heartBeat = setInterval(function(){
         console.log("Total connections: "+clients.length);
         for(var i = 0; i < clients.length; i++) {
             try{
                 console.log("heartbeat try");
-                clients[i].sendPing();
+                clients[i].sendPing('knock-knock, bitch!');
+                clients[i].once("pong", function(data){
+                   console.log("PONG DATA: "+data);
+                });
             }catch(err){
                 console.log("heartbeat catch");
                 console.log(err);
@@ -50,7 +75,7 @@ var server = ws.createServer(function(conn){
             //     break;
             // }
         }
-    }, 5000);
+    }, 5000);*/
 
 
     conn.on("text", function(str){
@@ -65,8 +90,20 @@ var server = ws.createServer(function(conn){
             dec_mac.forEach(function(dec){
                 mac.push(decimalToHex(dec));
             });
+            mac = mac.join(":").toUpperCase();
+            mac_array.push(mac);
+            // console.log("MAC ADDR: "+mac);
             var setup = {phase:"setup", iv_id:"1", pin:"2"};
             conn.sendText(JSON.stringify(setup));
+
+            for(var i = 0; i < clients.length; i++){
+               if(clients[i].conn == conn){
+                   clients[i].mac = mac;
+               }
+            }
+            console.log(clients);
+            www.eventEmitter.emit('mac_array', JSON.stringify(mac_array));
+            console.log(mac_array);
 
         }else if(obj.phase == "iv_reply"){
             console.log(str);
@@ -92,6 +129,8 @@ var server = ws.createServer(function(conn){
             console.log("freq.reply: "+str);
         }else if(obj.phase == "debug"){
             console.log("debug "+str);
+        }else if(obj.phase == 'sys_command'){
+            console.log("sys_command: "+str);
         }
 
         www.eventEmitter.emit('ws', str);
@@ -114,8 +153,6 @@ var server = ws.createServer(function(conn){
         conn.close();
         console.log("Total connections: "+clients.length);
     });*/
-}).addListener("close",  function(){
-    console.log("===CLOSED===");
 }).listen(81);
 
 
@@ -133,9 +170,14 @@ var my_command = function my_command(str){
         command = {phase:"command", command:obj.command};
         // command = {phase:"sys_command", command:"restart"};
     }
-    server.connections.forEach(function(conn){
-        conn.sendText(JSON.stringify(command));
-    });
+    for(var i = 0; i < clients.length; i++){
+        if(clients[i].mac == obj.mac){
+            clients[i].conn.sendText(JSON.stringify(command));
+        }
+    }
+    // server.connections.forEach(function(conn){
+    //     conn.sendText(JSON.stringify(command));
+    // });
 };
 
 event_command.addListener("ev_command", my_command);

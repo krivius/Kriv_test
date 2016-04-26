@@ -130,6 +130,10 @@ var sys_log = function(str){
   io.emit("sys_log",  str);
 };
 
+var mac_array = function mac_array(str){
+    io.emit('mac_array', str);
+};
+
 
 io.on('connection', function(socket){
 
@@ -182,6 +186,7 @@ io.on('connection', function(socket){
 eventEmitter.addListener('ws', ws1);
 shalabuhen.addListener('ws2', ws2);
 eventEmitter.addListener('info', ws_info);
+eventEmitter.addListener('mac_array', mac_array);
 eventEmitter.addListener('sys_log', sys_log);
 
 exports.eventEmitter = eventEmitter;

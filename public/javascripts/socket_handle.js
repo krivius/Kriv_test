@@ -50,7 +50,8 @@ var qwe;
 $("#run").on("click",  function(){
     console.log("iv_run");
     var obj = {
-        command: "start"
+        command: "start",
+        mac: $("#mac_list").val()
     };
     socket.emit("iv_status", JSON.stringify(obj));
     qwe = setInterval(function(){
@@ -61,10 +62,12 @@ $("#run").on("click",  function(){
     }, 1000);
 });
 $("#stop").on("click",  function(){
-    console.log("iv_stop");
+    // console.log("iv_stop");
     var obj = {
-        command: "stop"
+        command: "stop",
+        mac: $("#mac_list").val()
     };
+    console.log(JSON.stringify(obj))
     socket.emit("iv_status", JSON.stringify(obj));
     clearInterval(qwe);
     $("#curr_freq").text('');
@@ -72,7 +75,8 @@ $("#stop").on("click",  function(){
 
 $("#get_speed").on("click", function(){
     var obj = {
-        command: "gspeed"
+        command: "gspeed",
+        mac: $("#mac_list").val()
     };
     socket.emit("iv_status", JSON.stringify(obj));
 });
@@ -87,7 +91,8 @@ $("#set_speed").on("click",  function(){
     var obj = {
         command: "sspeed",
         sb1: parseInt(speed[0]+speed[1], 16).toString(),
-        sb2: parseInt(speed[2]+speed[3], 16).toString()
+        sb2: parseInt(speed[2]+speed[3], 16).toString(),
+        mac: $("#mac_list").val()
     };
     console.log(speed);
     socket.emit("iv_status", JSON.stringify(obj));
@@ -119,14 +124,27 @@ $("#sys_log").on("click", function(){
     // console.log(debug);
     var obj ={
         phase: "sys_command",
-        command: debug
+        command: debug,
+        mac: $("#mac_list").val()
     };
     socket.emit('iv_status', JSON.stringify(obj));
 });
 $("#update_fw").on("click",  function(){
     var obj ={
         phase: "sys_command",
-        command: "fw_update"
+        command: "fw_update",
+        mac: $("#mac_list").val()
     };
     socket.emit('iv_status', JSON.stringify(obj));
+});
+
+socket.on("mac_array",  function(data){
+
+    var mac_array = JSON.parse(data),
+        mac_list = '';
+    console.log(mac_array);
+    $.each(mac_array,  function(k, v){
+        mac_list += '<option value="'+v+'">'+v+'</option>';
+    });
+    $("#mac_list").html(mac_list);
 });

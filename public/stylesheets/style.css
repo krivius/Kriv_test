@@ -604,4 +604,10 @@ body{
   top: 25px;
 }
 
+#mac_list{
+  left: 20px;
+  position: relative;
+  top: 23px;
+  padding: 3px;
+}
 
