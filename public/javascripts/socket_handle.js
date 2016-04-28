@@ -47,6 +47,7 @@ socket.on('shalabuhi', function(data){
        for(var i=0; i < clients.length; i++){
            mac_arr.push(clients[i].mac);
        }
+       console.log(mac_arr);
        if($.inArray(mac, mac_arr) == -1){
            clients.push(obj);
            mac_arr.push(mac);
@@ -63,16 +64,17 @@ socket.on('shalabuhi', function(data){
            console.log(clients);
            console.log("++++++++++++++++++++");
            var t_rows = $("#shalabuhen table").find('tr').get();
+
            $.each(t_rows, function(){
-               var t_mac = $(this).find('td.mac').text();
+               var t_mac = $(this).find(".mac").text();
                console.log(t_mac == mac);
                if(mac == t_mac){
-                   $(this).find('td.state').text('on');
+                   $(this).find(".state").text('on');
                }
            });
        }
 
-       /*var rows = '<tr>'+
+       var rows = '<tr>'+
                        '<th>№</th>'+
                        '<th>MAC-адрес</th>'+
                        '<th>IP-адрес</th>'+
@@ -96,7 +98,7 @@ socket.on('shalabuhi', function(data){
            mac_list += '<option value="'+v+'">'+v+'</option>';
        });
        $("#mac_list").empty().html(mac_list);
-       $("#shalabuhen table").empty().html(rows);*/
+       $("#shalabuhen table").empty().html(rows);
    }
 });
 
@@ -211,11 +213,12 @@ socket.on("change_state",  function(data){
     }
     console.log(clients);
     console.log("change_state "+data);
+
     var rows = $("#shalabuhen table").find('tr').get();
     $.each(rows, function(){
-        var mac = $(this).find('td.mac').text();
+        var mac = $(this).find(".mac").text();
         if(mac == data){
-            $(this).find('td.state').text('off');
+            $(this).find(".state").text('off');
         }
     });
 });
@@ -232,6 +235,9 @@ $("#restart").on("click",  function(){
 
 socket.on("ws_clients",  function(data){
    // console.log(data);
+    clients = data;
+    console.log("ws_clients");
+    console.log(clients);
     var mac_arr = [];
     var rows = '<tr>'+
         '<th>№</th>'+
@@ -242,6 +248,7 @@ socket.on("ws_clients",  function(data){
         '<th>Статус</th>'+
         '</tr>';
     for(var i=0; i < data.length; i++){
+
         rows += '<tr>'+
             '<td>'+(i+1)+'</td>'+
             '<td class="mac">'+data[i].mac+'</td>'+
