@@ -580,7 +580,7 @@ body{
 }
 #get_speed, #set_speed,
 #stop_speed_interval, #sys_log,
-#update_fw{
+#update_fw, #restart{
   width:120px;
   background: #1280B4;
   margin:40px 0 0 40px;

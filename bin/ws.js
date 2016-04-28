@@ -81,7 +81,9 @@ var server = ws.createServer(function(conn){
     conn.on("text", function(str){
 
         var obj = JSON.parse(str);
-        console.log("Phase: "+obj.phase);
+        if(obj.command != "pong") {
+            console.log("Phase: " + obj.phase);
+        }
 
         if(obj.phase == "setup"){
 
@@ -99,6 +101,8 @@ var server = ws.createServer(function(conn){
             for(var i = 0; i < clients.length; i++){
                if(clients[i].conn == conn){
                    clients[i].mac = mac;
+                   clients[i].ip = obj.ip;
+                   clients[i].version = obj.version;
                }
             }
             console.log(clients);
@@ -129,7 +133,7 @@ var server = ws.createServer(function(conn){
             console.log("freq.reply: "+str);
         }else if(obj.phase == "debug"){
             console.log("debug "+str);
-        }else if(obj.phase == 'sys_command'){
+        }else if(obj.phase == 'sys_command' && obj.command != "pong"){
             console.log("sys_command: "+str);
         }
 
@@ -137,23 +141,50 @@ var server = ws.createServer(function(conn){
         www.shalabuhen.emit('ws2', str);
     });
 
-
-   /* conn.on("close", function(code, reason){
-
+    conn.on("error", function(){
         for(var i = 0; i < clients.length; i++) {
-            // # Remove from our connections list so we don't send
-            // # to a dead socket
-            if(clients[i] == conn) {
-                clients.splice(i);
+            if(clients[i].conn.key === conn.key){
+                var mac = clients[i].mac;
+                www.eventEmitter.emit('change_state', mac);
+                console.log(clients.splice(i,1));
                 break;
             }
         }
+        console.log("----------------------------------------------------------------------------");
+        console.log(clients);
 
-        console.log("Connection closed: "+reason);
-        conn.close();
-        console.log("Total connections: "+clients.length);
-    });*/
+    });
+
+
+    // conn.on("close", function(code, reason){
+    //
+    //     for(var i = 0; i < clients.length; i++) {
+    //         // # Remove from our connections list so we don't send
+    //         // # to a dead socket
+    //         if(clients[i].conn == conn) {
+    //             clients.splice(i);
+    //             console.log("Connection closed: "+reason);
+    //             clients[i].conn.close();
+    //             console.log("Total connections: "+clients.length);
+    //             break;
+    //         }
+    //     }
+    //
+    //
+    // });
 }).listen(81);
+
+setInterval(function(){
+    // for(var i = 0; i < clients.length; i++) {
+        var command = {
+            phase:"sys_command",
+            command:"ping"
+        };
+        server.connections.forEach(function(conn){
+            conn.sendText(JSON.stringify(command));
+        });
+    // }
+}, 1000);
 
 
 var event_command = new events.EventEmitter();
@@ -166,10 +197,12 @@ var my_command = function my_command(str){
         command = {phase: "command", command: obj.command, sb1: obj.sb1, sb2: obj.sb2};
     }else if(obj.phase == "sys_command") {
         command = {phase: "sys_command", command: obj.command};
-       }else{
+    }else{
         command = {phase:"command", command:obj.command};
         // command = {phase:"sys_command", command:"restart"};
-    }
+    }/*else if(obj.command = 'restart'){
+        command = {phase:"sys_command", command:"restart"};
+    }*/
     for(var i = 0; i < clients.length; i++){
         if(clients[i].mac == obj.mac){
             clients[i].conn.sendText(JSON.stringify(command));
@@ -183,3 +216,4 @@ var my_command = function my_command(str){
 event_command.addListener("ev_command", my_command);
 exports.event_command = event_command;
 
+exports.clients = clients;

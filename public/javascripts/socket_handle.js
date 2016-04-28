@@ -3,6 +3,9 @@
  */
 
 var socket = io();
+var clients = [];
+
+socket.emit("get_clients");
 
 function decimalToHex(d, padding) {
    var hex = Number(d).toString(16);
@@ -21,28 +24,79 @@ function zeroFill(string){
     return string;
 }
 
+function convertMac(mac){
+    var dec_mac = mac.split(":");
+    var hex_mac = [];
+    dec_mac.forEach(function(dec){
+        hex_mac.push(decimalToHex(dec));
+    });
+    hex_mac = hex_mac.join(":").toUpperCase();
+    return hex_mac;
+}
 
 socket.on('shalabuhi', function(data){
-   console.log(data);
-   var obj = JSON.parse(data);
-   if(obj.phase == "setup"){
-       var num = $("#shalabuhen table").find("tr:last-child").find("td:first-child").text();
-       var dec_mac = obj.mac.split(":");
-       var mac = [];
-       dec_mac.forEach(function(dec){
-           mac.push(decimalToHex(dec));
-       });
-       mac = mac.join(":").toUpperCase();
 
-       var row =   '<tr>'+
-           '<td>'+(+num+1)+'</td>'+
-           '<td>'+mac+'</td>'+
-           '<td>'+obj.ip+'</td>'+
-           '<td>'+(+num+1)+'</td>'+
-           '<td>'+obj.version+'</td>'+
-           '<td>on</td>'+
-           '</tr>';
-       $("#shalabuhen table").append(row);
+   var obj = JSON.parse(data);
+
+   if(obj.phase == "setup"){
+       console.log(data);
+       var mac = convertMac(obj.mac);
+       obj.mac = mac;
+       obj.state = 'on';
+       var mac_arr = [];
+       for(var i=0; i < clients.length; i++){
+           mac_arr.push(clients[i].mac);
+       }
+       if($.inArray(mac, mac_arr) == -1){
+           clients.push(obj);
+           mac_arr.push(mac);
+           console.log("====================");
+           console.log(clients);
+           console.log("====================");
+       }else{
+           for(var i=0; i < clients.length; i++){
+               if(mac == clients[i].mac){
+                   clients[i].state = 'on';
+               }
+           }
+           console.log("++++++++++++++++++++");
+           console.log(clients);
+           console.log("++++++++++++++++++++");
+           var t_rows = $("#shalabuhen table").find('tr').get();
+           $.each(t_rows, function(){
+               var t_mac = $(this).find('td.mac').text();
+               console.log(t_mac == mac);
+               if(mac == t_mac){
+                   $(this).find('td.state').text('on');
+               }
+           });
+       }
+
+       /*var rows = '<tr>'+
+                       '<th>№</th>'+
+                       '<th>MAC-адрес</th>'+
+                       '<th>IP-адрес</th>'+
+                       '<th>№ частотника</th>'+
+                       '<th>Версия прошивки</th>'+
+                       '<th>Статус</th>'+
+                   '</tr>';
+       for(var i=0; i < clients.length; i++){
+           rows += '<tr>'+
+               '<td>'+(i+1)+'</td>'+
+               '<td class="mac">'+clients[i].mac+'</td>'+
+               '<td>'+clients[i].ip+'</td>'+
+               '<td>'+(i+1)+'</td>'+
+               '<td>'+clients[i].version+'</td>'+
+               '<td class="state">'+clients[i].state+'</td>'+
+               '</tr>';
+       }
+       console.log(clients);
+       var mac_list = '';
+       $.each(mac_arr,  function(k, v){
+           mac_list += '<option value="'+v+'">'+v+'</option>';
+       });
+       $("#mac_list").empty().html(mac_list);
+       $("#shalabuhen table").empty().html(rows);*/
    }
 });
 
@@ -113,7 +167,7 @@ socket.on("sys_log",  function(data){
     if(phase == "log"){
         var d = new Date(),
             now = d.getDate()+'.'+d.getMonth()+'.'+d.getFullYear()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        var row = '<tr><td>'+obj.from+'</td><td>'+obj.log_string+'</td><td>'+now+'</td></tr>';
+        var row = '<tr><td>'+convertMac(obj.mac)+'</td><td>'+obj.from+'</td><td>'+obj.log_string+'</td><td>'+now+'</td></tr>';
         $("#logs table").append(row);
     }
     console.log(obj);
@@ -138,13 +192,70 @@ $("#update_fw").on("click",  function(){
     socket.emit('iv_status', JSON.stringify(obj));
 });
 
-socket.on("mac_array",  function(data){
+// socket.on("mac_array",  function(data){
+//
+//     var mac_array = JSON.parse(data),
+//         mac_list = '';
+//     console.log(mac_array);
+//     $.each(mac_array,  function(k, v){
+//         mac_list += '<option value="'+v+'">'+v+'</option>';
+//     });
+//     $("#mac_list").empty().html(mac_list);
+// });
 
-    var mac_array = JSON.parse(data),
-        mac_list = '';
-    console.log(mac_array);
-    $.each(mac_array,  function(k, v){
+socket.on("change_state",  function(data){
+    for(var i=0; i < clients.length; i++){
+        if(data == clients[i].mac){
+            clients[i].state = 'off';
+        }
+    }
+    console.log(clients);
+    console.log("change_state "+data);
+    var rows = $("#shalabuhen table").find('tr').get();
+    $.each(rows, function(){
+        var mac = $(this).find('td.mac').text();
+        if(mac == data){
+            $(this).find('td.state').text('off');
+        }
+    });
+});
+
+$("#restart").on("click",  function(){
+    var obj ={
+        phase: "sys_command",
+        command: "restart",
+        mac: $("#mac_list").val()
+    };
+    socket.emit('iv_status', JSON.stringify(obj));
+});
+
+
+socket.on("ws_clients",  function(data){
+   // console.log(data);
+    var mac_arr = [];
+    var rows = '<tr>'+
+        '<th>№</th>'+
+        '<th>MAC-адрес</th>'+
+        '<th>IP-адрес</th>'+
+        '<th>№ частотника</th>'+
+        '<th>Версия прошивки</th>'+
+        '<th>Статус</th>'+
+        '</tr>';
+    for(var i=0; i < data.length; i++){
+        rows += '<tr>'+
+            '<td>'+(i+1)+'</td>'+
+            '<td class="mac">'+data[i].mac+'</td>'+
+            '<td>'+data[i].ip+'</td>'+
+            '<td>'+(i+1)+'</td>'+
+            '<td>'+data[i].version+'</td>'+
+            '<td class="state">on</td>'+
+            '</tr>';
+        mac_arr.push(data[i].mac);
+    }
+    var mac_list = '';
+    $.each(mac_arr,  function(k, v){
         mac_list += '<option value="'+v+'">'+v+'</option>';
     });
-    $("#mac_list").html(mac_list);
+    $("#mac_list").empty().html(mac_list);
+    $("#shalabuhen table").empty().html(rows);
 });

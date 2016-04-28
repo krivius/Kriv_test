@@ -13,6 +13,7 @@ var events = require('events');
 var udp = require('./udp.js');
 var ws = require('./ws.js');
 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -133,6 +134,12 @@ var sys_log = function(str){
 var mac_array = function mac_array(str){
     io.emit('mac_array', str);
 };
+var change_state = function change_state(str) {
+  io.emit('change_state', str);  
+};
+var ws_clients = function ws_clients(str) {
+    io.emit('ws_clients',  str);
+};
 
 
 io.on('connection', function(socket){
@@ -180,6 +187,22 @@ io.on('connection', function(socket){
         }
 
     });
+
+    socket.on("get_clients", function(){
+        console.log("===============");
+        var send_clients = [];
+        ws.clients.forEach(function(client){
+           var obj = {};
+            obj.mac = client.mac;
+            obj.ip = client.ip;
+            obj.version = client.version;
+            obj.state = 'on';
+            send_clients.push(obj);
+        });
+        socket.emit("ws_clients",  send_clients);
+        console.log(send_clients);
+        console.log("===============");
+    });
 });
 
 
@@ -188,6 +211,8 @@ shalabuhen.addListener('ws2', ws2);
 eventEmitter.addListener('info', ws_info);
 eventEmitter.addListener('mac_array', mac_array);
 eventEmitter.addListener('sys_log', sys_log);
+eventEmitter.addListener('change_state', change_state);
+// eventEmitter.addListener('ws_clients', ws_clients);
 
 exports.eventEmitter = eventEmitter;
 exports.shalabuhen = shalabuhen;
