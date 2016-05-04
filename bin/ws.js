@@ -145,8 +145,19 @@ var server = ws.createServer(function(conn){
         for(var i = 0; i < clients.length; i++) {
             if(clients[i].conn.key === conn.key){
                 var mac = clients[i].mac;
+
+                // var send_clients = [];
+                // clients.forEach(function(client){
+                //     var obj = {};
+                //     obj.mac = client.mac;
+                //     obj.ip = client.ip;
+                //     obj.version = client.version;
+                //     obj.state = 'on';
+                //     send_clients.push(obj);
+                // });
+                // www.eventEmitter.emit('change_state', send_clients);
+                clients.splice(i,1);
                 www.eventEmitter.emit('change_state', mac);
-                console.log(clients.splice(i,1));
                 break;
             }
         }

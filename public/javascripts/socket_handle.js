@@ -24,6 +24,8 @@ function zeroFill(string){
     return string;
 }
 
+
+
 function convertMac(mac){
     var dec_mac = mac.split(":");
     var hex_mac = [];
@@ -63,15 +65,15 @@ socket.on('shalabuhi', function(data){
            console.log("++++++++++++++++++++");
            console.log(clients);
            console.log("++++++++++++++++++++");
-           var t_rows = $("#shalabuhen table").find('tr').get();
-
-           $.each(t_rows, function(){
-               var t_mac = $(this).find(".mac").text();
-               console.log(t_mac == mac);
-               if(mac == t_mac){
-                   $(this).find(".state").text('on');
-               }
-           });
+           // var t_rows = $("#shalabuhen table").find('tr').get();
+           //
+           // $.each(t_rows, function(){
+           //     var t_mac = $(this).find(".mac").text();
+           //     console.log(t_mac == mac);
+           //     if(mac == t_mac){
+           //         $(this).find(".state").text('on');
+           //     }
+           // });
        }
 
        var rows = '<tr>'+
@@ -168,7 +170,7 @@ socket.on("sys_log",  function(data){
 
     if(phase == "log"){
         var d = new Date(),
-            now = d.getDate()+'.'+d.getMonth()+'.'+d.getFullYear()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+            now = ('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+d.getFullYear()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);
         var row = '<tr><td>'+convertMac(obj.mac)+'</td><td>'+obj.from+'</td><td>'+obj.log_string+'</td><td>'+now+'</td></tr>';
         $("#logs table").append(row);
     }
@@ -193,17 +195,6 @@ $("#update_fw").on("click",  function(){
     };
     socket.emit('iv_status', JSON.stringify(obj));
 });
-
-// socket.on("mac_array",  function(data){
-//
-//     var mac_array = JSON.parse(data),
-//         mac_list = '';
-//     console.log(mac_array);
-//     $.each(mac_array,  function(k, v){
-//         mac_list += '<option value="'+v+'">'+v+'</option>';
-//     });
-//     $("#mac_list").empty().html(mac_list);
-// });
 
 socket.on("change_state",  function(data){
     for(var i=0; i < clients.length; i++){
