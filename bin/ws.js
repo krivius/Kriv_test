@@ -62,9 +62,10 @@ var server = ws.createServer(function(conn){
                 tmp.state = 'on';
                 send_clients.push(tmp);
             }
-            console.log(clients);
+            //console.log(clients);
             www.eventEmitter.emit('mac_array', JSON.stringify(send_clients));
-            console.log(mac_array);
+            //console.log(send_clients);
+            //console.log(mac_array);
 
         }else if(obj.phase == "iv_reply"){
             console.log(str);
@@ -94,8 +95,7 @@ var server = ws.createServer(function(conn){
             console.log("sys_command: "+str);
         }
 
-        www.eventEmitter.emit('ws', str);
-        www.shalabuhen.emit('ws2', str);
+        www.eventEmitter.emit('main_channel', str);
     });
 
     conn.on("error", function(){
@@ -118,9 +118,8 @@ var server = ws.createServer(function(conn){
                 break;
             }
         }
-        console.log("----------------------------------------------------------------------------");
+        console.log("----------------WS_ON_ERROR------------------");
         console.log(clients);
-
     });
 
 

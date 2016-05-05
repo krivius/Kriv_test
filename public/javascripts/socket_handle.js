@@ -24,8 +24,6 @@ function zeroFill(string){
     return string;
 }
 
-
-
 function convertMac(mac){
     var dec_mac = mac.split(":");
     var hex_mac = [];
@@ -36,7 +34,7 @@ function convertMac(mac){
     return hex_mac;
 }
 
-socket.on('shalabuhi', function(data){
+socket.on('main_channel', function(data){
 
    var obj = JSON.parse(data);
 

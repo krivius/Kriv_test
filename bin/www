@@ -103,7 +103,6 @@ function onListening() {
 
 
 var eventEmitter = new events.EventEmitter();
-var shalabuhen = new events.EventEmitter();
 
 var emit_func = function emit_func(channel, str, wrap){
     if(!wrap){
@@ -116,13 +115,16 @@ var emit_func = function emit_func(channel, str, wrap){
     }
 };
 
-var ws1 = function ws1(str){
-    io.emit('ws', {data: str});
+var ws_main_channel = function ws_main_channel(str){
+    var t_str = JSON.parse(str);
+    if(t_str.command != 'pong') {
+        console.log('ws_main_channel func emit start ---------->');
+        console.log(str);
+        console.log('ws_main_channel func emit end   ---------->');
+    }
+    io.emit('main_channel', str);
 };
 
-var ws2 = function ws2(str){
-    io.emit('shalabuhi', str);
-};
 var ws_info = function info(str){
     io.emit("iv_info",  str)
 };
@@ -206,8 +208,7 @@ io.on('connection', function(socket){
 });
 
 
-eventEmitter.addListener('ws', ws1);
-shalabuhen.addListener('ws2', ws2);
+eventEmitter.addListener('main_channel', ws_main_channel);
 eventEmitter.addListener('info', ws_info);
 eventEmitter.addListener('mac_array', mac_array);
 eventEmitter.addListener('sys_log', sys_log);
@@ -215,4 +216,3 @@ eventEmitter.addListener('change_state', change_state);
 // eventEmitter.addListener('ws_clients', ws_clients);
 
 exports.eventEmitter = eventEmitter;
-exports.shalabuhen = shalabuhen;
