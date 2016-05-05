@@ -30,7 +30,7 @@ var server = ws.createServer(function(conn){
 
 
 
-    // conn.on('connect', function(){
+    conn.on('connect', function(){
         console.log("New connection!");
         var client_obj = {};
         client_obj.conn = conn;
@@ -39,44 +39,7 @@ var server = ws.createServer(function(conn){
 
         global_conn = conn;
         //console.log("clients_array: "+clients);
-
-      /*  for(var i = 0; i < clients.length; i++) {
-            try {
-                var ping = {phase: 'sys_command', command: 'ping'};
-                clients[i].sendText(JSON.stringify(ping));
-            } catch (err) {
-                // clients.splice(i);
-                console.log("PING ERR: " + err);
-            }
-        }*/
-    // });
-
-
-   /* var heartBeat = setInterval(function(){
-        console.log("Total connections: "+clients.length);
-        for(var i = 0; i < clients.length; i++) {
-            try{
-                console.log("heartbeat try");
-                clients[i].sendPing('knock-knock, bitch!');
-                clients[i].once("pong", function(data){
-                   console.log("PONG DATA: "+data);
-                });
-            }catch(err){
-                console.log("heartbeat catch");
-                console.log(err);
-                clients[i].close();
-                clients.splice(i, 1);
-                break;
-            }
-            // # Remove from our connections list so we don't send
-            // # to a dead socket
-            // if(clients[i] == conn) {
-            //     clients.splice(i);
-            //     break;
-            // }
-        }
-    }, 5000);*/
-
+    });
 
     conn.on("text", function(str){
 
