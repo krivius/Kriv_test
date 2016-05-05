@@ -46,6 +46,7 @@ socket.on('main_channel', function(data){
        obj.state = 'on';
        // var mac_arr = [];
        console.log("Clients: " + clients);
+       console.log("Clients_length: " + clients.length);
        for(var i=0; i < clients.length; i++){
            if($.inArray(clients[i].mac, mac_arr) == -1){
                mac_arr.push(clients[i].mac);
@@ -233,7 +234,7 @@ socket.on("ws_clients",  function(data){
     clients = data;
     console.log("ws_clients_1");
     console.log(clients);
-    var mac_arr = [];
+    //var mac_arr = [];
     var rows = '<tr>'+
         '<th>№</th>'+
         '<th>MAC-адрес</th>'+
@@ -266,7 +267,7 @@ socket.on("mac_array",  function(data){
     clients = data;
     console.log("ws_clients_mac");
     console.log(clients);
-    var mac_arr = [];
+    //var mac_arr = [];
     var rows = '<tr>'+
         '<th>№</th>'+
         '<th>MAC-адрес</th>'+
