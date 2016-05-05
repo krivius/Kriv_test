@@ -257,3 +257,37 @@ socket.on("ws_clients",  function(data){
     $("#mac_list").empty().html(mac_list);
     $("#shalabuhen table").empty().html(rows);
 });
+
+socket.on("mac_array",  function(data){
+    clients = data;
+    console.log("ws_clients");
+    console.log(clients);
+    var mac_arr = [];
+    var rows = '<tr>'+
+        '<th>№</th>'+
+        '<th>MAC-адрес</th>'+
+        '<th>IP-адрес</th>'+
+        '<th>№ частотника</th>'+
+        '<th>Версия прошивки</th>'+
+        '<th>Статус</th>'+
+        '</tr>';
+    for(var i=0; i < data.length; i++){
+
+        rows += '<tr>'+
+            '<td>'+(i+1)+'</td>'+
+            '<td class="mac">'+data[i].mac+'</td>'+
+            '<td>'+data[i].ip+'</td>'+
+            '<td>'+(i+1)+'</td>'+
+            '<td>'+data[i].version+'</td>'+
+            '<td class="state">on</td>'+
+            '</tr>';
+        mac_arr.push(data[i].mac);
+    }
+    var mac_list = '';
+    $.each(mac_arr,  function(k, v){
+        mac_list += '<option value="'+v+'">'+v+'</option>';
+    });
+    $("#mac_list").empty().html(mac_list);
+    $("#shalabuhen table").empty().html(rows);
+});
+

@@ -82,7 +82,8 @@ var server = ws.createServer(function(conn){
 
         var obj = JSON.parse(str);
         if(obj.command != "pong") {
-            console.log("Phase: " + obj.phase);
+            console.log("Phase: " + obj.phase + " " + str);
+
         }
 
         if(obj.phase == "setup"){
@@ -98,15 +99,22 @@ var server = ws.createServer(function(conn){
             var setup = {phase:"setup", iv_id:"1", pin:"2"};
             conn.sendText(JSON.stringify(setup));
 
+            var send_clients = [];
             for(var i = 0; i < clients.length; i++){
+                var tmp={};
                if(clients[i].conn == conn){
                    clients[i].mac = mac;
                    clients[i].ip = obj.ip;
                    clients[i].version = obj.version;
                }
+                tmp.mac = mac;
+                tmp.ip = obj.ip;
+                tmp.version = obj.version;
+                tmp.state = 'on';
+                send_clients.push(tmp);
             }
             console.log(clients);
-            www.eventEmitter.emit('mac_array', JSON.stringify(mac_array));
+            www.eventEmitter.emit('mac_array', JSON.stringify(send_clients));
             console.log(mac_array);
 
         }else if(obj.phase == "iv_reply"){
