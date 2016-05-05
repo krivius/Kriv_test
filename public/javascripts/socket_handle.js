@@ -226,7 +226,7 @@ $("#restart").on("click",  function(){
 socket.on("ws_clients",  function(data){
    // console.log(data);
     clients = data;
-    console.log("ws_clients");
+    console.log("ws_clients_1");
     console.log(clients);
     var mac_arr = [];
     var rows = '<tr>'+
@@ -259,7 +259,7 @@ socket.on("ws_clients",  function(data){
 
 socket.on("mac_array",  function(data){
     clients = data;
-    console.log("ws_clients");
+    console.log("ws_clients_mac");
     console.log(clients);
     var mac_arr = [];
     var rows = '<tr>'+
