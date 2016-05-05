@@ -1,6 +1,9 @@
 /**
  * Created by adm_kriv on 12.04.2016.
  */
+
+'use strict';
+
 var PORT = 8888;
 
 var net = require('net');
@@ -19,12 +22,7 @@ function ret_clients_data(){
     return clients_data;
 }
 
-udp_server.on('listening', function(){
-    var address = udp_server.address();
-    console.log('UDP server listening on ' + address.address + ":" + address.port);
-});
 /*=======================================================================================*/
-'use strict';
 
 var os = require('os');
 var ifaces = os.networkInterfaces();
@@ -53,6 +51,12 @@ Object.keys(ifaces).forEach(function (ifname) {
 
 console.log("Current IP: "+ip_arr[0]);
 /*=======================================================================================*/
+
+udp_server.on('listening', function(){
+    var address = udp_server.address();
+    console.log('UDP server listening on ' + ip_arr[0] + ":" + address.port);
+});
+
 udp_server.on('message', function(message, remote){
     console.log(remote.address + ":" + remote.port + " - " + message);
     var message_to_send = new Buffer(ip_arr[0]);

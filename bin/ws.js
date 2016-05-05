@@ -2,7 +2,7 @@
  * Created by adm_kriv on 12.04.2016.
  */
 
-'use strict'
+'use strict';
 
 var www = require('./www');
 var ws = require("nodejs-websocket");
@@ -10,22 +10,19 @@ var events = require('events');
 
 
 var global_conn;
-
+var clients = [];
+var mac_array = [];
 
 
 function decimalToHex(d, padding) {
     var hex = Number(d).toString(16);
     padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
-
     while (hex.length < padding) {
         hex = "0" + hex;
     }
-
     return hex;
 }
 
-var clients = [];
-var mac_array = [];
 var server = ws.createServer(function(conn){
     console.log("New connection!");
     var client_obj = {};
@@ -34,15 +31,12 @@ var server = ws.createServer(function(conn){
     global_conn = conn;
     //console.log("clients_array: "+clients);
     conn.on("text", function(str){
-
         var obj = JSON.parse(str);
         if(obj.command != "pong") {
             console.log("Phase: " + obj.phase + " " + str);
-
         }
 
         if(obj.phase == "setup"){
-
             var dec_mac = obj.mac.split(":");
             var mac = [];
             dec_mac.forEach(function(dec){
