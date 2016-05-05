@@ -39,15 +39,16 @@ socket.on('main_channel', function(data){
    var obj = JSON.parse(data);
 
    if(obj.phase == "setup"){
-       console.log(data);
+       console.log("setup phase detected: " + data);
        var mac = convertMac(obj.mac);
        obj.mac = mac;
        obj.state = 'on';
        var mac_arr = [];
+       console.log("Clients: " + clients);
        for(var i=0; i < clients.length; i++){
            mac_arr.push(clients[i].mac);
        }
-       console.log(mac_arr);
+       console.log("MAC arr is: " + mac_arr);
        if($.inArray(mac, mac_arr) == -1){
            clients.push(obj);
            mac_arr.push(mac);

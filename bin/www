@@ -202,8 +202,9 @@ io.on('connection', function(socket){
             send_clients.push(obj);
         });
         socket.emit("ws_clients",  send_clients);
+        console.log("===SEND_CLIENTS===");
         console.log(send_clients);
-        console.log("===============");
+        console.log("==================");
     });
 });
 
