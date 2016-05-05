@@ -27,20 +27,12 @@ function decimalToHex(d, padding) {
 var clients = [];
 var mac_array = [];
 var server = ws.createServer(function(conn){
-
-
-
-    conn.on('connect', function(){
-        console.log("New connection!");
-        var client_obj = {};
-        client_obj.conn = conn;
-
-        clients.push(client_obj);
-
-        global_conn = conn;
-        //console.log("clients_array: "+clients);
-    });
-
+    console.log("New connection!");
+    var client_obj = {};
+    client_obj.conn = conn;
+    clients.push(client_obj);
+    global_conn = conn;
+    //console.log("clients_array: "+clients);
     conn.on("text", function(str){
 
         var obj = JSON.parse(str);
