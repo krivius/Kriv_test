@@ -104,15 +104,8 @@ function onListening() {
 
 var eventEmitter = new events.EventEmitter();
 
-var emit_func = function emit_func(channel, str, wrap){
-    if(!wrap){
-        wrap = false;
-    }
-    if(wrap){
-      io.emit(channel, {data:str});
-    }else{
+var emit_func = function emit_func(channel, str){
       io.emit(channel, str);
-    }
 };
 
 var ws_main_channel = function ws_main_channel(str){

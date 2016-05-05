@@ -4,6 +4,7 @@
 
 var socket = io();
 var clients = [];
+var mac_arr =[];
 
 socket.emit("get_clients");
 
@@ -43,10 +44,12 @@ socket.on('main_channel', function(data){
        var mac = convertMac(obj.mac);
        obj.mac = mac;
        obj.state = 'on';
-       var mac_arr = [];
+       // var mac_arr = [];
        console.log("Clients: " + clients);
        for(var i=0; i < clients.length; i++){
-           mac_arr.push(clients[i].mac);
+           if($.inArray(clients[i].mac, mac_arr) == -1){
+               mac_arr.push(clients[i].mac);
+           }
        }
        console.log("MAC arr is: " + mac_arr);
        if($.inArray(mac, mac_arr) == -1){
@@ -59,6 +62,8 @@ socket.on('main_channel', function(data){
            for(var i=0; i < clients.length; i++){
                if(mac == clients[i].mac){
                    clients[i].state = 'on';
+                   // clients.splice(i, 1);
+                   // clients.push(obj);
                }
            }
            console.log("++++++++++++++++++++");
