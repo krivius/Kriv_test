@@ -5,6 +5,7 @@
 var socket = io();
 var clients = [];
 var mac_arr =[];
+var interval_gspeed;
 
 socket.emit("get_clients");
 
@@ -118,68 +119,13 @@ socket.on('main_channel', function(data){
    }
 });
 
-var qwe;
-$("#run").on("click",  function(){
-    console.log("iv_run");
-    var obj = {
-        command: "start",
-        mac: $("#mac_list").val()
-    };
-    socket.emit("iv_status", JSON.stringify(obj));
-    qwe = setInterval(function(){
-        var obj = {
-            command: "gspeed"
-        };
-        socket.emit("iv_status", JSON.stringify(obj));
-    }, 1000);
-});
-$("#stop").on("click",  function(){
-    // console.log("iv_stop");
-    var obj = {
-        command: "stop",
-        mac: $("#mac_list").val()
-    };
-    console.log(JSON.stringify(obj))
-    socket.emit("iv_status", JSON.stringify(obj));
-    clearInterval(qwe);
-    $("#curr_freq").text('');
-});
-
-$("#get_speed").on("click", function(){
-    var obj = {
-        command: "gspeed",
-        mac: $("#mac_list").val()
-    };
-    socket.emit("iv_status", JSON.stringify(obj));
-});
-
-
-$("#set_speed").on("click",  function(){
-    var speed = $("#speed").val() || '0000';
-    if(speed != '0000'){
-        speed = decimalToHex(speed);
-        speed = zeroFill(speed);
-    }
-    var obj = {
-        command: "sspeed",
-        sb1: parseInt(speed[0]+speed[1], 16).toString(),
-        sb2: parseInt(speed[2]+speed[3], 16).toString(),
-        mac: $("#mac_list").val()
-    };
-    console.log(speed);
-    socket.emit("iv_status", JSON.stringify(obj));
-});
-
-
-
-
 socket.on("iv_info", function(data){
     console.log("RPM: "+data);
     $("#curr_freq").text(data);
 });
 
 socket.on("sys_log",  function(data){
-   var obj = JSON.parse(data);
+    var obj = JSON.parse(data);
     var phase = obj.phase;
 
     if(phase == "log"){
@@ -189,25 +135,6 @@ socket.on("sys_log",  function(data){
         $("#logs table").append(row);
     }
     console.log(obj);
-});
-
-$("#sys_log").on("click", function(){
-    var debug = $("#debug:checked").val() || 'debug_off';
-    // console.log(debug);
-    var obj ={
-        phase: "sys_command",
-        command: debug,
-        mac: $("#mac_list").val()
-    };
-    socket.emit('iv_status', JSON.stringify(obj));
-});
-$("#update_fw").on("click",  function(){
-    var obj ={
-        phase: "sys_command",
-        command: "fw_update",
-        mac: $("#mac_list").val()
-    };
-    socket.emit('iv_status', JSON.stringify(obj));
 });
 
 socket.on("change_state",  function(data){
@@ -228,18 +155,8 @@ socket.on("change_state",  function(data){
     });
 });
 
-$("#restart").on("click",  function(){
-    var obj ={
-        phase: "sys_command",
-        command: "restart",
-        mac: $("#mac_list").val()
-    };
-    socket.emit('iv_status', JSON.stringify(obj));
-});
-
-
 socket.on("ws_clients",  function(data){
-   // console.log(data);
+    // console.log(data);
     clients = data;
     console.log("ws_clients_1");
     console.log(clients);
@@ -271,6 +188,86 @@ socket.on("ws_clients",  function(data){
     $("#mac_list").empty().html(mac_list);
     $("#shalabuhen table").empty().html(rows);
 });
+
+$("#run").on("click",  function(){
+    console.log("iv_run");
+    var obj = {
+        command: "start",
+        mac: $("#mac_list").val()
+    };
+    socket.emit("iv_status", JSON.stringify(obj));
+    interval_gspeed = setInterval(function(){
+        var obj = {
+            command: "gspeed"
+        };
+        socket.emit("iv_status", JSON.stringify(obj));
+    }, 1000);
+});
+$("#stop").on("click",  function(){
+    // console.log("iv_stop");
+    var obj = {
+        command: "stop",
+        mac: $("#mac_list").val()
+    };
+    console.log(JSON.stringify(obj));
+    socket.emit("iv_status", JSON.stringify(obj));
+    clearInterval(interval_gspeed);
+    $("#curr_freq").text('');
+});
+
+$("#get_speed").on("click", function(){
+    var obj = {
+        command: "gspeed",
+        mac: $("#mac_list").val()
+    };
+    socket.emit("iv_status", JSON.stringify(obj));
+});
+
+
+$("#set_speed").on("click",  function(){
+    var speed = $("#speed").val() || '0000';
+    if(speed != '0000'){
+        speed = decimalToHex(speed);
+        speed = zeroFill(speed);
+    }
+    var obj = {
+        command: "sspeed",
+        sb1: parseInt(speed[0]+speed[1], 16).toString(),
+        sb2: parseInt(speed[2]+speed[3], 16).toString(),
+        mac: $("#mac_list").val()
+    };
+    console.log(speed);
+    socket.emit("iv_status", JSON.stringify(obj));
+});
+
+$("#sys_log").on("click", function(){
+    var debug = $("#debug:checked").val() || 'debug_off';
+    // console.log(debug);
+    var obj ={
+        phase: "sys_command",
+        command: debug,
+        mac: $("#mac_list").val()
+    };
+    socket.emit('iv_status', JSON.stringify(obj));
+});
+$("#update_fw").on("click",  function(){
+    var obj ={
+        phase: "sys_command",
+        command: "fw_update",
+        mac: $("#mac_list").val()
+    };
+    socket.emit('iv_status', JSON.stringify(obj));
+});
+
+$("#restart").on("click",  function(){
+    var obj ={
+        phase: "sys_command",
+        command: "restart",
+        mac: $("#mac_list").val()
+    };
+    socket.emit('iv_status', JSON.stringify(obj));
+});
+
 /*
 
 socket.on("mac_array",  function(data){
