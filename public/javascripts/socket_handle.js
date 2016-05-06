@@ -160,7 +160,7 @@ socket.on("ws_clients",  function(data){
     clients = data;
     console.log("ws_clients_1");
     console.log(clients);
-    //var mac_arr = [];
+    var mac_arr = [];
     var rows = '<tr>'+
         '<th>№</th>'+
         '<th>MAC-адрес</th>'+
@@ -169,6 +169,7 @@ socket.on("ws_clients",  function(data){
         '<th>Версия прошивки</th>'+
         '<th>Статус</th>'+
         '</tr>';
+    console.log("data.length: " + data.length);
     for(var i=0; i < data.length; i++){
 
         rows += '<tr>'+
@@ -177,7 +178,7 @@ socket.on("ws_clients",  function(data){
             '<td>'+data[i].ip+'</td>'+
             '<td>'+(i+1)+'</td>'+
             '<td>'+data[i].version+'</td>'+
-            '<td class="state">on</td>'+
+            '<td class="state">'+data[i].state+'</td>'+
             '</tr>';
         mac_arr.push(data[i].mac);
     }

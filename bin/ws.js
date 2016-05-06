@@ -9,9 +9,11 @@ var ws = require("nodejs-websocket");
 var events = require('events');
 
 
-var global_conn;
-var clients = [];
-var mac_array = [];
+var global_conn     = "";
+var clients         = [];
+var send_clients    = [];
+var mac_array       = [];
+var client_in_array = false;
 
 
 function decimalToHex(d, padding) {
@@ -48,23 +50,34 @@ var server = ws.createServer(function(conn){
             var setup = {phase:"setup", iv_id:"1", pin:"2"};
             conn.sendText(JSON.stringify(setup));
 
-            var send_clients = [];
+            client_in_array = false;
+
             for(var i = 0; i < clients.length; i++){
                 var tmp={};
-                if(clients[i].conn == conn){
+                if(clients[i].conn == conn) {
                     clients[i].mac = mac;
                     clients[i].ip = obj.ip;
+                    clients[i].state = 'on';
                     clients[i].version = obj.version;
+                    for (var i = 0; i < send_clients.length; i++) {
+                        if(send_clients[i].mac == mac) {
+                            send_clients[i].state = 'on';
+                            client_in_array = true;
+                        }
+                    }
+                    if(client_in_array == false) {
+                        tmp.mac = mac;
+                        tmp.ip = obj.ip;
+                        tmp.version = obj.version;
+                        tmp.state = 'on';
+                        send_clients.push(tmp);
+                    }
                 }
-                tmp.mac = mac;
-                tmp.ip = obj.ip;
-                tmp.version = obj.version;
-                tmp.state = 'on';
-                send_clients.push(tmp);
             }
             //console.log(clients);
-            www.eventEmitter.emit('ws_clients', JSON.stringify(send_clients));
-            console.log("Send clients: " + send_clients);
+            //www.eventEmitter.emit('ws_clients', JSON.stringify(send_clients));
+            www.eventEmitter.emit('ws_clients', send_clients);
+            console.log("Send clients: " + JSON.stringify(send_clients));
             //console.log(mac_array);
 
         }else if(obj.phase == "iv_reply"){
@@ -102,6 +115,12 @@ var server = ws.createServer(function(conn){
         for(var i = 0; i < clients.length; i++) {
             if(clients[i].conn.key === conn.key){
                 var mac = clients[i].mac;
+                for(var i = 0; i < send_clients.length; i++) {
+                    if(send_clients[i].mac == mac) {
+                        //send_clients.splice(i,1);
+                        send_clients[i].state = 'off';
+                    }
+                }
 
                 // var send_clients = [];
                 // clients.forEach(function(client){
@@ -115,6 +134,7 @@ var server = ws.createServer(function(conn){
                 // www.eventEmitter.emit('change_state', send_clients);
                 clients.splice(i,1);
                 www.eventEmitter.emit('change_state', mac);
+                www.eventEmitter.emit('ws_clients', send_clients);
                 console.log("On error clients: " + clients);
                 break;
             }
