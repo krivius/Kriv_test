@@ -65,8 +65,17 @@ socket.on('main_channel', function(data){
                    clients[i].state = 'on';
                    // clients.splice(i, 1);
                    // clients.push(obj);
+
                }
+
+
            }
+           var t_rows = $("#shalabuhen table").find('tr').get();
+           $.each(t_rows,  function(){
+               if($(this).find(".mac").text() == mac){
+                   $(this).find(".state").text("on");
+               }
+           });
            console.log("++++++++++++++++++++");
            console.log(clients);
            console.log("++++++++++++++++++++");
@@ -262,6 +271,7 @@ socket.on("ws_clients",  function(data){
     $("#mac_list").empty().html(mac_list);
     $("#shalabuhen table").empty().html(rows);
 });
+/*
 
 socket.on("mac_array",  function(data){
     clients = data;
@@ -295,4 +305,5 @@ socket.on("mac_array",  function(data){
     $("#mac_list").empty().html(mac_list);
     $("#shalabuhen table").empty().html(rows);
 });
+*/
 

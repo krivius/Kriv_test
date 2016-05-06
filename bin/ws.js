@@ -63,7 +63,7 @@ var server = ws.createServer(function(conn){
                 send_clients.push(tmp);
             }
             //console.log(clients);
-            www.eventEmitter.emit('mac_array', JSON.stringify(send_clients));
+            www.eventEmitter.emit('ws_clients', JSON.stringify(send_clients));
             //console.log(send_clients);
             //console.log(mac_array);
 
