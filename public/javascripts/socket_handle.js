@@ -4,7 +4,7 @@
 
 var socket = io();
 var clients = [];
-var mac_arr =[];
+var mac_arr = [];
 var interval_gspeed;
 
 socket.emit("get_clients");
@@ -46,7 +46,7 @@ socket.on('main_channel', function(data){
        obj.mac = mac;
        obj.state = 'on';
        // var mac_arr = [];
-       console.log("Clients: " + clients);
+       console.log("Clients: " + data);
        console.log("Clients_length: " + clients.length);
        for(var i=0; i < clients.length; i++){
            if($.inArray(clients[i].mac, mac_arr) == -1){

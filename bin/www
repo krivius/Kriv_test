@@ -121,16 +121,14 @@ var ws_main_channel = function ws_main_channel(str){
 var ws_info = function info(str){
     io.emit("iv_info",  str)
 };
-
 var sys_log = function(str){
-  io.emit("sys_log",  str);
+    io.emit("sys_log",  str);
 };
-
 var mac_array = function mac_array(str){
     io.emit('mac_array', str);
 };
 var change_state = function change_state(str) {
-  io.emit('change_state', str);  
+    io.emit('change_state', str);
 };
 var ws_clients = function ws_clients(str) {
     io.emit('ws_clients',  str);
@@ -207,6 +205,6 @@ eventEmitter.addListener('info', ws_info);
 eventEmitter.addListener('mac_array', mac_array);
 eventEmitter.addListener('sys_log', sys_log);
 eventEmitter.addListener('change_state', change_state);
-// eventEmitter.addListener('ws_clients', ws_clients);
+eventEmitter.addListener('ws_clients', ws_clients);
 
 exports.eventEmitter = eventEmitter;

@@ -51,11 +51,11 @@ var server = ws.createServer(function(conn){
             var send_clients = [];
             for(var i = 0; i < clients.length; i++){
                 var tmp={};
-               if(clients[i].conn == conn){
-                   clients[i].mac = mac;
-                   clients[i].ip = obj.ip;
-                   clients[i].version = obj.version;
-               }
+                if(clients[i].conn == conn){
+                    clients[i].mac = mac;
+                    clients[i].ip = obj.ip;
+                    clients[i].version = obj.version;
+                }
                 tmp.mac = mac;
                 tmp.ip = obj.ip;
                 tmp.version = obj.version;
@@ -64,7 +64,7 @@ var server = ws.createServer(function(conn){
             }
             //console.log(clients);
             www.eventEmitter.emit('ws_clients', JSON.stringify(send_clients));
-            //console.log(send_clients);
+            console.log("Send clients: " + send_clients);
             //console.log(mac_array);
 
         }else if(obj.phase == "iv_reply"){
@@ -95,7 +95,7 @@ var server = ws.createServer(function(conn){
             console.log("sys_command: "+str);
         }
 
-        www.eventEmitter.emit('main_channel', str);
+        //www.eventEmitter.emit('main_channel', str);
     });
 
     conn.on("error", function(){
@@ -115,6 +115,7 @@ var server = ws.createServer(function(conn){
                 // www.eventEmitter.emit('change_state', send_clients);
                 clients.splice(i,1);
                 www.eventEmitter.emit('change_state', mac);
+                console.log("On error clients: " + clients);
                 break;
             }
         }
