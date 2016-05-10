@@ -4,11 +4,11 @@
 $(document).ready(function(){
     $("button, input[type='button']").button();
     $("#menu, #admin_menu > ul").menu();
-    $(document).tooltip({
-        position: {
-            my: "center",
-        }
-    });
+    // $(document).tooltip({
+    //     position: {
+    //         my: "center",
+    //     }
+    // });
 
     $("#logo").on("click", function(){
         $("#menu").slideDown("fast");
@@ -91,5 +91,53 @@ $(document).ready(function(){
 
     $(".scales").on("mouseup", function(){
         $(this).find(".led").removeClass("green_led").addClass("red_led");
+    });
+
+
+
+    $(".informer").on("click",  function(){
+        var title = $(this).attr("title");
+        var dialog_settings = {
+            modal:true,
+            resizable:false,
+            title:title,
+            width:900,
+            height:600,
+            buttons:[
+                {
+                    text:"Закрыть",
+                    click: function(){
+                        $(this).dialog("close");
+                    }
+                }
+            ],
+            close:function(){
+                $(this).dialog("destroy");
+                $(this).remove();
+            }
+        };
+        $('<div><div id="highstock"></div></div>').appendTo('body').dialog(dialog_settings);
+        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+            // Create the chart
+            $('#highstock').highcharts('StockChart', {
+
+
+                rangeSelector : {
+                    selected : 1
+                },
+
+                title : {
+                    text : title
+                },
+
+                series : [{
+                    name : title,
+                    data : data,
+                    tooltip: {
+                        valueDecimals: 2
+                    }
+                }]
+            });
+        });
     });
 });

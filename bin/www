@@ -13,6 +13,9 @@ var events = require('events');
 var udp = require('./udp.js');
 var ws = require('./ws.js');
 
+var db  = require('./db_engine');
+var db_conn = db.connection();
+
 
 /**
  * Get port from environment and store in Express.
@@ -139,6 +142,22 @@ io.on('connection', function(socket){
 
     // console.log('User <<' + this.id + '>> connected!');
     //io.emit('shalabuhi', '{data:str}');
+
+
+  /*  db_conn.query("SELECT * from sys_log limit 10", function(err, rows, fields){
+        var db_array = [];
+        rows.forEach(function(item){
+            var db_obj = {};
+            db_obj.zaslon_id = item.zaslon_id;
+            db_obj.sys_name = item.sys_name;
+            db_obj.level = item.level;
+            db_obj.message = item.message;
+            db_array.push(db_obj);
+        });
+        console.log("/////////////////////////////////////////////////////////////");
+        console.log(db_array);
+        console.log("/////////////////////////////////////////////////////////////");
+    });*/
 
     socket.emit('on_connect', { 'data': 'data'});
 

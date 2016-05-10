@@ -610,4 +610,10 @@ body{
   top: 23px;
   padding: 3px;
 }
+#highstock{
+  width: 95%;
+  height: 450px;
+  display: block;
+  margin: 5px auto;
+}
 
