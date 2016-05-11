@@ -14,6 +14,7 @@ var clients         = [];
 var send_clients    = [];
 var mac_array       = [];
 var client_in_array = false;
+var state_changed   = false;
 
 
 function decimalToHex(d, padding) {
@@ -34,10 +35,23 @@ var server = ws.createServer(function(conn){
     //console.log("clients_array: "+clients);
     conn.on("text", function(str){
         var obj = JSON.parse(str);
+        //=============COMMAND============
         if(obj.command != "pong") {
             console.log("Phase: " + obj.phase + " " + str);
         }
-
+        if(obj.command == "pong") {
+            for(var i = 0; i < send_clients.length; i++) {
+                if(send_clients[i].raw_mac == obj.mac && send_clients[i].state == 'off') {
+                    send_clients[i].state = 'on';
+                    state_changed = true;
+                }
+            }
+            if(state_changed) {
+                www.eventEmitter.emit('ws_clients', send_clients);
+                state_changed = false;
+            }
+        }
+        //=============SETUP==============
         if(obj.phase == "setup"){
             var dec_mac = obj.mac.split(":");
             var mac = [];
@@ -65,8 +79,10 @@ var server = ws.createServer(function(conn){
                             client_in_array = true;
                         }
                     }
+                    console.log("->send_clients: " + JSON.stringify(send_clients));
                     if(client_in_array == false) {
                         tmp.mac = mac;
+                        tmp.raw_mac = obj.mac;
                         tmp.ip = obj.ip;
                         tmp.version = obj.version;
                         tmp.state = 'on';
@@ -115,10 +131,10 @@ var server = ws.createServer(function(conn){
         for(var i = 0; i < clients.length; i++) {
             if(clients[i].conn.key === conn.key){
                 var mac = clients[i].mac;
-                for(var i = 0; i < send_clients.length; i++) {
-                    if(send_clients[i].mac == mac) {
+                for(var j = 0; j < send_clients.length; j++) {
+                    if(send_clients[j].mac == mac) {
                         //send_clients.splice(i,1);
-                        send_clients[i].state = 'off';
+                        send_clients[j].state = 'off';
                     }
                 }
 

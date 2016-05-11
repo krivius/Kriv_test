@@ -112,12 +112,12 @@ var emit_func = function emit_func(channel, str){
 };
 
 var ws_main_channel = function ws_main_channel(str){
-    var t_str = JSON.parse(str);
+    /*var t_str = JSON.parse(str);
     if(t_str.command != 'pong') {
         console.log('ws_main_channel func emit start ---------->');
         console.log(str);
         console.log('ws_main_channel func emit end   ---------->');
-    }
+    }*/
     io.emit('main_channel', str);
 };
 
