@@ -143,6 +143,14 @@ var server = ws.createServer(function(conn){
             }
         }else if(obj.phase == "log"){
             console.log("log: "+str);
+            var dec_mac = obj.mac.split(":");
+            var mac = [];
+
+            dec_mac.forEach(function(dec){
+                mac.push(decimalToHex(dec));
+            });
+            mac = mac.join(":").toUpperCase();
+            db_conn.query('INSERT INTO hw_log_table SET mac="'+mac+'", message="'+obj.log_string+'", system="'+obj.from+'" ');
             www.eventEmitter.emit('sys_log', str);
         }else if(obj.phase == "command"){
             console.log("freq.reply: "+str);
