@@ -91,6 +91,7 @@ body{
 #shalabuhen{
   display: block;
 }
+#device_logs table,
 #shalabuhen table,
 #logs table{
   margin: 20px auto;
@@ -103,6 +104,37 @@ body{
 #logs th{
   border:1px solid;
   padding: 2px 5px;
+  text-align: center;
+}
+#shalabuhen td{
+  cursor: pointer;
+}
+
+#device_logs {
+  position: absolute;
+  bottom: 10px;
+  text-align: left;
+  height: 150px;
+  width: 850px;
+  display: block;
+  margin: 0 auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+#device_logs table{
+  text-align: left;
+  width: 100%;
+}
+#device_logs tr:nth-child(odd){
+  background: #cccccc;
+}
+#device_logs td,
+#device_logs th{
+  border:1px solid;
+  padding: 2px 5px;
+  text-align: left;
+}
+#device_logs th{
   text-align: center;
 }
 

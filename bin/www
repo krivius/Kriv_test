@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('Kriv_test:server');
 var http = require('http');
 var events = require('events');
+var dateFormat = require('dateformat');
 
 
 var udp = require('./udp.js');
@@ -198,6 +199,28 @@ io.on('connection', function(socket){
         console.log("[from www] ===SEND_CLIENTS===");
         console.log(send_clients);
         console.log("[from www] ==================");
+    });
+
+
+
+    socket.on("get_device_info",  function(mac){
+        var sql =  'SELECT message, system, time FROM hw_log_table WHERE mac="'+mac+'" ORDER BY id DESC LIMIT 100';
+        db_conn.query(sql,  function(err, rows, fields){
+            var info = {
+                mac:mac,
+                logs:[]
+            };
+            rows.forEach(function(log){
+                var tmp = {
+                    time:dateFormat(log.time, 'dd.mm.yy HH:MM:ss'),
+                    system: log.system,
+                    message:log.message
+                };
+
+                info.logs.push(tmp);
+            });
+            socket.emit("show_device_controls", info);
+        });
     });
 });
 

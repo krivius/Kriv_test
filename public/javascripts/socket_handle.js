@@ -269,39 +269,45 @@ $("#restart").on("click",  function(){
     socket.emit('iv_status', JSON.stringify(obj));
 });
 
-/*
 
-socket.on("mac_array",  function(data){
-    clients = data;
-    console.log("ws_clients_mac");
-    console.log(clients);
-    //var mac_arr = [];
-    var rows = '<tr>'+
-        '<th>№</th>'+
-        '<th>MAC-адрес</th>'+
-        '<th>IP-адрес</th>'+
-        '<th>№ частотника</th>'+
-        '<th>Версия прошивки</th>'+
-        '<th>Статус</th>'+
-        '</tr>';
-    for(var i=0; i < data.length; i++){
-
-        rows += '<tr>'+
-            '<td>'+(i+1)+'</td>'+
-            '<td class="mac">'+data[i].mac+'</td>'+
-            '<td>'+data[i].ip+'</td>'+
-            '<td>'+(i+1)+'</td>'+
-            '<td>'+data[i].version+'</td>'+
-            '<td class="state">on</td>'+
-            '</tr>';
-        mac_arr.push(data[i].mac);
+$("#shalabuhen table").on("click", "tr", function(){
+    var mac = $(this).find(".mac").text() || 'no_mac';
+    console.log(mac);
+    if(mac != 'no_mac'){
+        socket.emit("get_device_info", mac);
     }
-    var mac_list = '';
-    $.each(mac_arr,  function(k, v){
-        mac_list += '<option value="'+v+'">'+v+'</option>';
-    });
-    $("#mac_list").empty().html(mac_list);
-    $("#shalabuhen table").empty().html(rows);
-});
-*/
 
+});
+
+$("#device_controls").dialog({
+    modal:true,
+    autoOpen:false,
+    resizable:false,
+    width:900,
+    height:600,
+    buttons:[
+        {
+            text:"Сохранить",
+            click: function(){
+                $(this).dialog("close");
+            }
+        }
+    ]
+});
+socket.on("show_device_controls",  function(data){
+    console.log(data);
+    var rows = '<tr>'+
+                    '<th>Тип</th>'+
+                    '<th>Сообщение</th>'+
+                    '<th>Дата / время</th>'+
+                '</tr>';
+    $.each(data.logs,  function(key, log){
+        rows += '<tr>'+
+                    '<td>'+log.system+'</td>'+
+                    '<td>'+log.message+'</td>'+
+                    '<td>'+log.time+'</td>'+
+                '</tr>';
+    });
+    $("#device_logs table").empty().html(rows);
+    $("#device_controls").dialog("option", "title", data.mac).dialog("open");
+});
