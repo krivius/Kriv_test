@@ -67,16 +67,25 @@ var server = ws.createServer(function(conn){
             });
             mac = mac.join(":").toUpperCase();
 
-            var hw_mac_array = [];
+
             db_conn.query("SELECT mac FROM hw_table",  function(err, rows,  fields){
+                var hw_mac_array = [];
                 rows.forEach(function(item){
                    hw_mac_array.push(item.mac);
                 });
+                console.log(hw_mac_array);
+                var sql = '';
+                if(hw_mac_array.indexOf(mac) == -1){
+                    sql = 'INSERT INTO hw_table SET mac="'+mac+'", raw_mac="'+raw_mac+'", ip="'+obj.ip+'", state="1", fw_version="'+obj.version+'", type="'+obj.type+'"';
+                }else{
+                    sql = 'UPDATE hw_table SET  ip="'+obj.ip+'", state="1", fw_version="'+obj.version+'" WHERE raw_mac = "'+obj.mac+'"';
+                }
+                db_conn.query(sql);
             });
-            console.log(hw_mac_array);
 
-            var sql = 'INSERT INTO hw_table SET mac="'+mac+'", raw_mac="'+raw_mac+'", ip="'+obj.ip+'", state="1", fw_version="'+obj.version+'", type="'+obj.type+'"';
-            // db_conn.query(sql);
+
+
+
             
             mac_array.push(mac);
             // console.log("MAC ADDR: "+mac);
@@ -156,6 +165,7 @@ var server = ws.createServer(function(conn){
                         send_clients[j].state = 'off';
                     }
                 }
+                db_conn.query('UPDATE hw_table SET state="0" WHERE mac="'+mac+'"');
 
                 // var send_clients = [];
                 // clients.forEach(function(client){
