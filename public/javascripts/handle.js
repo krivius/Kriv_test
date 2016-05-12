@@ -119,11 +119,22 @@ $(document).ready(function(){
         $('<div><div id="highstock"></div></div>').appendTo('body').dialog(dialog_settings);
         $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
             // Create the chart
+
+
+            /*
+            *   window.chart = new Highcharts.StockChart({
+             chart: {
+             renderTo: 'container'
+             },
+            * */
             $('#highstock').highcharts('StockChart', {
-
-
+                chart:{
+                    renderTo: 'container'
+                },
                 rangeSelector : {
-                    selected : 1
+                    selected : 1,
+                    inputDateFormat: '%d.%m.%Y',
+                    inputEditDateFormat: '%d.%m.%Y'
                 },
 
                 title : {
@@ -137,7 +148,21 @@ $(document).ready(function(){
                         valueDecimals: 2
                     }
                 }]
+            }, function(chart) {
+
+                // apply the date pickers
+                setTimeout(function() {
+                    $('input.highcharts-range-selector', $('#' + chart.options.chart.renderTo)).datepicker()
+                }, 0)
             });
         });
+    });
+
+    $.datepicker.setDefaults({
+        dateFormat: 'dd.mm.yy',
+        onSelect: function(dateText) {
+            this.onchange();
+            this.onblur();
+        }
     });
 });

@@ -8,6 +8,9 @@ var www = require('./www');
 var ws = require("nodejs-websocket");
 var events = require('events');
 
+var db  = require('./db_engine');
+var db_conn = db.connection();
+
 
 var global_conn     = "";
 var clients         = [];
@@ -53,12 +56,28 @@ var server = ws.createServer(function(conn){
         }
         //=============SETUP==============
         if(obj.phase == "setup"){
+
+            var raw_mac = obj.mac;
+
             var dec_mac = obj.mac.split(":");
             var mac = [];
+
             dec_mac.forEach(function(dec){
                 mac.push(decimalToHex(dec));
             });
             mac = mac.join(":").toUpperCase();
+
+            var hw_mac_array = [];
+            db_conn.query("SELECT mac FROM hw_table",  function(err, rows,  fields){
+                rows.forEach(function(item){
+                   hw_mac_array.push(item.mac);
+                });
+            });
+            console.log(hw_mac_array);
+
+            var sql = 'INSERT INTO hw_table SET mac="'+mac+'", raw_mac="'+raw_mac+'", ip="'+obj.ip+'", state="1", fw_version="'+obj.version+'", type="'+obj.type+'"';
+            // db_conn.query(sql);
+            
             mac_array.push(mac);
             // console.log("MAC ADDR: "+mac);
             var setup = {phase:"setup", iv_id:"1", pin:"2"};
