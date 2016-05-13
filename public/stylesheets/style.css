@@ -114,8 +114,8 @@ body{
   position: absolute;
   bottom: 10px;
   text-align: left;
-  height: 150px;
-  width: 850px;
+  height: 225px;
+  width: 860px;
   display: block;
   margin: 0 auto;
   overflow-y: scroll;
@@ -649,3 +649,23 @@ body{
   margin: 5px auto;
 }
 
+.controls{
+  width: 100%;
+  height: 50px;
+  background: #2b2b2c none repeat scroll 0 0;
+  /*border: 4px ridge #525050;*/
+}
+.controls button{
+  width: 32px;
+}
+.more_info{
+  height: 25px;
+  width: 100%;
+  background: url("/images/under_cons.jpg") no-repeat scroll center center;
+  cursor: pointer;
+}
+#device_controls_modal fieldset{
+  display: inline-block;
+  width: 46%;
+  height: 200px;
+}

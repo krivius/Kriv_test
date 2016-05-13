@@ -111,10 +111,10 @@ socket.on('main_channel', function(data){
        }
        console.log(clients);
        var mac_list = '';
-       $.each(mac_arr,  function(k, v){
-           mac_list += '<option value="'+v+'">'+v+'</option>';
-       });
-       $("#mac_list").empty().html(mac_list);
+       // $.each(mac_arr,  function(k, v){
+       //     mac_list += '<option value="'+v+'">'+v+'</option>';
+       // });
+       // $("#mac_list").empty().html(mac_list);
        $("#shalabuhen table").empty().html(rows);
    }
 });
@@ -183,10 +183,10 @@ socket.on("ws_clients",  function(data){
         mac_arr.push(data[i].mac);
     }
     var mac_list = '';
-    $.each(mac_arr,  function(k, v){
-        mac_list += '<option value="'+v+'">'+v+'</option>';
-    });
-    $("#mac_list").empty().html(mac_list);
+    // $.each(mac_arr,  function(k, v){
+    //     mac_list += '<option value="'+v+'">'+v+'</option>';
+    // });
+    // $("#mac_list").empty().html(mac_list);
     $("#shalabuhen table").empty().html(rows);
 });
 
@@ -279,7 +279,7 @@ $("#shalabuhen table").on("click", "tr", function(){
 
 });
 
-$("#device_controls").dialog({
+$("#device_controls_modal").dialog({
     modal:true,
     autoOpen:false,
     resizable:false,
@@ -309,5 +309,9 @@ socket.on("show_device_controls",  function(data){
                 '</tr>';
     });
     $("#device_logs table").empty().html(rows);
-    $("#device_controls").dialog("option", "title", data.mac).dialog("open");
+    $("#device_info .info_ip").text(data.ip);
+    $("#device_info .info_mac").text(data.mac);
+    $("#device_info .info_login").text(data.last_login);
+    $("#mac_list").val(data.mac);
+    $("#device_controls_modal").dialog("option", "title", data.mac).dialog("open");
 });

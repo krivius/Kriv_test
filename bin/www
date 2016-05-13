@@ -204,12 +204,14 @@ io.on('connection', function(socket){
 
 
     socket.on("get_device_info",  function(mac){
-        var sql =  'SELECT message, system, time FROM hw_log_table WHERE mac="'+mac+'" ORDER BY id DESC LIMIT 100';
+        var sql =  'SELECT log.message as message, log.system as system, log.time as time, hw.ip as ip, hw.state as state, hw.last_login as last_login ' +
+            'FROM hw_log_table as log LEFT JOIN hw_table as hw ON log.mac = hw.mac WHERE log.mac="'+mac+'" ORDER BY log.id DESC LIMIT 100';
+        var info = {
+            mac:mac,
+            logs:[]
+        };
         db_conn.query(sql,  function(err, rows, fields){
-            var info = {
-                mac:mac,
-                logs:[]
-            };
+
             rows.forEach(function(log){
                 var tmp = {
                     time:dateFormat(log.time, 'dd.mm.yy HH:MM:ss'),
@@ -218,7 +220,12 @@ io.on('connection', function(socket){
                 };
 
                 info.logs.push(tmp);
+                info.ip = log.ip;
+                info.state = log.state;
+                info.last_login = dateFormat(log.last_login, 'dd.mm.yy HH:MM:ss');
             });
+
+
             socket.emit("show_device_controls", info);
         });
     });

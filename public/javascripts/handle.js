@@ -2,7 +2,7 @@
  * Created by adm_kriv on 11.04.2016.
  */
 $(document).ready(function(){
-    $("button, input[type='button']").button();
+    $("#user").find("button, input[type='button']").button();
     $("#menu, #admin_menu > ul").menu();
     // $(document).tooltip({
     //     position: {
@@ -95,7 +95,10 @@ $(document).ready(function(){
 
 
 
-    $(".informer").on("click",  function(){
+
+    $("#user").on("click",  ".more_info", function(){
+        $(this).parents('.informer').attr('state', '0').css('height', '25px');
+        $(this).parents('.informer').find('.controls').remove();
         var title = $(this).attr("title");
         var dialog_settings = {
             modal:true,
@@ -163,6 +166,22 @@ $(document).ready(function(){
         onSelect: function(dateText) {
             this.onchange();
             this.onblur();
+        }
+    });
+    
+    
+    $(".informer").on("click",  function(element){
+        var state = $(this).attr('state');
+        if(state == '0'){
+            var controls =  '<div class="controls">' +
+                                '<div class="more_info"></div>'+
+                                '<button class="decrease">-</button>'+
+                                '<button class="increase">+</button>'+
+                            '</div>';
+
+            $(this).attr('state', '1');
+            $(this).css('height',  '75px');
+            $(this).prepend(controls);
         }
     });
 });
