@@ -6,6 +6,7 @@ var socket = io();
 var clients = [];
 var mac_arr = [];
 var interval_gspeed;
+var curr_freq = [];
 
 socket.emit("get_clients");
 
@@ -74,7 +75,7 @@ socket.on('main_channel', function(data){
            var t_rows = $("#shalabuhen table").find('tr').get();
            $.each(t_rows,  function(){
                if($(this).find(".mac").text() == mac){
-                   $(this).find(".state").text("on");
+                   $(this).find(".state").text("on").css("color", "green");
                }
            });
            console.log("++++++++++++++++++++");
@@ -100,13 +101,17 @@ socket.on('main_channel', function(data){
                        '<th>Статус</th>'+
                    '</tr>';
        for(var i=0; i < clients.length; i++){
+           var color = "red";
+           if(clients[i].state == '1'){
+               color = "green";
+           }
            rows += '<tr>'+
                '<td>'+(i+1)+'</td>'+
                '<td class="mac">'+clients[i].mac+'</td>'+
                '<td>'+clients[i].ip+'</td>'+
                '<td>'+(i+1)+'</td>'+
                '<td>'+clients[i].version+'</td>'+
-               '<td class="state">'+clients[i].state+'</td>'+
+               '<td class="state" style="color:'+color+'">'+clients[i].state+'</td>'+
                '</tr>';
        }
        console.log(clients);
@@ -121,7 +126,8 @@ socket.on('main_channel', function(data){
 
 socket.on("iv_info", function(data){
     console.log("RPM: "+data);
-    $("#curr_freq").text(data);
+    $("#curr_freq").val(data);
+    curr_freq[0] = data;
 });
 
 socket.on("sys_log",  function(data){
@@ -150,7 +156,7 @@ socket.on("change_state",  function(data){
     $.each(rows, function(){
         var mac = $(this).find(".mac").text();
         if(mac == data){
-            $(this).find(".state").text('off');
+            $(this).find(".state").text('off').css("color", "red");
         }
     });
 });
@@ -190,6 +196,7 @@ socket.on("ws_clients",  function(data){
     $("#shalabuhen table").empty().html(rows);
 });
 
+
 $("#run").on("click",  function(){
     console.log("iv_run");
     var obj = {
@@ -199,7 +206,8 @@ $("#run").on("click",  function(){
     socket.emit("iv_status", JSON.stringify(obj));
     interval_gspeed = setInterval(function(){
         var obj = {
-            command: "gspeed"
+            command: "gspeed",
+            mac: $("#mac_list").val()
         };
         socket.emit("iv_status", JSON.stringify(obj));
     }, 1000);
@@ -213,7 +221,17 @@ $("#stop").on("click",  function(){
     console.log(JSON.stringify(obj));
     socket.emit("iv_status", JSON.stringify(obj));
     clearInterval(interval_gspeed);
-    $("#curr_freq").text('');
+    curr_freq[0] = '0';
+
+    var chart = $("#device_controls_modal").find('#highstock').highcharts();
+    // var series = chart.series[0];
+    // console.log(series);
+    //
+    // var x = (new Date()).getTime();
+    // series.addPoint([x, 0], true, true);
+
+
+    $("#curr_freq").val('');
 });
 
 $("#get_speed").on("click", function(){
@@ -313,5 +331,99 @@ socket.on("show_device_controls",  function(data){
     $("#device_info .info_mac").text(data.mac);
     $("#device_info .info_login").text(data.last_login);
     $("#mac_list").val(data.mac);
+    if(data.state == '1'){
+        $("#device_info").find(".led").removeClass('red_led').addClass('green_led');
+    }else{
+        $("#device_info").find(".led").removeClass('green_led').addClass('red_led');
+    }
+
     $("#device_controls_modal").dialog("option", "title", data.mac).dialog("open");
+});
+
+
+
+
+$("#user").on("click",  ".more_info", function(){
+    $(this).parents('.informer').attr('state', '0').css('height', '25px');
+    $(this).parents('.informer').find('.controls').remove();
+    var title = $(this).parents(".informer").attr("title");
+    var dialog_settings = {
+        modal:true,
+        resizable:false,
+        title:title,
+        width:900,
+        height:600,
+        buttons:[
+            {
+                text:"Закрыть",
+                click: function(){
+                    $(this).dialog("close");
+                }
+            }
+        ],
+        close:function(){
+            $(this).dialog("destroy");
+            $(this).remove();
+        }
+    };
+
+    $('<div><div id="highstock"></div></div>').appendTo('body').dialog(dialog_settings);
+    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+
+   /* Highcharts.setOptions({
+        lang: {
+            loading: "Загрузка...",
+            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентярбрь', 'Октрябрь', 'Ноябрь', 'Декабрь'],
+            shortMonths: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'],
+            rangeSelectorFrom: "С",
+            rangeSelectorTo: "По",
+            shortWeekdays: ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
+            thousandsSep: " ",
+            weekdays: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+        }
+    });*/
+    $('#highstock').highcharts('StockChart', {
+        chart:{
+            renderTo: 'container',
+            events : {
+                load : function () {
+
+                    // set up the updating of the chart each second
+                    var series = this.series[0];
+                    setInterval(function () {
+                        // console.log("curr_freq[0]: "+ curr_freq[0]);
+                        var x = (new Date()).getTime(), // current time
+                            y = curr_freq[0] || 0;
+                            series.addPoint([x, y], true, true);
+                    }, 1000);
+                }
+            }
+        },
+        rangeSelector : {
+            selected : 2,
+            inputDateFormat: '%d.%m.%Y',
+            inputEditDateFormat: '%d.%m.%Y'
+        },
+
+        title : {
+            text : title
+        },
+
+        series : [{
+            name : title,
+            data : [(new Date()).getTime(), 0],
+            tooltip: {
+                valueDecimals: 2
+            }
+        }]
+    });
+    });
+});
+
+$.datepicker.setDefaults({
+    dateFormat: 'dd.mm.yy',
+    onSelect: function(dateText) {
+        this.onchange();
+        this.onblur();
+    }
 });

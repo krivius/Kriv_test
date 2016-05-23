@@ -1,6 +1,7 @@
 /**
  * Created by adm_kriv on 11.04.2016.
  */
+
 $(document).ready(function(){
     $("#user").find("button, input[type='button']").button();
     $("#menu, #admin_menu > ul").menu();
@@ -96,78 +97,7 @@ $(document).ready(function(){
 
 
 
-    $("#user").on("click",  ".more_info", function(){
-        $(this).parents('.informer').attr('state', '0').css('height', '25px');
-        $(this).parents('.informer').find('.controls').remove();
-        var title = $(this).attr("title");
-        var dialog_settings = {
-            modal:true,
-            resizable:false,
-            title:title,
-            width:900,
-            height:600,
-            buttons:[
-                {
-                    text:"Закрыть",
-                    click: function(){
-                        $(this).dialog("close");
-                    }
-                }
-            ],
-            close:function(){
-                $(this).dialog("destroy");
-                $(this).remove();
-            }
-        };
-        $('<div><div id="highstock"></div></div>').appendTo('body').dialog(dialog_settings);
-        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
-            // Create the chart
-
-
-            /*
-            *   window.chart = new Highcharts.StockChart({
-             chart: {
-             renderTo: 'container'
-             },
-            * */
-            $('#highstock').highcharts('StockChart', {
-                chart:{
-                    renderTo: 'container'
-                },
-                rangeSelector : {
-                    selected : 1,
-                    inputDateFormat: '%d.%m.%Y',
-                    inputEditDateFormat: '%d.%m.%Y'
-                },
-
-                title : {
-                    text : title
-                },
-
-                series : [{
-                    name : title,
-                    data : data,
-                    tooltip: {
-                        valueDecimals: 2
-                    }
-                }]
-            }, function(chart) {
-
-                // apply the date pickers
-                setTimeout(function() {
-                    $('input.highcharts-range-selector', $('#' + chart.options.chart.renderTo)).datepicker()
-                }, 0)
-            });
-        });
-    });
-
-    $.datepicker.setDefaults({
-        dateFormat: 'dd.mm.yy',
-        onSelect: function(dateText) {
-            this.onchange();
-            this.onblur();
-        }
-    });
+  
     
     
     $(".informer").on("click",  function(element){

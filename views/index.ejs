@@ -132,23 +132,25 @@
                   <td>Last login:</td><td class="info_login"></td>
                 </tr>
               </table>
+              <div class="led"></div>
             </fieldset>
             <fieldset id="device_controls">
               <legend>Управление</legend>
-            </fieldset>
-            <!--<div id="device_controls">-->
-              <!--<input type="button" id="run" value="run">-->
-              <!--<input type="button" id="stop" value="stop">-->
+              <input type="button" id="run" value="run">
+              <input type="button" id="stop" value="stop">
+              <input type="button" id="restart" value="restart"><br>
+              <input type="button" id="set_speed" value="set speed">
+              <input type="text" id="speed" maxlength="4">
               <!--<input type="button" id="get_speed" value="get speed">-->
-              <!--<div class="informer" id="curr_freq"></div>-->
-              <!--<input type="button" id="set_speed" value="set speed">-->
-              <!--<input type="text" id="speed" maxlength="4">-->
-              <!--<input type="button" id="sys_log" value="sys log">-->
-              <!--<input type="checkbox" id="debug" name="debug" value="debug_on"> <label for="debug">debug</label>-->
-              <!--<input type="button" id="update_fw" value="update fw">-->
-              <!--<input type="button" id="restart" value="restart">-->
-              <!--<input type="hidden" id="mac_list">-->
-            <!--</div>-->
+              <label for="curr_freq" style="margin-left: 11px">curr.speed: </label>
+              <input type="text" disabled="disabled" id="curr_freq"><br>
+              <input type="button" id="sys_log" value="sys log" style="margin-top: 35px;">
+              <input type="checkbox" id="debug" name="debug" value="debug_on"> <label for="debug">debug</label>
+              <input type="button" id="update_fw" value="update fw" style="margin-left: 42px;">
+
+
+              <input type="hidden" id="mac_list">
+            </fieldset>
             <div  id="device_logs">
               <table></table>
             </div>
