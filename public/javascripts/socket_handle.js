@@ -357,7 +357,7 @@ socket.on("show_device_controls",  function(data){
 
 socket.on("template_list",  function(data){
     console.log(data);
-    var t_list = '<option value="new" selected="selected">==Новый шаблон==</option>';
+    var t_list = '<option value="new">==Новый шаблон==</option>';
     $.each(data, function(key, value){
        if(value.current == '1'){
             t_list += '<option value="'+value.id+'" selected="selected">'+value.name+'</option>';
@@ -413,6 +413,42 @@ $("#save_template").on("click",  function(){
             '</div>';
         $(content).appendTo('body').dialog(dialog_settings);
     }
+});
+
+$("#delete_template").on("click",  function(){
+    var id = $("#template_list").val(),
+        name = $("#template_list").find("option:selected").text();
+    if(id != "new"){
+        var dialog_settings = {
+            modal:true,
+            autoOpen:true,
+            resizable:false,
+            title:"Удаление шаблона",
+            buttons:[
+                {
+                    text:"Удалить",
+                    click: function(){
+                        $(this).dialog("close");
+                        socket.emit("delete_template", {id: id});
+                    }
+                },
+                {
+                    text:"Отмена",
+                    click: function(){
+                        $(this).dialog("close");
+                    }
+                }
+            ],
+            close:function(){
+                $(this).dialog("destroy");
+                $(this).remove();
+            }
+        };
+        var content = '<div id="del_template_modal">Удалить шаблон "'+name+'"?</div>';
+        $(content).appendTo('body').dialog(dialog_settings);
+    }
+
+
 });
 
 

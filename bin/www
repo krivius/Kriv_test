@@ -277,6 +277,23 @@ io.on('connection', function(socket){
             socket.emit("template_list", t_list);
         });
     });
+
+
+    socket.on("delete_template",  function(data){
+       db_conn.query('DELETE FROM templates WHERE id="'+data.id+'"');
+       db_conn.query('UPDATE templates SET current="0" WHERE 1=1');
+       db_conn.query('UPDATE templates SET current="1" WHERE id=(SELECT min(id) FROM templates)');
+
+
+        var sql =  'SELECT id, name, template, current FROM templates';
+        var t_list = [];
+        db_conn.query(sql, function(err, rows, fields){
+            rows.forEach(function(t){
+                t_list.push({id:t.id, name:t.name, template:t.template, current:t.current});
+            });
+            socket.emit("template_list", t_list);
+        });
+    });
 });
 
 
