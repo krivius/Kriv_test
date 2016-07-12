@@ -282,7 +282,14 @@ io.on('connection', function(socket){
     socket.on("delete_template",  function(data){
        db_conn.query('DELETE FROM templates WHERE id="'+data.id+'"');
        db_conn.query('UPDATE templates SET current="0" WHERE 1=1');
-       db_conn.query('UPDATE templates SET current="1" WHERE id=(SELECT min(id) FROM templates)');
+        var min_id;
+        db_conn.query("SELECT min(id) FROM templates",  function(err,  rows, fields){
+            rows.forEach(function(q){
+               min_id = q.id;
+                db_conn.query('UPDATE templates SET current="1" WHERE id="'+min_id+'"');
+            });
+        });
+
 
 
         var sql =  'SELECT id, name, template, current FROM templates';

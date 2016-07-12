@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
     $("#user").find("button, input[type='button']").button();
-    $("#save_template").button();
+    $("#save_template, #delete_template").button();
     $("#menu, #admin_menu > ul").menu();
     // $(document).tooltip({
     //     position: {
