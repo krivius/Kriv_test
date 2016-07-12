@@ -688,3 +688,14 @@ body{
   float: right;
   position: relative;
 }
+#device_info td{
+  padding: 0 10px;
+}
+
+#template_wrapper{
+  display: inline-block;
+  float: right;
+  height: 100%;
+  margin-right: 100px;
+  margin-top: 2%;
+}

@@ -204,12 +204,20 @@ io.on('connection', function(socket){
 
 
     socket.on("get_device_info",  function(mac){
-        var sql =  'SELECT log.message as message, log.system as system, log.time as time, hw.ip as ip, hw.state as state, hw.last_login as last_login ' +
+        var sql =  'SELECT log.message as message, log.system as system, log.time as time, hw.ip as ip, hw.state as state, hw.last_login as last_login, hw.role as role ' +
             'FROM hw_log_table as log LEFT JOIN hw_table as hw ON log.mac = hw.mac WHERE log.mac="'+mac+'" ORDER BY log.id DESC LIMIT 100';
+        var sql_2 = 'SELECT id, name FROM hw_roles';
         var info = {
             mac:mac,
-            logs:[]
+            logs:[],
+            roles:[]
         };
+        db_conn.query(sql_2,  function(err, rows, fields){
+            rows.forEach(function(role){
+               var r_obj = {id:role.id, name:role.name};
+                info.roles.push(r_obj);
+            });
+        });
         db_conn.query(sql,  function(err, rows, fields){
 
             rows.forEach(function(log){
@@ -223,10 +231,50 @@ io.on('connection', function(socket){
                 info.ip = log.ip;
                 info.state = log.state;
                 info.last_login = dateFormat(log.last_login, 'dd.mm.yy HH:MM:ss');
+                info.curr_role = log.role;
             });
 
-
+            console.log(info.roles);
             socket.emit("show_device_controls", info);
+        });
+        // socket.emit("show_device_controls", info);
+    });
+
+
+
+    socket.on("save_device_role",  function(data){
+       var sql = 'UPDATE hw_table SET role="'+data.role+'" WHERE mac="'+data.mac+'"';
+        db_conn.query(sql);
+    });
+
+
+    socket.on("get_templates",  function(){
+        var sql =  'SELECT id, name, template, current FROM templates';
+        var t_list = [];
+        db_conn.query(sql, function(err, rows, fields){
+            rows.forEach(function(t){
+                t_list.push({id:t.id, name:t.name, template:t.template, current:t.current});
+            });
+            socket.emit("template_list", t_list);
+        });
+    });
+
+    socket.on("save_template",  function(data){
+        db_conn.query('UPDATE templates SET current="0" WHERE 1=1');
+        
+        if(data.id == 'new'){
+            db_conn.query('INSERT INTO templates SET name="'+data.name+'", template="'+data.template+'", current="1"');
+        }else{
+            db_conn.query('UPDATE templates SET template="'+data.template+'", current="1" WHERE id="'+data.id+'"');
+        }
+
+        var sql =  'SELECT id, name, template, current FROM templates';
+        var t_list = [];
+        db_conn.query(sql, function(err, rows, fields){
+            rows.forEach(function(t){
+                t_list.push({id:t.id, name:t.name, template:t.template, current:t.current});
+            });
+            socket.emit("template_list", t_list);
         });
     });
 });

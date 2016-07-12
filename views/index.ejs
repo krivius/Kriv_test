@@ -17,6 +17,11 @@
   <body>
   <div id="header">
     <div id="logo"></div>
+    <div id="template_wrapper">
+      <label for="template_list">Шаблон: </label>
+      <select id="template_list"></select>
+      <button id="save_template">Сохранить шаблон</button>
+    </div>
   </div>
   <ul id="menu">
     <li mode="user">Оператор</li>
@@ -29,7 +34,7 @@
 
         <div id="small_bunker">
           <div class="led red_led" style="top:5px"></div>
-          <div class="informer" style="bottom: 125px; right: 0"  title="Загрузочный бункер">623</div>
+          <!--<div class="informer" style="bottom: 125px; right: 0"  title="Загрузочный бункер">623</div>-->
         </div>
 
         <div class="elev_1"></div>
@@ -131,10 +136,19 @@
                 <tr>
                   <td>Last login:</td><td class="info_login"></td>
                 </tr>
+                <tr>
+                  <td>Role:</td>
+                  <td>
+                    <select id="device_role">
+
+                    </select>
+                  </td>
+                </tr>
               </table>
               <div class="led"></div>
             </fieldset>
-            <fieldset id="device_controls">
+
+            <fieldset id="device_controls" style="height: 200px">
               <legend>Управление</legend>
               <input type="button" id="run" value="run">
               <input type="button" id="stop" value="stop">

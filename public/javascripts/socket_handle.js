@@ -9,6 +9,7 @@ var interval_gspeed;
 var curr_freq = [];
 
 socket.emit("get_clients");
+socket.emit("get_templates");
 
 function decimalToHex(d, padding) {
    var hex = Number(d).toString(16);
@@ -307,6 +308,9 @@ $("#device_controls_modal").dialog({
         {
             text:"Сохранить",
             click: function(){
+                var role = $("#device_role").val(),
+                    mac = $(this).find(".info_mac").text();
+                socket.emit("save_device_role", {mac:mac, role:role});
                 $(this).dialog("close");
             }
         }
@@ -326,7 +330,17 @@ socket.on("show_device_controls",  function(data){
                     '<td>'+log.time+'</td>'+
                 '</tr>';
     });
+    var roles = '<option value="0"></option>';
+    $.each(data.roles, function(key, value){
+            if(value.id == data.curr_role){
+                roles += '<option value="'+value.id+'" selected="selected">'+value.name+'</option>';
+            }else{
+                roles += '<option value="'+value.id+'">'+value.name+'</option>';
+            }
+    });
+
     $("#device_logs table").empty().html(rows);
+    $("#device_role").empty().html(roles);
     $("#device_info .info_ip").text(data.ip);
     $("#device_info .info_mac").text(data.mac);
     $("#device_info .info_login").text(data.last_login);
@@ -341,6 +355,65 @@ socket.on("show_device_controls",  function(data){
 });
 
 
+socket.on("template_list",  function(data){
+    console.log(data);
+    var t_list = '<option value="new" selected="selected">==Новый шаблон==</option>';
+    $.each(data, function(key, value){
+       if(value.current == '1'){
+            t_list += '<option value="'+value.id+'" selected="selected">'+value.name+'</option>';
+       }else{
+           t_list += '<option value="'+value.id+'">'+value.name+'</option>';
+       }
+    });
+    $("#template_list").empty().html(t_list);
+});
+
+
+
+$("#save_template").on("click",  function(){
+   var tmp = $(".informer").get(),
+       id = $("#template_list").val(),
+       template = [];
+
+    $.each(tmp,  function(){
+        template.push($(this).text());
+    });
+    template = template.join("_");
+    if(id != "new") {
+        socket.emit("save_template", {id: id, template: template});
+    }else{
+        var dialog_settings = {
+            modal:true,
+            autoOpen:true,
+            resizable:false,
+            title:"Новый щаблон",
+            buttons:[
+                {
+                    text:"Сохранить",
+                    click: function(){
+                        $(this).dialog("close");
+                        var name = $(this).find("#new_template_name").val();
+                        socket.emit("save_template", {id: id, template: template, name:name});
+                    }
+                },
+                {
+                    text:"Отмена",
+                    click: function(){
+                        $(this).dialog("close");
+                    }
+                }
+            ],
+            close:function(){
+                $(this).dialog("destroy");
+                $(this).remove();
+            }
+        };
+        var content = '<div id="new_template_modal">' +
+            'Название: <input type="text" id="new_template_name">' +
+            '</div>';
+        $(content).appendTo('body').dialog(dialog_settings);
+    }
+});
 
 
 $("#user").on("click",  ".more_info", function(){
@@ -418,6 +491,8 @@ $("#user").on("click",  ".more_info", function(){
         }]
     });
     });
+
+
 });
 
 $.datepicker.setDefaults({
