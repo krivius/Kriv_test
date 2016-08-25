@@ -10,6 +10,22 @@ var http = require('http');
 var events = require('events');
 var dateFormat = require('dateformat');
 
+var CronJob = require('cron').CronJob;
+
+var job = new CronJob({
+    cronTime: '00 10 17 * * 1-7',
+    onTick: function() {
+        /*
+         * Runs every weekday (Monday through Friday)
+         * at 17:00:00
+         */
+        console.log("CRON!!!!!!!!!!!!!!!!!!!")
+    },
+    start: false,
+    timeZone: 'America/Los_Angeles'
+});
+job.start();
+
 
 var udp = require('./udp.js');
 var ws = require('./ws.js');
