@@ -89,7 +89,7 @@ var server = ws.createServer(function(conn){
             
             mac_array.push(mac);
             // console.log("MAC ADDR: "+mac);
-            var setup = {phase:"setup", iv_id:"1", pin:"2"};
+            var setup = {phase:"setup", iv_id:"1", pin:"4"};
             conn.sendText(JSON.stringify(setup));
 
             client_in_array = false;
