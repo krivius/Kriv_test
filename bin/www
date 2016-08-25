@@ -15,11 +15,13 @@ var CronJob = require('cron').CronJob;
 var job = new CronJob({
     cronTime: '00 35 17 * * 1-7',
     onTick: function() {
+
         /*
          * Runs every weekday (Monday through Friday)
-         * at 17:00:00
+         * at 17:35:00
          */
-        console.log("CRON!!!!!!!!!!!!!!!!!!!")
+
+        console.log("CRON!!!!!!!!!!!!!!!!!!!");
     },
     start: false,
 });
