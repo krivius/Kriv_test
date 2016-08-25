@@ -163,38 +163,38 @@ var server = ws.createServer(function(conn){
         //www.eventEmitter.emit('main_channel', str);
     });
 
-    // conn.on("error", function(){
-    //     for(var i = 0; i < clients.length; i++) {
-    //         if(clients[i].conn.key === conn.key){
-    //             var mac = clients[i].mac;
-    //             for(var j = 0; j < send_clients.length; j++) {
-    //                 if(send_clients[j].mac == mac) {
-    //                     //send_clients.splice(i,1);
-    //                     send_clients[j].state = 'off';
-    //                 }
-    //             }
-    //             db_conn.query('UPDATE hw_table SET state="0" WHERE mac="'+mac+'"');
-    //
-    //             // var send_clients = [];
-    //             // clients.forEach(function(client){
-    //             //     var obj = {};
-    //             //     obj.mac = client.mac;
-    //             //     obj.ip = client.ip;
-    //             //     obj.version = client.version;
-    //             //     obj.state = 'on';
-    //             //     send_clients.push(obj);
-    //             // });
-    //             // www.eventEmitter.emit('change_state', send_clients);
-    //             clients.splice(i,1);
-    //             www.eventEmitter.emit('change_state', mac);
-    //             www.eventEmitter.emit('ws_clients', send_clients);
-    //             console.log("On error clients: " + clients);
-    //             break;
-    //         }
-    //     }
-    //     console.log("----------------WS_ON_ERROR------------------");
-    //     console.log(clients);
-    // });
+    conn.on("error", function(){
+        for(var i = 0; i < clients.length; i++) {
+            if(clients[i].conn.key === conn.key){
+                var mac = clients[i].mac;
+                for(var j = 0; j < send_clients.length; j++) {
+                    if(send_clients[j].mac == mac) {
+                        //send_clients.splice(i,1);
+                        send_clients[j].state = 'off';
+                    }
+                }
+                db_conn.query('UPDATE hw_table SET state="0" WHERE mac="'+mac+'"');
+
+                // var send_clients = [];
+                // clients.forEach(function(client){
+                //     var obj = {};
+                //     obj.mac = client.mac;
+                //     obj.ip = client.ip;
+                //     obj.version = client.version;
+                //     obj.state = 'on';
+                //     send_clients.push(obj);
+                // });
+                // www.eventEmitter.emit('change_state', send_clients);
+                clients.splice(i,1);
+                www.eventEmitter.emit('change_state', mac);
+                www.eventEmitter.emit('ws_clients', send_clients);
+                console.log("On error clients: " + clients);
+                break;
+            }
+        }
+        console.log("----------------WS_ON_ERROR------------------");
+        console.log(clients);
+    });
 
 
     // conn.on("close", function(code, reason){
