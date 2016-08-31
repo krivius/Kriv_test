@@ -14,12 +14,12 @@ var CronJob = require('cron').CronJob;
 
 var job;
 job = new CronJob({
-    cronTime: '00 55 12 * * 1-7',
+    cronTime: '00 01 13 * * 1-7',
     onTick: function () {
 
         /*
          * Runs every weekday (Monday through Friday)
-         * at 12:13:00
+         * at 12:55:00
          */
 
         //select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY);
