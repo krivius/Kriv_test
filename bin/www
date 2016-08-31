@@ -23,12 +23,12 @@ var job = new CronJob({
 
         //select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY);
         var scale1=[],  scale2 = [];
-        db_conn.query("select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows,  fields){
+        db_conn.query("select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY) and state = 1",  function(err, rows,  fields){
             rows.forEach(function(item){
                 scale1.push(dateFormat(item.date, 'HH:MM:ss'));
             });
         });
-        db_conn.query("select date from scale2_log where date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows,  fields){
+        db_conn.query("select date from scale2_log where date >= (CURDATE() - INTERVAL 1 DAY)  and state = 1",  function(err, rows,  fields){
             rows.forEach(function(item){
                 scale2.push(dateFormat(item.date, 'HH:MM:ss'));
             });
@@ -43,8 +43,8 @@ var job = new CronJob({
 
         var excelbuilder = require('msexcel-builder');
         // Create a new workbook file in current working-path
-        var sheet_name = 'report_'+dateFormat(new Date(), 'dd_mm_yy')+'.xlsx';
-        var workbook = excelbuilder.createWorkbook('./', sheet_name);
+        var sheet_name = 'report_'+dateFormat(new Date(), 'dd_mm_yy')+'___'+dateFormat(new Date(), 'HH_MM')+'.xlsx';
+        var workbook = excelbuilder.createWorkbook('../reports/', sheet_name);
 
         // Create a new worksheet with 10 columns and 12 rows
         var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
