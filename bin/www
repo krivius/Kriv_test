@@ -13,7 +13,7 @@ var dateFormat = require('dateformat');
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob({
-    cronTime: '00 13 12 * * 1-7',
+    cronTime: '00 21 12 * * 1-7',
     onTick: function() {
 
         /*
