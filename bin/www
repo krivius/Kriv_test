@@ -13,46 +13,95 @@ var dateFormat = require('dateformat');
 var CronJob = require('cron').CronJob;
 
 var job = new CronJob({
-    cronTime: '00 35 17 * * 1-7',
+    cronTime: '00 13 12 * * 1-7',
     onTick: function() {
 
         /*
          * Runs every weekday (Monday through Friday)
-         * at 17:35:00
+         * at 12:13:00
          */
+
+        //select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY);
+        var scale1=[],  scale2 = [];
+        db_conn.query("select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows,  fields){
+            rows.forEach(function(item){
+                scale1.push(dateFormat(item.date, 'HH:MM:ss'));
+            });
+        });
+        db_conn.query("select date from scale2_log where date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows,  fields){
+            rows.forEach(function(item){
+                scale2.push(dateFormat(item.date, 'HH:MM:ss'));
+            });
+        });
+
+        var sheet_rows = 1;
+        if(scale1.length > scale2.length){
+            sheet_rows = scale1.length+1;
+        }else{
+            sheet_rows = scale2.length+1;
+        }
+
+        var excelbuilder = require('msexcel-builder');
+        // Create a new workbook file in current working-path
+        var sheet_name = 'report_'+dateFormat(new Date(), 'dd_mm_yy')+'.xlsx';
+        var workbook = excelbuilder.createWorkbook('./', sheet_name);
+
+        // Create a new worksheet with 10 columns and 12 rows
+        var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
+
+        // Fill some data
+        sheet1.set(1, 1, 'Scale 1');
+        sheet1.set(2, 1, 'Scale 2');
+        for (var i = 2; i < scale1.length; i++) {
+            sheet1.set(1, i, scale1[i]);
+        }
+        for (var i = 2; i < scale2.length; i++) {
+            sheet1.set(1, i, scale2[i]);
+        }
+
+        // Save it
+        workbook.save(function(ok){
+            if (!ok)
+                workbook.cancel();
+            else
+                console.log('congratulations, your workbook created');
+        });
+
 
         console.log("CRON!!!!!!!!!!!!!!!!!!!");
     },
-    start: false,
+    start: false
 });
 job.start();
 
 ////////////////////////////////////////////////////////////////////////////
-var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport({
-    host: "mx1.agroimpex.com",
-    secure: false,
-    port: 25,
-    tls: {
-        rejectUnauthorized: false
-    }
-});
-
-// setup e-mail data with unicode symbols
-var mailOptions = {
-
-    from: '<mailbot@agroimpex.com>', // sender address
-    to: '<d.krivitskiy@agroimpex.com>, <s.korolev@agroimpex.com>', // list of receivers
-    subject: 'Node.js mail test', // Subject line
-    text: 'Hello world ', // plaintext body
-    html: '<b>Hello world</b>', // html body
-   /* attachments:[
-        {
-            path: 'D:\\doc20160824143743.xlsx'
-        }
-    ]*/
-};
+////////////////////////////////////////////////////////////////////////////
+// var nodemailer = require('nodemailer');
+//
+// var transporter = nodemailer.createTransport({
+//     host: "mx1.agroimpex.com",
+//     secure: false,
+//     port: 25,
+//     tls: {
+//         rejectUnauthorized: false
+//     }
+// });
+//
+// // setup e-mail data with unicode symbols
+// var mailOptions = {
+//
+//     from: '<mailbot@agroimpex.com>', // sender address
+//     to: '<d.krivitskiy@agroimpex.com>, <s.korolev@agroimpex.com>', // list of receivers
+//     subject: 'Node.js mail test', // Subject line
+//     text: 'Hello world ', // plaintext body
+//     html: '<b>Hello world</b>', // html body
+//    /* attachments:[
+//         {
+//             path: 'D:\\doc20160824143743.xlsx'
+//         }
+//     ]*/
+// };
 
 // send mail with defined transport object
 // transporter.sendMail(mailOptions, function(error, info){
