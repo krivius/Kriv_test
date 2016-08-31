@@ -14,7 +14,7 @@ var CronJob = require('cron').CronJob;
 
 var job;
 job = new CronJob({
-    cronTime: '00 52 12 * * 1-7',
+    cronTime: '00 55 12 * * 1-7',
     onTick: function () {
 
         /*
@@ -45,7 +45,7 @@ job = new CronJob({
         var excelbuilder = require('msexcel-builder');
         // Create a new workbook file in current working-path
         var sheet_name = 'report_' + dateFormat(new Date(), 'dd_mm_yy') + '___' + dateFormat(new Date(), 'HH_MM') + '.xlsx';
-        var workbook = excelbuilder.createWorkbook('../reports/', sheet_name);
+        var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
 
         // Create a new worksheet with 10 columns and 12 rows
         var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
