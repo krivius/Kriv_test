@@ -160,17 +160,31 @@ var server = ws.createServer(function(conn){
         }else if(obj.phase == 'sys_command' && obj.command != "pong"){
             console.log("sys_command: "+str);
         }else if(obj.phase == 'scale_state'){
-            var z_id;
-            db_conn.query('SELECT id FROM hw_table WHERE raw_mac = "'+obj.mac+'"',  function(err, rows, fields){
-                rows.forEach(function (item) {
-                   z_id = item.id ;
-                });
-            });
-            if(z_id == '8'){
-                db_conn.query('INSERT INTO scale2_log SET zaslon_id = 8, state = "'+obj.state+'"');
-            }else if(z_id == '4'){
-                db_conn.query('INSERT INTO scale1_log SET zaslon_id = 4, state = "'+obj.state+'"');
-            }
+
+
+             var raw_mac = obj.mac;
+
+             var dec_mac = obj.mac.split(":");
+             var scale_mac = [];
+
+             dec_mac.forEach(function(dec){
+             mac.push(decimalToHex(dec));
+             });
+            scale_mac = scale_mac.join(":").toUpperCase();
+
+
+            db_conn.query('INSERT INTO scale1_log SET zaslon_id = "'+scale_mac+'", state = "'+obj.state+'"');
+            // var z_id;
+            // db_conn.query('SELECT id FROM hw_table WHERE raw_mac = "'+obj.mac+'"',  function(err, rows, fields){
+            //     rows.forEach(function (item) {
+            //        z_id = item.id ;
+            //     });
+            // });
+            // if(z_id == '8'){
+            //     db_conn.query('INSERT INTO scale2_log SET zaslon_id = 8, state = "'+obj.state+'"');
+            // }else if(z_id == '4'){
+            //     db_conn.query('INSERT INTO scale1_log SET zaslon_id = 4, state = "'+obj.state+'"');
+            // }
         }
 
         //www.eventEmitter.emit('main_channel', str);
