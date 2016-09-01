@@ -11,19 +11,44 @@ var events = require('events');
 var dateFormat = require('dateformat');
 
 var CronJob = require('cron').CronJob;
-/*
+
 
 var job;
 job = new CronJob({
-    cronTime: '00 45 14 * * 1-7',
+    cronTime: '00 53 17 * * 1-7',
     onTick: function () {
 
-        /!*
+        /*
          * Runs every weekday (Monday through Friday)
          * at 12:55:00
-         *!/
+         */
 
         //select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY);
+
+       var mac_array = [];
+        db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log",  function(err, rows, fields){
+           rows.forEach(function(item){
+               mac_array.push(item.zaslon_id);
+           });
+        });
+        console.log(mac_array);
+
+        var scales = {};
+        mac_array.forEach(function(mac_item){
+            db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+mac_item+'"',  function(err, rows, fields){
+               var tmp = [];
+                rows.forEach(function(item){
+                   tmp.push(dateFormat(item.date, 'HH:MM:ss'));
+               });
+            });
+            scales[mac_item] = tmp;
+        });
+        console.log(scales);
+        /*
+
+
+
+
         var scale1 = [], scale2 = [];
         db_conn.query("select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY) and state = 1", function (err, rows, fields) {
             rows.forEach(function (item) {
@@ -67,9 +92,9 @@ job = new CronJob({
                 workbook.cancel();
             else
                 console.log('congratulations, your workbook created');
-        });
+        });*/
 
-        var nodemailer = require('nodemailer');
+       /* var nodemailer = require('nodemailer');
 
         var transporter = nodemailer.createTransport({
             host: "mx1.agroimpex.com",
@@ -99,7 +124,7 @@ job = new CronJob({
                 return console.log(error);
             }
             console.log('Message sent: ' + info.response);
-        });
+        });*/
 
 
         console.log("CRON!!!!!!!!!!!!!!!!!!!");
@@ -107,7 +132,7 @@ job = new CronJob({
     start: false
 });
 job.start();
-*/
+
 
 ////////////////////////////////////////////////////////////////////////////
 
