@@ -168,7 +168,7 @@ var server = ws.createServer(function(conn){
              var scale_mac = [];
 
              dec_mac.forEach(function(dec){
-             mac.push(decimalToHex(dec));
+                 scale_mac.push(decimalToHex(dec));
              });
             scale_mac = scale_mac.join(":").toUpperCase();
 
