@@ -160,7 +160,7 @@ var server = ws.createServer(function(conn){
         }else if(obj.phase == 'sys_command' && obj.command != "pong"){
             console.log("sys_command: "+str);
         }else if(obj.phase == 'scale_state'){
-
+            console.log("SCALE STATE!");
 
              var raw_mac = obj.mac;
 
@@ -174,6 +174,8 @@ var server = ws.createServer(function(conn){
 
 
             db_conn.query('INSERT INTO scale1_log SET zaslon_id = "'+scale_mac+'", state = "'+obj.state+'"');
+
+            console.log("SCALE STATE!");
             // var z_id;
             // db_conn.query('SELECT id FROM hw_table WHERE raw_mac = "'+obj.mac+'"',  function(err, rows, fields){
             //     rows.forEach(function (item) {
