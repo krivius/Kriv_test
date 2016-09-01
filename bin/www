@@ -14,7 +14,7 @@ var CronJob = require('cron').CronJob;
 
 var job;
 job = new CronJob({
-    cronTime: '00 01 13 * * 1-7',
+    cronTime: '00 19 14 * * 1-7',
     onTick: function () {
 
         /*
