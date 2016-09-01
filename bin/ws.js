@@ -173,7 +173,12 @@ var server = ws.createServer(function(conn){
             scale_mac = scale_mac.join(":").toUpperCase();
 
 
-            db_conn.query('INSERT INTO scale1_log SET zaslon_id = "'+scale_mac+'", state = "'+obj.state+'"');
+            try{
+                db_conn.query('INSERT INTO scale1_log SET zaslon_id = "'+scale_mac+'", state = "'+obj.state+'"');
+            }catch(e){
+                console.log("Error: "+e);
+            }
+
 
             console.log("SCALE STATE!");
             // var z_id;
