@@ -35,8 +35,8 @@ job = new CronJob({
 
         var scales = {};
         mac_array.forEach(function(mac_item){
+            var tmp = [];
             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+mac_item+'"',  function(err, rows, fields){
-               var tmp = [];
                 rows.forEach(function(item){
                    tmp.push(dateFormat(item.date, 'HH:MM:ss'));
                });
