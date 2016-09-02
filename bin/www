@@ -21,7 +21,7 @@ var report_mac_array = [];
 
 
 
-db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log",  function(err, rows, fields){
+db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows, fields){
     var report_scales_obj = {};
     rows.forEach(function(item){
         report_mac_array.push(item.zaslon_id);
