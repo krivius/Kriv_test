@@ -15,7 +15,7 @@ var CronJob = require('cron').CronJob;
 
 var job;
 job = new CronJob({
-    cronTime: '00 53 17 * * 1-7',
+    cronTime: '00 01 13 * * 1-7',
     onTick: function () {
 
         /*
@@ -32,7 +32,6 @@ job = new CronJob({
            });
         });
         console.log(mac_array);
-
         var scales = {};
         mac_array.forEach(function(mac_item){
             var tmp = [];
