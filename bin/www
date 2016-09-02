@@ -107,6 +107,13 @@ job = new CronJob({
                  sheet1.set(1, i, report_scales_obj[keys[1]][i]);
              }
 
+             workbook.save(function (ok) {
+                 if (!ok)
+                     workbook.cancel();
+                 else
+                     console.log('congratulations, your workbook created');
+             });
+
 
          });
 
