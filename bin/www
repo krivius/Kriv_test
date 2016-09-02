@@ -21,27 +21,7 @@ var report_mac_array = [];
 
 
 
-db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows, fields){
-    var report_scales_obj = {};
-    rows.forEach(function(item){
-        report_mac_array.push(item.zaslon_id);
-    });
-    console.log(report_mac_array);
-    report_mac_array.forEach(function(mac_item){
-        var tmp = [];
-        db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+mac_item+'"',  function(err, rows, fields){
-            rows.forEach(function(item){
-                tmp.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
-            });
-            report_scales_obj[mac_item] = tmp;
-            console.log(report_scales_obj);
-        });
-        console.log(report_scales_obj);
-    });
 
-    console.log(report_scales_obj);
-
-});
 
 
 
@@ -80,10 +60,61 @@ job = new CronJob({
             scales[mac_item] = tmp;
         });
         console.log(scales);*/
+
+
+
+         db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows, fields){
+             var report_scales_obj = {};
+             rows.forEach(function(item){
+                report_mac_array.push(item.zaslon_id);
+             });
+             console.log(report_mac_array);
+             report_mac_array.forEach(function(mac_item){
+                 var tmp = [];
+                 db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+mac_item+'"',  function(err, rows, fields){
+                     rows.forEach(function(item){
+                        tmp.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
+                     });
+                    report_scales_obj[mac_item] = tmp;
+             // console.log(report_scales_obj);
+                 });
+             // console.log(report_scales_obj);
+             });
+
+             console.log(report_scales_obj);
+
+             var sheet_rows = 1;
+             var keys = _.keys(report_scales_obj);
+             if(report_scales_obj[keys[0]].length> report_scales_obj[keys[1]].length){
+                 sheet_rows = report_scales_obj[keys[0]].length+1;
+             }else{
+                 sheet_rows = report_scales_obj[keys[1]].length+1;
+             }
+
+             var excelbuilder = require('msexcel-builder');
+             // Create a new workbook file in current working-path
+             var sheet_name = 'report_' + dateFormat(new Date(), 'dd_mm_yy') + '___' + dateFormat(new Date(), 'HH_MM') + '.xlsx';
+             var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
+
+
+             var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
+             sheet1.set(1, 1, 'Scale 1');
+             sheet1.set(2, 1, 'Scale 2');
+             for (var i = 2; i < report_scales_obj[keys[0]].length; i++) {
+                 sheet1.set(1, i, report_scales_obj[keys[0]][i]);
+             }
+             for (var i = 2; i < report_scales_obj[keys[1]].length; i++) {
+                 sheet1.set(1, i, report_scales_obj[keys[1]][i]);
+             }
+
+
+         });
+
+
+
+
+
         /*
-
-
-
 
         var scale1 = [], scale2 = [];
         db_conn.query("select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY) and state = 1", function (err, rows, fields) {
