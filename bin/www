@@ -17,7 +17,7 @@ var db  = require('./db_engine');
 var db_conn = db.connection();
 var CronJob = require('cron').CronJob;
 var report_mac_array = [];
-var scales = {};
+var report_scales_obj = {};
 
 
 
@@ -32,12 +32,12 @@ db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log",  function(err, rows, f
             rows.forEach(function(item){
                 tmp.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
             });
-            scales[mac_item] = tmp;
-            console.log(scales);
+            report_scales_obj[mac_item] = tmp;
+            console.log(report_scales_obj);
         });
     });
 
-    console.log(scales);
+    console.log(report_scales_obj);
 
 });
 
