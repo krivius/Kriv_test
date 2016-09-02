@@ -35,6 +35,7 @@ db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log",  function(err, rows, f
             report_scales_obj[mac_item] = tmp;
             console.log(report_scales_obj);
         });
+        console.log(report_scales_obj);
     });
 
     console.log(report_scales_obj);
