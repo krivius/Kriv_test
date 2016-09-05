@@ -27,7 +27,7 @@ var scale_1_arr = [],  scale_2_arr = [];
 
 var job;
 job = new CronJob({
-    cronTime: '00 26 14 * * 1-7',
+    cronTime: '00 06 15 * * 1-7',
     onTick: function () {
 
         /*
@@ -43,12 +43,12 @@ job = new CronJob({
              console.log(report_mac_array);
 
 
-             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+report_mac_array[0]+'"',  function(err, rows, fields){
+             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "'+report_mac_array[0]+'"',  function(err, rows, fields){
                  rows.forEach(function(item){
                      scale_1_arr.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
                  });
              });
-             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+report_mac_array[1]+'"',  function(err, rows, fields){
+             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "'+report_mac_array[1]+'"',  function(err, rows, fields){
                  rows.forEach(function(item){
                      scale_2_arr.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
                  });
