@@ -16,9 +16,8 @@ var ws = require('./ws.js');
 var db  = require('./db_engine');
 var db_conn = db.connection();
 var CronJob = require('cron').CronJob;
-var report_mac_array = [];
 
-
+var _ = require('underscore');
 
 
 
@@ -27,85 +26,64 @@ var report_mac_array = [];
 
 var job;
 job = new CronJob({
-    cronTime: '00 10 13 * * 1-7',
+    cronTime: '00 12 13 * * 1-7',
     onTick: function () {
 
         /*
          * Runs every weekday (Monday through Friday)
          * at 12:55:00
          */
-
-        //select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY);
-
-
-
-
-/*
-
-        db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log",  function(err, rows, fields){
-           rows.forEach(function(item){
-               report_mac_array.push(item.zaslon_id);
-           });
-        });
-
-        console.log(report_mac_array);
-        var scales = {};
-        report_mac_array.forEach(function(mac_item){
-            var tmp = [];
-            db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+mac_item+'"',  function(err, rows, fields){
-                rows.forEach(function(item){
-                   tmp.push(dateFormat(item.date, 'HH:MM:ss'));
-               });
-            });
-            scales[mac_item] = tmp;
-        });
-        console.log(scales);*/
-
-
-
          db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows, fields){
-             var report_scales_obj = {};
+             // var report_scales_obj = {};
+             var report_mac_array = [];
+             var scale_1_arr = [],  scale_2_arr = [];
              rows.forEach(function(item){
                 report_mac_array.push(item.zaslon_id);
              });
              console.log(report_mac_array);
-             report_mac_array.forEach(function(mac_item){
-                 var tmp = [];
-                 db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+mac_item+'"',  function(err, rows, fields){
-                     rows.forEach(function(item){
-                        tmp.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
-                     });
-                    report_scales_obj[mac_item] = tmp;
-             // console.log(report_scales_obj);
+
+
+             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+report_mac_array[0]+'"',  function(err, rows, fields){
+                 rows.forEach(function(item){
+                     scale_1_arr.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
                  });
-             // console.log(report_scales_obj);
+             });
+             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 1 AND zaslon_id = "'+report_mac_array[1]+'"',  function(err, rows, fields){
+                 rows.forEach(function(item){
+                     scale_2_arr.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
+                 });
              });
 
-             console.log(report_scales_obj);
+
+             console.log(scale_1_arr, scale_2_arr);
 
              var sheet_rows = 1;
-             var keys = _.keys(report_scales_obj);
-             if(report_scales_obj[keys[0]].length> report_scales_obj[keys[1]].length){
-                 sheet_rows = report_scales_obj[keys[0]].length+1;
-             }else{
-                 sheet_rows = report_scales_obj[keys[1]].length+1;
+             if(scale_1_arr.length > scale_2_arr.length){
+                 sheet_rows = scale_1_arr.length + 1;
+             }else {
+                 sheet_rows = scale_2_arr.length + 1;
              }
+
 
              var excelbuilder = require('msexcel-builder');
              // Create a new workbook file in current working-path
              var sheet_name = 'report_' + dateFormat(new Date(), 'dd_mm_yy') + '___' + dateFormat(new Date(), 'HH_MM') + '.xlsx';
-             var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
+             // var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
+             var workbook = excelbuilder.createWorkbook('./', sheet_name);
 
 
              var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
              sheet1.set(1, 1, 'Scale 1');
              sheet1.set(2, 1, 'Scale 2');
-             for (var i = 2; i < report_scales_obj[keys[0]].length; i++) {
-                 sheet1.set(1, i, report_scales_obj[keys[0]][i]);
+             for (var i = 2; i < sheet_rows; i++) {
+                 sheet1.set(1, i, scale_1_arr[i]);
              }
-             for (var i = 2; i < report_scales_obj[keys[1]].length; i++) {
-                 sheet1.set(1, i, report_scales_obj[keys[1]][i]);
+             for (var i = 2; i < sheet_rows; i++) {
+                 sheet1.set(1, i, scale_2_arr[i]);
              }
+             // for (var i = 2; i < report_scales_obj[report_mac_array[1]].length; i++) {
+             //     sheet1.set(1, i, report_scales_obj[report_mac_array[1]][i]);
+             // }
 
              workbook.save(function (ok) {
                  if (!ok)
@@ -114,91 +92,39 @@ job = new CronJob({
                      console.log('congratulations, your workbook created');
              });
 
+             var nodemailer = require('nodemailer');
 
+             var transporter = nodemailer.createTransport({
+                 host: "mx1.agroimpex.com",
+                 secure: false,
+                 port: 25,
+                 tls: {
+                     rejectUnauthorized: false
+                 }
+             });
+
+             // setup e-mail data with unicode symbols
+             var mailOptions = {
+                 from: '<mailbot@agroimpex.com>', // sender address
+                 to: '<d.krivitskiy@agroimpex.com>', // list of receivers
+                 subject: 'Daily report', // Subject line
+                 text: '', // plaintext body
+                 attachments: [
+                     {
+                         // path: '/var/www/html/zaslon/reports/'+sheet_name
+                         path: './'+sheet_name
+                     }
+                 ]
+             };
+
+             // send mail with defined transport object
+             transporter.sendMail(mailOptions, function (error, info) {
+                 if (error) {
+                     return console.log(error);
+                 }
+                 console.log('Message sent: ' + info.response);
+             });
          });
-
-
-
-
-
-        /*
-
-        var scale1 = [], scale2 = [];
-        db_conn.query("select date from scale1_log where date >= (CURDATE() - INTERVAL 1 DAY) and state = 1", function (err, rows, fields) {
-            rows.forEach(function (item) {
-                scale1.push(dateFormat(item.date, 'HH:MM:ss'));
-            });
-        });
-        db_conn.query("select date from scale2_log where date >= (CURDATE() - INTERVAL 1 DAY)  and state = 1", function (err, rows, fields) {
-            rows.forEach(function (item) {
-                scale2.push(dateFormat(item.date, 'HH:MM:ss'));
-            });
-        });
-
-        var sheet_rows = 1;
-        if (scale1.length > scale2.length) {
-            sheet_rows = scale1.length + 1;
-        } else {
-            sheet_rows = scale2.length + 1;
-        }
-
-        var excelbuilder = require('msexcel-builder');
-        // Create a new workbook file in current working-path
-        var sheet_name = 'report_' + dateFormat(new Date(), 'dd_mm_yy') + '___' + dateFormat(new Date(), 'HH_MM') + '.xlsx';
-        var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
-
-        // Create a new worksheet with 10 columns and 12 rows
-        var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
-
-        // Fill some data
-        sheet1.set(1, 1, 'Scale 1');
-        sheet1.set(2, 1, 'Scale 2');
-        for (var i = 2; i < scale1.length; i++) {
-            sheet1.set(1, i, scale1[i]);
-        }
-        for (var i = 2; i < scale2.length; i++) {
-            sheet1.set(1, i, scale2[i]);
-        }
-
-        // Save it
-        workbook.save(function (ok) {
-            if (!ok)
-                workbook.cancel();
-            else
-                console.log('congratulations, your workbook created');
-        });*/
-
-       /* var nodemailer = require('nodemailer');
-
-        var transporter = nodemailer.createTransport({
-            host: "mx1.agroimpex.com",
-            secure: false,
-            port: 25,
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-
-        // setup e-mail data with unicode symbols
-        var mailOptions = {
-            from: '<mailbot@agroimpex.com>', // sender address
-            to: '<d.krivitskiy@agroimpex.com>', // list of receivers
-            subject: 'Node.js mail test', // Subject line
-            text: 'Daily report', // plaintext body
-            attachments: [
-                {
-                    path: '/var/www/html/zaslon/reports/'+sheet_name
-                }
-            ]
-        };
-
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                return console.log(error);
-            }
-            console.log('Message sent: ' + info.response);
-        });*/
 
 
         console.log("CRON!!!!!!!!!!!!!!!!!!!");
