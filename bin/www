@@ -19,14 +19,15 @@ var CronJob = require('cron').CronJob;
 
 var _ = require('underscore');
 
-
+var report_mac_array = [];
+var scale_1_arr = [],  scale_2_arr = [];
 
 
 
 
 var job;
 job = new CronJob({
-    cronTime: '00 17 13 * * 1-7',
+    cronTime: '00 44 13 * * 1-7',
     onTick: function () {
 
         /*
@@ -35,8 +36,7 @@ job = new CronJob({
          */
          db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows, fields){
              // var report_scales_obj = {};
-             var report_mac_array = [];
-             var scale_1_arr = [],  scale_2_arr = [];
+
              rows.forEach(function(item){
                 report_mac_array.push(item.zaslon_id);
              });
@@ -55,75 +55,77 @@ job = new CronJob({
              });
 
 
-             console.log(scale_1_arr, scale_2_arr);
 
-             var sheet_rows = 1;
-             if(scale_1_arr.length > scale_2_arr.length){
-                 sheet_rows = scale_1_arr.length + 1;
-             }else {
-                 sheet_rows = scale_2_arr.length + 1;
-             }
-
-
-             var excelbuilder = require('msexcel-builder');
-             // Create a new workbook file in current working-path
-             var sheet_name = 'report_' + dateFormat(new Date(), 'dd_mm_yy') + '___' + dateFormat(new Date(), 'HH_MM') + '.xlsx';
-             // var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
-             var workbook = excelbuilder.createWorkbook('./', sheet_name);
-
-
-             var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
-             sheet1.set(1, 1, 'Scale 1');
-             sheet1.set(2, 1, 'Scale 2');
-             for (var i = 2; i < sheet_rows; i++) {
-                 sheet1.set(1, i, scale_1_arr[i]);
-             }
-             for (var i = 2; i < sheet_rows; i++) {
-                 sheet1.set(1, i, scale_2_arr[i]);
-             }
-             // for (var i = 2; i < report_scales_obj[report_mac_array[1]].length; i++) {
-             //     sheet1.set(1, i, report_scales_obj[report_mac_array[1]][i]);
-             // }
-
-             workbook.save(function (ok) {
-                 if (!ok)
-                     workbook.cancel();
-                 else
-                     console.log('congratulations, your workbook created');
-             });
-
-             var nodemailer = require('nodemailer');
-
-             var transporter = nodemailer.createTransport({
-                 host: "mx1.agroimpex.com",
-                 secure: false,
-                 port: 25,
-                 tls: {
-                     rejectUnauthorized: false
+             setTimeout(function(){
+                 // console.log(scale_1_arr, scale_2_arr);
+                 var sheet_rows = 1;
+                 if(scale_1_arr.length > scale_2_arr.length){
+                     sheet_rows = scale_1_arr.length + 1;
+                 }else {
+                     sheet_rows = scale_2_arr.length + 1;
                  }
-             });
 
-             // setup e-mail data with unicode symbols
-             var mailOptions = {
-                 from: '<mailbot@agroimpex.com>', // sender address
-                 to: '<d.krivitskiy@agroimpex.com>', // list of receivers
-                 subject: 'Daily report', // Subject line
-                 text: '', // plaintext body
-                 attachments: [
-                     {
-                         // path: '/var/www/html/zaslon/reports/'+sheet_name
-                         path: './'+sheet_name
+
+                 var excelbuilder = require('msexcel-builder');
+                 // Create a new workbook file in current working-path
+                 var sheet_name = 'report_' + dateFormat(new Date(), 'dd_mm_yy') + '___' + dateFormat(new Date(), 'HH_MM') + '.xlsx';
+                 var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
+                 // var workbook = excelbuilder.createWorkbook('./', sheet_name);
+
+
+                 var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
+                 sheet1.set(1, 1, 'Scale 1');
+                 sheet1.set(2, 1, 'Scale 2');
+                 for (var i = 0; i < scale_1_arr.length; i++) {
+                     sheet1.set(1, i+2, scale_1_arr[i]);
+                 }
+                 for (var i = 0; i < scale_2_arr.length; i++) {
+                     sheet1.set(1, i+2, scale_2_arr[i]);
+                 }
+
+                 workbook.save(function (ok) {
+                     if (!ok)
+                         workbook.cancel();
+                     else
+                         console.log('congratulations, your workbook created');
+                 });
+
+                 var nodemailer = require('nodemailer');
+
+                 var transporter = nodemailer.createTransport({
+                     host: "mx1.agroimpex.com",
+                     secure: false,
+                     port: 25,
+                     tls: {
+                         rejectUnauthorized: false
                      }
-                 ]
-             };
+                 });
 
-             // send mail with defined transport object
-             transporter.sendMail(mailOptions, function (error, info) {
-                 if (error) {
-                     return console.log(error);
-                 }
-                 console.log('Message sent: ' + info.response);
-             });
+                 // setup e-mail data with unicode symbols
+                 var mailOptions = {
+                     from: '<mailbot@agroimpex.com>', // sender address
+                     to: '<s.khaesh@agroimpex.com>', // list of receivers
+                     cc: '<s.korolev@agroimpex.com>, <d.krivitskiy@agroimpex.com>',
+                     subject: 'Daily report', // Subject line
+                     text: '', // plaintext body
+                     attachments: [
+                         {
+                             path: '/var/www/html/zaslon/reports/'+sheet_name
+                             // path: './'+sheet_name
+                         }
+                     ]
+                 };
+
+                 // send mail with defined transport object
+                 transporter.sendMail(mailOptions, function (error, info) {
+                     if (error) {
+                         return console.log(error);
+                     }
+                     console.log('Message sent: ' + info.response);
+                 });
+             }, 2000)
+
+
          });
 
 
@@ -133,43 +135,6 @@ job = new CronJob({
 });
 job.start();
 
-
-////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////
-/*var nodemailer = require('nodemailer');
-
-var transporter = nodemailer.createTransport({
-    host: "mx1.agroimpex.com",
-    secure: false,
-    port: 25,
-    tls: {
-        rejectUnauthorized: false
-    }
-});
-
-// setup e-mail data with unicode symbols
-var mailOptions = {
-
-    from: '<mailbot@agroimpex.com>', // sender address
-    to: '<d.krivitskiy@agroimpex.com>, <s.korolev@agroimpex.com>', // list of receivers
-    subject: 'Node.js mail test', // Subject line
-    text: 'Hello world ', // plaintext body
-    html: '<b>Hello world</b>', // html body
-    /!* attachments:[
-     {
-     path: 'D:\\doc20160824143743.xlsx'
-     }
-     ]*!/
-};
-
-// send mail with defined transport object
-transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        return console.log(error);
-    }
-    console.log('Message sent: ' + info.response);
-});*/
 
 ////////////////////////////////////////////////////////////////////////////
 
