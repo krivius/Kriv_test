@@ -468,7 +468,7 @@ $("#user").on("click",  ".more_info", function() {
     var dialog_settings = {
         modal: true,
         resizable: false,
-        title: title,
+        title: mac,
         width: 900,
         height: 600,
         buttons: [
