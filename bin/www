@@ -435,6 +435,7 @@ io.on('connection', function(socket){
             rows.forEach(function(item){
                 scale_data.push({date:item.date, state:item.state});
             });
+            console.log(scale_data);
             socket.emit("curr_scale_state", scale_data);
         });
     });
