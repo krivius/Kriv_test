@@ -7,6 +7,7 @@ var clients = [];
 var mac_arr = [];
 var interval_gspeed;
 var curr_freq = [];
+var curr_scale_state = [];
 
 socket.emit("get_clients");
 socket.emit("get_templates");
@@ -195,6 +196,12 @@ socket.on("ws_clients",  function(data){
     // });
     // $("#mac_list").empty().html(mac_list);
     $("#shalabuhen table").empty().html(rows);
+});
+
+
+socket.on("scale_state",  function(data){
+    curr_scale_state = data;
+    console.log("scale state", curr_scale_state);
 });
 
 
@@ -452,82 +459,89 @@ $("#delete_template").on("click",  function(){
 });
 
 
-$("#user").on("click",  ".more_info", function(){
+$("#user").on("click",  ".more_info", function() {
     $(this).parents('.informer').attr('state', '0').css('height', '25px');
     $(this).parents('.informer').find('.controls').remove();
     var title = $(this).parents(".informer").attr("title");
+    var mac = $(this).parents(".informer").attr("mac");
+    var type = $(this).parents(".informer").attr("type") || 'no_type';
     var dialog_settings = {
-        modal:true,
-        resizable:false,
-        title:title,
-        width:900,
-        height:600,
-        buttons:[
+        modal: true,
+        resizable: false,
+        title: title,
+        width: 900,
+        height: 600,
+        buttons: [
             {
-                text:"Закрыть",
-                click: function(){
+                text: "Закрыть",
+                click: function () {
                     $(this).dialog("close");
                 }
             }
         ],
-        close:function(){
+        close: function () {
             $(this).dialog("destroy");
             $(this).remove();
         }
     };
 
     $('<div><div id="highstock"></div></div>').appendTo('body').dialog(dialog_settings);
-    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+    if (type != "scales") {
 
-   /* Highcharts.setOptions({
-        lang: {
-            loading: "Загрузка...",
-            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентярбрь', 'Октрябрь', 'Ноябрь', 'Декабрь'],
-            shortMonths: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'],
-            rangeSelectorFrom: "С",
-            rangeSelectorTo: "По",
-            shortWeekdays: ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
-            thousandsSep: " ",
-            weekdays: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
-        }
-    });*/
-    $('#highstock').highcharts('StockChart', {
-        chart:{
-            renderTo: 'container',
-            events : {
-                load : function () {
 
-                    // set up the updating of the chart each second
-                    var series = this.series[0];
-                    setInterval(function () {
-                        // console.log("curr_freq[0]: "+ curr_freq[0]);
-                        var x = (new Date()).getTime(), // current time
-                            y = curr_freq[0] || 0;
-                            series.addPoint([x, y], true, true);
-                    }, 1000);
-                }
-            }
-        },
-        rangeSelector : {
-            selected : 2,
-            inputDateFormat: '%d.%m.%Y',
-            inputEditDateFormat: '%d.%m.%Y'
-        },
+        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+            console.log(data);
+            /* Highcharts.setOptions({
+             lang: {
+             loading: "Загрузка...",
+             months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентярбрь', 'Октрябрь', 'Ноябрь', 'Декабрь'],
+             shortMonths: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'],
+             rangeSelectorFrom: "С",
+             rangeSelectorTo: "По",
+             shortWeekdays: ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
+             thousandsSep: " ",
+             weekdays: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+             }
+             });*/
+            $('#highstock').highcharts('StockChart', {
+                chart: {
+                    renderTo: 'container',
+                    events: {
+                        load: function () {
 
-        title : {
-            text : title
-        },
+                            // set up the updating of the chart each second
+                            var series = this.series[0];
+                            setInterval(function () {
+                                // console.log("curr_freq[0]: "+ curr_freq[0]);
+                                var x = (new Date()).getTime(), // current time
+                                    y = curr_freq[0] || 0;
+                                series.addPoint([x, y], true, true);
+                            }, 1000);
+                        }
+                    }
+                },
+                rangeSelector: {
+                    selected: 2,
+                    inputDateFormat: '%d.%m.%Y',
+                    inputEditDateFormat: '%d.%m.%Y'
+                },
 
-        series : [{
-            name : title,
-            data : [(new Date()).getTime(), 0],
-            tooltip: {
-                valueDecimals: 2
-            }
-        }]
-    });
-    });
+                title: {
+                    text: title
+                },
 
+                series: [{
+                    name: title,
+                    data: [(new Date()).getTime(), 0],
+                    tooltip: {
+                        valueDecimals: 2
+                    }
+                }]
+            });
+        });
+    }else{
+
+    }
 
 });
 
