@@ -464,7 +464,7 @@ $("#user").on("click",  ".more_info", function() {
     $(this).parents('.informer').find('.controls').remove();
     var title = $(this).parents(".informer").attr("title");
     var mac = $(this).parents(".informer").attr("mac");
-    var type = $(this).parents("div:first").find(".infromer").attr("type") || 'no_type';
+    var type = $(this).parents(".informer").attr("type");
     var dialog_settings = {
         modal: true,
         resizable: false,
