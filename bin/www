@@ -105,7 +105,7 @@ job = new CronJob({
                  var mailOptions = {
                      from: '<mailbot@agroimpex.com>', // sender address
                      to: '<s.khaesh@agroimpex.com>', // list of receivers
-                     cc: '<s.korolev@agroimpex.com>, <d.krivitskiy@agroimpex.com>',
+                     cc: '<s.korolev@agroimpex.com>, <d.krivitskiy@agroimpex.com>', //copy
                      subject: 'Ежедневный отчет', // Subject line
                      text: 'Отчет сгенерирован автоматически', // plaintext body
                      attachments: [
@@ -133,7 +133,7 @@ job = new CronJob({
     },
     start: false
 });
-job.start();
+// job.start();
 
 
 ////////////////////////////////////////////////////////////////////////////
