@@ -200,7 +200,8 @@ socket.on("ws_clients",  function(data){
 
 
 socket.on("scale_state",  function(data){
-    curr_scale_state = data;
+    curr_scale_state = data.scale_data;
+    var title = "Весы "+data.scale_mac;
     console.log("scale state", curr_scale_state);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
