@@ -486,6 +486,7 @@ $("#user").on("click",  ".more_info", function() {
     };
 
     $('<div><div id="highstock"></div></div>').appendTo('body').dialog(dialog_settings);
+    console.log("type = " +type);
     if (type != "scales") {
 
 
