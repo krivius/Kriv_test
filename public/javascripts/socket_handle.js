@@ -486,10 +486,7 @@ $("#user").on("click",  ".more_info", function() {
     };
 
     $('<div><div id="highstock"></div></div>').appendTo('body').dialog(dialog_settings);
-    console.log("type = " +type);
     if (type != "scales") {
-
-
         $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
             console.log(data);
             /* Highcharts.setOptions({
@@ -540,8 +537,9 @@ $("#user").on("click",  ".more_info", function() {
                 }]
             });
         });
-    }else{
-
+    }else {
+        // $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+        socket.emit("get_scale_data", mac);
     }
 
 });

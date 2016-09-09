@@ -426,6 +426,19 @@ io.on('connection', function(socket){
             socket.emit("template_list", t_list);
         });
     });
+
+    socket.on("get_scale_data", function(mac){
+        var sql = 'SELECT date, state FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND zaslon_id = "'+mac+'"';
+        var scale_data = [];
+        db_conn.query(sql, function(err, rows, fields){
+            rows.forEach(function(item){
+                scale_data.push({date:item.date, state:item.state});
+            });
+            socket.emit("curr_scale_state", scale_data);
+        });
+    });
+
+
 });
 
 
