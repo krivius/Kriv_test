@@ -461,10 +461,10 @@ $("#delete_template").on("click",  function(){
 
 $("#user").on("click",  ".more_info", function() {
     $(this).parents('.informer').attr('state', '0').css('height', '25px');
-    $(this).parents('.informer').find('.controls').remove();
     var title = $(this).parents(".informer").attr("title");
     var mac = $(this).parents(".informer").attr("mac");
-    var type = $(this).parents(".informer").attr("type");
+    var type = $(this).parents(".informer").attr("type") || 'no_type';
+    $(this).parents('.informer').find('.controls').remove();
     var dialog_settings = {
         modal: true,
         resizable: false,
