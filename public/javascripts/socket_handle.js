@@ -202,6 +202,61 @@ socket.on("ws_clients",  function(data){
 socket.on("scale_state",  function(data){
     curr_scale_state = data;
     console.log("scale state", curr_scale_state);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+        // console.log(data);
+        /* Highcharts.setOptions({
+         lang: {
+         loading: "Загрузка...",
+         months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентярбрь', 'Октрябрь', 'Ноябрь', 'Декабрь'],
+         shortMonths: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'],
+         rangeSelectorFrom: "С",
+         rangeSelectorTo: "По",
+         shortWeekdays: ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
+         thousandsSep: " ",
+         weekdays: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+         }
+         });*/
+        $('#highstock').highcharts('StockChart', {
+            chart: {
+                renderTo: 'container',
+                events: {
+                    load: function () {
+
+                        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function () {
+                            // console.log("curr_freq[0]: "+ curr_freq[0]);
+                            var x = curr_scale_state[0].date, // current time
+                                y = curr_scale_state[0].state;
+                            series.addPoint([x, y], true, true);
+                        }, 1000);
+                    }
+                }
+            },
+            rangeSelector: {
+                selected: 2,
+                inputDateFormat: '%d.%m.%Y',
+                inputEditDateFormat: '%d.%m.%Y'
+            },
+
+            title: {
+                text: title
+            },
+
+            series: [{
+                name: title,
+                data: [(new Date()).getTime(), 0],
+                tooltip: {
+                    valueDecimals: 2
+                }
+            }]
+        });
+    });
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 });
 
 
