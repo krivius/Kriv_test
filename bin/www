@@ -436,7 +436,7 @@ io.on('connection', function(socket){
                 scale_data.push({date:dateFormat(item.date, 'dd.mm.yy HH:MM:ss'), state:item.state});
             });
             console.log(scale_data);
-            socket.emit("curr_scale_state", scale_data);
+            socket.emit("scale_state", scale_data);
         });
     });
 
