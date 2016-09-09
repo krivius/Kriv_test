@@ -229,8 +229,9 @@ socket.on("scale_state",  function(data){
                         var series = this.series[0];
                         setInterval(function () {
                             // console.log("curr_freq[0]: "+ curr_freq[0]);
-                            var x = curr_scale_state[0].date, // current time
-                                y = curr_scale_state[0].state;
+                            var last_elem =  curr_scale_state[curr_scale_state.length];
+                            var x = last_elem.date, // current time
+                                y = last_elem.state;
                             series.addPoint([x, y], true, true);
                         }, 1000);
                     }
