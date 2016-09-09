@@ -27,7 +27,7 @@ var scale_1_arr = [],  scale_2_arr = [];
 
 var job;
 job = new CronJob({
-    cronTime: '00 06 15 * * 1-7',
+    cronTime: '00 30 15 * * 1-7',
     onTick: function () {
 
         /*
@@ -133,7 +133,7 @@ job = new CronJob({
     },
     start: false
 });
-// job.start();
+job.start();
 
 
 ////////////////////////////////////////////////////////////////////////////
