@@ -372,7 +372,7 @@ $("#device_controls_modal").dialog({
             text:"Обновить логи",
             click:function(){
                 var device_mac =$(this).parents(".ui-dialog").find("#ui-id-1").text();
-                socket.emit("get_device_info", device_mac);
+                socket.emit("refresh_logs", device_mac);
             }
         },
         {
@@ -387,6 +387,23 @@ $("#device_controls_modal").dialog({
 
     ]
 });
+
+socket.on("show_fresh_logs",  function(data){
+    var rows = '<tr>'+
+                    '<th>Тип</th>'+
+                    '<th>Сообщение</th>'+
+                    '<th>Дата / время</th>'+
+                '</tr>';
+    $.each(data,  function(key, log){
+        rows += '<tr>'+
+                '<td>'+log.system+'</td>'+
+                '<td>'+log.message+'</td>'+
+                '<td>'+log.time+'</td>'+
+            '</tr>';
+    });
+    $("#device_logs table").empty().html(rows);
+});
+
 socket.on("show_device_controls",  function(data){
     console.log(data);
     var rows = '<tr>'+
