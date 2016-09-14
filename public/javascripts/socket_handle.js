@@ -372,7 +372,7 @@ $("#device_controls_modal").dialog({
             text:"Обновить логи",
             click:function(){
                 var device_mac =$(this).parents(".ui-dialog").find("#ui-id-1").text();
-                console.log(device_mac);
+                socket.emit("get_device_info", device_mac);
             }
         },
         {
