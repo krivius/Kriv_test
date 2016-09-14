@@ -369,6 +369,13 @@ $("#device_controls_modal").dialog({
     height:600,
     buttons:[
         {
+            text:"Обновить логи",
+            click:function(){
+                var device_mac =$(this).parents(".ui-dialog").find("#ui-id-1").text();
+                console.log(device_mac);
+            }
+        },
+        {
             text:"Сохранить",
             click: function(){
                 var role = $("#device_role").val(),
@@ -377,6 +384,7 @@ $("#device_controls_modal").dialog({
                 $(this).dialog("close");
             }
         }
+
     ]
 });
 socket.on("show_device_controls",  function(data){
