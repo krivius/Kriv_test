@@ -388,7 +388,7 @@ $("#device_controls_modal").dialog({
     ]
 });
 
-/*
+
 socket.on("show_fresh_logs",  function(data){
     var rows = '<tr>'+
                     '<th>Тип</th>'+
@@ -404,7 +404,7 @@ socket.on("show_fresh_logs",  function(data){
     });
     $("#device_logs table").empty().html(rows);
 });
-*/
+
 
 socket.on("show_device_controls",  function(data){
     console.log(data);
