@@ -175,8 +175,8 @@ var server = ws.createServer(function(conn){
             console.log("SCALE MAC: "+scale_mac);
             try{
                 db_conn.query('INSERT INTO scale_log SET zaslon_id = "'+scale_mac+'", state = "'+obj.state+'"');
-                db_conn.query('INSERT INTO hw_log_table SET mac="'+scale_mac+'", message="change scale state: '+obj.state+'", system="'+obj.from+'" ');
-                www.eventEmitter.emit('scale_led', {state:obj.state, mac:scale_mac});
+                // db_conn.query('INSERT INTO hw_log_table SET mac="'+scale_mac+'", message="change scale state: '+obj.state+'", system="'+obj.from+'" ');
+                // www.eventEmitter.emit('scale_led', {state:obj.state, mac:scale_mac});
             }catch(e){
                 console.log("Error: "+e);
             }
