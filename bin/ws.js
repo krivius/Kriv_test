@@ -175,24 +175,12 @@ var server = ws.createServer(function(conn){
             console.log("SCALE MAC: "+scale_mac);
             try{
                 db_conn.query('INSERT INTO scale_log SET zaslon_id = "'+scale_mac+'", state = "'+obj.state+'"');
-                // db_conn.query('INSERT INTO hw_log_table SET mac="'+scale_mac+'", message="change scale state: '+obj.state+'", system="'+obj.from+'" ');
-                // www.eventEmitter.emit('scale_led', {state:obj.state, mac:scale_mac});
+                db_conn.query('INSERT INTO hw_log_table SET mac="'+scale_mac+'", message="change scale state: '+obj.state+'", system="'+obj.from+'" ');
             }catch(e){
                 console.log("Error: "+e);
             }
 
 
-            // var z_id;
-            // db_conn.query('SELECT id FROM hw_table WHERE raw_mac = "'+obj.mac+'"',  function(err, rows, fields){
-            //     rows.forEach(function (item) {
-            //        z_id = item.id ;
-            //     });
-            // });
-            // if(z_id == '8'){
-            //     db_conn.query('INSERT INTO scale2_log SET zaslon_id = 8, state = "'+obj.state+'"');
-            // }else if(z_id == '4'){
-            //     db_conn.query('INSERT INTO scale1_log SET zaslon_id = 4, state = "'+obj.state+'"');
-            // }
         }
 
         //www.eventEmitter.emit('main_channel', str);

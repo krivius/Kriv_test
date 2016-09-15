@@ -365,7 +365,7 @@ io.on('connection', function(socket){
         // socket.emit("show_device_controls", info);
     });
 
-   /* socket.on("refresh_logs",  function(mac){
+    socket.on("refresh_logs",  function(mac){
         var sql = 'SELECT message, system, time FROM hw_log_table WHERE mac="'+mac+'" ORDER BY id DESC LIMIT 100';
         var logs = [];
         db_conn.query(sql, function(err, rows, fields){
@@ -380,7 +380,7 @@ io.on('connection', function(socket){
             socket.emit("show_fresh_logs", logs);
         });
 
-    });*/
+    });
 
 
 
