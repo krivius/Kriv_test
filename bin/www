@@ -34,13 +34,19 @@ job = new CronJob({
          * Runs every weekday (Monday through Friday)
          * at 12:55:00
          */
-         db_conn.query("SELECT DISTINCT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY)",  function(err, rows, fields){
+
+        //SELECT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) GROUP BY zaslon_id ORDER BY count(*) DESC LIMIT 2;
+        //SELECT DISTINCT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY)
+
+         db_conn.query("SELECT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) GROUP BY zaslon_id ORDER BY count(*) DESC LIMIT 2",  function(err, rows, fields){
              // var report_scales_obj = {};
 
              rows.forEach(function(item){
                 report_mac_array.push(item.zaslon_id);
              });
              console.log(report_mac_array);
+
+
 
 
              db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "'+report_mac_array[0]+'"',  function(err, rows, fields){
@@ -80,7 +86,7 @@ job = new CronJob({
                      sheet1.set(1, i+2, scale_1_arr[i]);
                  }
                  for (var i = 0; i < scale_2_arr.length; i++) {
-                     sheet1.set(1, i+2, scale_2_arr[i]);
+                     sheet1.set(2, i+2, scale_2_arr[i]);
                  }
 
                  workbook.save(function (ok) {
