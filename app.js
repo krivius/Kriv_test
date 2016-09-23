@@ -1,4 +1,4 @@
-require('look').start();
+require('look').start(5959, '127.0.0.1');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
