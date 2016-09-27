@@ -49,12 +49,12 @@ job = new CronJob({
 
 
 
-             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "'+report_mac_array[0]+'"',  function(err, rows, fields){
+             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "5C:CF:7F:80:2D:45"',  function(err, rows, fields){
                  rows.forEach(function(item){
                      scale_1_arr.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
                  });
              });
-             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "'+report_mac_array[1]+'"',  function(err, rows, fields){
+             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "5C:CF:7F:19:47:7B"',  function(err, rows, fields){
                  rows.forEach(function(item){
                      scale_2_arr.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
                  });
@@ -80,8 +80,8 @@ job = new CronJob({
 
 
                  var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
-                 sheet1.set(1, 1, 'Scale 1');
-                 sheet1.set(2, 1, 'Scale 2');
+                 sheet1.set(1, 1, 'fraction 3-5');
+                 sheet1.set(2, 1, 'fraction 2-4');
                  for (var i = 0; i < scale_1_arr.length; i++) {
                      sheet1.set(1, i+2, scale_1_arr[i]);
                  }
