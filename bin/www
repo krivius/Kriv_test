@@ -47,7 +47,9 @@ job = new CronJob({
              console.log(report_mac_array);
 
 
-
+             /*SELECT l1.zaslon_id as mac, AVG(TIMESTAMPDIFF(second, l1.date, l2.date)) as avg_time
+             FROM scale_log as l1 JOIN scale_log as l2 ON(l2.id = l1.id + 1)
+             WHERE l1.date >= (CURDATE() - INTERVAL 1 DAY) GROUP BY mac ORDER BY count(*) desc limit 2;*/
 
              db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "5C:CF:7F:80:2D:45"',  function(err, rows, fields){
                  rows.forEach(function(item){
