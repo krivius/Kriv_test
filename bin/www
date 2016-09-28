@@ -466,6 +466,20 @@ io.on('connection', function(socket){
     });
 
 
+    socket.on("get_scales_avg", function(){
+        var sql = 'SELECT zaslon_id as mac, count(*)*20 as total FROM scale_log WHERE date >= (CURDATE() - INTERVAL 24 HOUR) AND state=0 GROUP BY zaslon_id DESC LIMIT 2';
+        var scale_data = [];
+        db_conn.query(sql, function(err, rows, fields){
+            rows.forEach(function(item){
+               scale_data.push({mac:item.mac, total:item.total});
+            });
+            console.log("=======================================<avg>====================================================");
+            console.log(scale_data);
+            console.log("=======================================</avg>===================================================");
+        });
+    });
+
+
 });
 
 

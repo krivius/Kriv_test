@@ -11,6 +11,8 @@ var curr_scale_state = [];
 
 socket.emit("get_clients");
 socket.emit("get_templates");
+socket.emit("get_scales_avg");
+
 
 function decimalToHex(d, padding) {
    var hex = Number(d).toString(16);
