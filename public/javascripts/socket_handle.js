@@ -463,7 +463,8 @@ socket.on("template_list",  function(data){
 
 socket.on("show_scale_avg",  function(data){
    console.log(data);
-    $.each(data,  function(item){
+    $.each(data,  function(key, item){
+        console.log(key, item);
        $(".informer[mac='"+item.mac+"']").empty().text(item.total);
     });
 });
