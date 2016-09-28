@@ -473,9 +473,7 @@ io.on('connection', function(socket){
             rows.forEach(function(item){
                scale_data.push({mac:item.mac, total:item.total});
             });
-            console.log("=======================================<avg>====================================================");
-            console.log(scale_data);
-            console.log("=======================================</avg>===================================================");
+            socket.broadcast.emit("show_scale_avg",  scale_data);
         });
     });
 

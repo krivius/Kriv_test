@@ -461,6 +461,11 @@ socket.on("template_list",  function(data){
 });
 
 
+socket.on("show_scale_avg",  function(data){
+   console.log(data);
+});
+
+
 
 $("#save_template").on("click",  function(){
    var tmp = $(".informer").get(),
