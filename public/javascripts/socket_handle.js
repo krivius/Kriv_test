@@ -468,10 +468,10 @@ socket.on("show_scale_avg",  function(data){
     });
 });
 
-
-socket.on("realtime_scale_state",  function(data){
+/*
+socket.on("realtime_scale_avg",  function(data){
    console.log(data);
-});
+});*/
 
 
 
