@@ -38,7 +38,7 @@ job = new CronJob({
         //SELECT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) GROUP BY zaslon_id ORDER BY count(*) DESC LIMIT 2;
         //SELECT DISTINCT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY)
 
-         db_conn.query("SELECT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) GROUP BY zaslon_id ORDER BY count(*) DESC LIMIT 2",  function(err, rows, fields){
+         db_conn.query("SELECT zaslon_id FROM scale_log WHERE date >= (NOW() - INTERVAL 1 DAY) GROUP BY zaslon_id ORDER BY count(*) DESC LIMIT 2",  function(err, rows, fields){
              // var report_scales_obj = {};
 
              rows.forEach(function(item){
@@ -51,12 +51,12 @@ job = new CronJob({
              FROM scale_log as l1 JOIN scale_log as l2 ON(l2.id = l1.id + 1)
              WHERE l1.date >= (CURDATE() - INTERVAL 1 DAY) GROUP BY mac ORDER BY count(*) desc limit 2;*/
 
-             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "5C:CF:7F:80:2D:45"',  function(err, rows, fields){
+             db_conn.query('SELECT date FROM scale_log WHERE date >= (NOW() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "5C:CF:7F:80:2D:45"',  function(err, rows, fields){
                  rows.forEach(function(item){
                      scale_1_arr.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
                  });
              });
-             db_conn.query('SELECT date FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "5C:CF:7F:19:47:7B"',  function(err, rows, fields){
+             db_conn.query('SELECT date FROM scale_log WHERE date >= (NOW() - INTERVAL 1 DAY) AND state = 0 AND zaslon_id = "5C:CF:7F:19:47:7B"',  function(err, rows, fields){
                  rows.forEach(function(item){
                      scale_2_arr.push(dateFormat(item.date, 'dd.mm.yy HH:MM:ss'));
                  });
@@ -274,7 +274,7 @@ var ws_clients = function ws_clients(str) {
 var scale_state = function scale_state(obj){
     console.log(obj);
     // io.emit('realtime_scale_avg', obj);
-    var sql = 'SELECT zaslon_id as mac, count(*)*20 as total FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 HOUR) AND state=0 GROUP BY zaslon_id DESC LIMIT 2';
+    var sql = 'SELECT zaslon_id as mac, count(*)*20 as total FROM scale_log WHERE date >= (NOW() - INTERVAL 1 HOUR) AND state=0 GROUP BY zaslon_id DESC LIMIT 2';
     var scale_data = [];
     db_conn.query(sql, function(err, rows, fields){
         rows.forEach(function(item){
@@ -466,7 +466,7 @@ io.on('connection', function(socket){
 
     socket.on("get_scale_data", function(mac){
         console.log("MAC: "+mac);
-        var sql = 'SELECT date, state FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) AND zaslon_id = "'+mac+'" ORDER BY id DESC';
+        var sql = 'SELECT date, state FROM scale_log WHERE date >= (NOW() - INTERVAL 1 DAY) AND zaslon_id = "'+mac+'" ORDER BY id DESC';
         var scale_data = [];
         db_conn.query(sql, function(err, rows, fields){
             rows.forEach(function(item){
@@ -479,7 +479,7 @@ io.on('connection', function(socket){
 
 
     socket.on("get_scales_avg", function(){
-        var sql = 'SELECT zaslon_id as mac, count(*)*20 as total FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 HOUR) AND state=0 GROUP BY zaslon_id DESC LIMIT 2';
+        var sql = 'SELECT zaslon_id as mac, count(*)*20 as total FROM scale_log WHERE date >= (NOW() - INTERVAL 1 HOUR) AND state=0 GROUP BY zaslon_id DESC LIMIT 2';
         var scale_data = [];
         db_conn.query(sql, function(err, rows, fields){
             rows.forEach(function(item){
