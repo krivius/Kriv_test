@@ -271,6 +271,10 @@ var ws_clients = function ws_clients(str) {
     io.emit('ws_clients',  str);
 };
 
+var scale_state = function scale_state(obj){
+    console.log(obj);
+    io.emit(obj);
+};
 
 io.on('connection', function(socket){
 
@@ -480,7 +484,7 @@ io.on('connection', function(socket){
 
 });
 
-
+eventEmitter.addListener('scale_state',  scale_state);
 eventEmitter.addListener('main_channel', ws_main_channel);
 eventEmitter.addListener('info', ws_info);
 eventEmitter.addListener('mac_array', mac_array);
