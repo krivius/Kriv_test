@@ -273,7 +273,7 @@ var ws_clients = function ws_clients(str) {
 
 var scale_state = function scale_state(obj){
     console.log(obj);
-    io.emit(obj);
+    io.emit('realtime_scale_state', obj);
 };
 
 io.on('connection', function(socket){

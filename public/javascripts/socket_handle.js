@@ -469,6 +469,11 @@ socket.on("show_scale_avg",  function(data){
 });
 
 
+socket.on("realtime_scale_state",  function(data){
+   console.log(data);
+});
+
+
 
 $("#save_template").on("click",  function(){
    var tmp = $(".informer").get(),
