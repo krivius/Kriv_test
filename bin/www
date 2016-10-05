@@ -280,13 +280,15 @@ var scale_state = function scale_state(obj){
             var sql_2 = 'select t1. zaslon_id, FLOOR(72000/(TIMESTAMPDIFF(second, t2.date, t1.date))) as speed FROM scale_log as t1 JOIN scale_log as t2 ON (t2.id = t1.id-1)'+
                 'WHERE t1.state = 0 AND t2.state=1  AND t1.zaslon_id = "'+item.mac+'" AND t2.zaslon_id =  "'+item.mac+'" AND TIMESTAMPDIFF(second, t2.date, t1.date) > 15'+
                 'AND t1.date >= (NOW() - INTERVAL 1 HOUR) ORDER BY t1.date DESC limit 1';
-            db_conn.query(sql_2,  function(err_2, rows_2, fields_2){
-                setTimeout(function(){
-                    rows_2.forEach(function(s_item){
-                        scale_data.push({mac:item.mac, total:item.total, speed:rows_2[0].speed});
+            setTimeout(function() {
+                db_conn.query(sql_2, function (err_2, rows_2, fields_2) {
+                    // setTimeout(function(){
+                    rows_2.forEach(function (s_item) {
+                        scale_data.push({mac: item.mac, total: item.total, speed: rows_2[0].speed});
                     });
-                }, 400);
-            });
+                    // }, 400);
+                });
+            }, 500);
         });
         // setTimeout(function(){
             io.emit("show_scale_avg",  scale_data);
