@@ -465,6 +465,7 @@ socket.on("show_scale_avg",  function(data){
    console.log(data);
     $.each(data,  function(key, item){
        $(".informer[mac='"+item.mac+"']").empty().text(item.total);
+        $(".speed_informer[mac='"+item.mac+"']").empty().text(item.speed);
     });
 });
 

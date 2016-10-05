@@ -273,14 +273,23 @@ var ws_clients = function ws_clients(str) {
 
 var scale_state = function scale_state(obj){
     console.log(obj);
-    // io.emit('realtime_scale_avg', obj);
     var sql = 'SELECT zaslon_id as mac, count(*)*20 as total FROM scale_log WHERE date >= (NOW() - INTERVAL 1 HOUR) AND state=0 GROUP BY zaslon_id DESC LIMIT 2';
     var scale_data = [];
     db_conn.query(sql, function(err, rows, fields){
         rows.forEach(function(item){
-            scale_data.push({mac:item.mac, total:item.total});
+            var sql_2 = 'select t1. zaslon_id, FLOOR(72000/(TIMESTAMPDIFF(second, t2.date, t1.date))) as speed FROM scale_log as t1 JOIN scale_log as t2 ON (t2.id = t1.id-1)'+
+                'WHERE t1.state = 0 AND t2.state=1  AND t1.zaslon_id = "'+item.mac+'" AND t2.zaslon_id =  "'+item.mac+'" AND TIMESTAMPDIFF(second, t2.date, t1.date) > 15'+
+                'AND t1.date >= (NOW() - INTERVAL 1 HOUR) ORDER BY t1.date DESC limit 1';
+            db_conn.query(sql_2,  function(err_2,  rows_2, fields_2){
+                rows_2.forEach(function(s_item){
+                    scale_data.push({mac:item.mac, total:item.total, speed:s_item.speed});
+                });
+            });
         });
-        io.emit("show_scale_avg",  scale_data);
+        setTimeout(function(){
+            io.emit("show_scale_avg",  scale_data);
+        }, 1000);
+
     });
 };
 
