@@ -591,7 +591,7 @@ body{
   src: url("POCKC___.ttf");
 }
 
-.informer {
+.informer, .speed_informer {
   background: #2b2b2c none repeat scroll 0 0;
   border: 4px ridge #525050;
   color: #6eb42b;
