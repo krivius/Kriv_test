@@ -262,6 +262,10 @@ socket.on("scale_state",  function(data){
 
 });
 
+socket.on("w_console", function(data){
+    $("#w_console").append('<p>'+ data + '</p>');
+});
+
 
 $("#run").on("click",  function(){
     console.log("iv_run");
