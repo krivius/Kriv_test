@@ -282,7 +282,7 @@ var scale_state = function scale_state(obj){
     //             'AND t1.date >= (NOW() - INTERVAL 1 HOUR) ORDER BY t1.date DESC limit 1';
     //         db_conn.query(sql_2, function (err_2, rows_2) {
     //             rows_2.forEach(function(s_item) {
-                    scale_data.push({mac: item.mac, total: item.total, speed: s_item.speed});
+                    scale_data.push({mac: item.mac, total: item.total});
         //         });
         //     });
         // });
