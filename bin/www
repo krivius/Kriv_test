@@ -118,8 +118,8 @@ job = new CronJob({
                      text: 'Отчет сгенерирован автоматически', // plaintext body
                      attachments: [
                          {
-                             // path: '/var/www/html/zaslon/reports/'+sheet_name
-                             path: './'+sheet_name
+                             path: '/var/www/html/zaslon/reports/'+sheet_name
+                             // path: './'+sheet_name
                          }
                      ]
                  };
