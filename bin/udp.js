@@ -9,6 +9,7 @@ var PORT = 8888;
 var net = require('net');
 var dgram = require('dgram');
 var udp_server = dgram.createSocket('udp4');
+var www = require('./www');
 
 var clients_data = [];
 
@@ -55,6 +56,7 @@ console.log("Current IP: "+ip_arr[0]);
 udp_server.on('listening', function(){
     var address = udp_server.address();
     console.log('UDP server listening on ' + ip_arr[0] + ":" + address.port);
+    www.eventEmitter.emit('w_console', 'UDP server listening on ' + ip_arr[0] + ":" + address.port);
 });
 
 udp_server.on('message', function(message, remote){
