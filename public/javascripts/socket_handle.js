@@ -277,6 +277,7 @@ $(function() {
                     var chart = this;
                     var series1 = this.series[0];
                     socket.on('w_memory', function(d){
+                        console.log(d);
                         var x = (new Date()).getTime(),
                             y = d;
                         series1.addPoint([x, y]);
