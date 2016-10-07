@@ -9,7 +9,7 @@ var pid = process.pid;
 
 function Get_Proc_Stat(){
     usage.lookup(pid, function (err, result) {
-        www.eventEmitter.emit('w_console', JSON.parse(result));
+        www.eventEmitter.emit('w_console', result);
     });
 }
 
