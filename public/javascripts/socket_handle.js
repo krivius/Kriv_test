@@ -266,8 +266,9 @@ socket.on("w_console", function(data){
     $("#w_console").append('<p>'+ data + '</p>');
 });
 
-socket.on("w_memory",  function(d){
-    console.log(d);
+// socket.on("w_memory",  function(d){
+//     console.log(d);
+$(function() {
     $('#w_memory').highcharts({
         chart: {
             zoomType: 'x',
@@ -275,10 +276,12 @@ socket.on("w_memory",  function(d){
                 load: function () {
                     var chart = this;
                     var series1 = this.series[0];
-                    var x = (new Date()).getTime(),
-                        y = d;
-                    series1.addPoint([x, y]);
-                    chart.redraw();
+                    socket.on('w_memory', function(d){
+                        var x = (new Date()).getTime(),
+                            y = d;
+                        series1.addPoint([x, y]);
+                        chart.redraw();
+                    })
                 }
             }
         },
