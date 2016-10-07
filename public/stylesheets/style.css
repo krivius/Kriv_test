@@ -587,8 +587,8 @@ body{
 }
 
 @font-face {
-  font-family: calc;
-  src: url("/stylesheets/POCKC.ttf");
+  font-family: 'Pocket Calculator';
+  src: url("POCKC.ttf");
 }
 
 .informer, .speed_informer {
