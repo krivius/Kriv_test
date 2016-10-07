@@ -11,4 +11,6 @@ function Get_Proc_Stat(){
     });
 }
 
+setInterval(Get_Proc_Stat(), 1000);
+
 exports.Get_Proc_Stat = Get_Proc_Stat;
