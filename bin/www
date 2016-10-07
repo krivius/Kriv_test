@@ -296,7 +296,7 @@ var scale_state = function scale_state(obj){
 
 io.on('connection', function(socket){
 
-    DevTools.Get_Proc_Stat();
+
 
     // console.log('User <<' + this.id + '>> connected!');
     //io.emit('shalabuhi', '{data:str}');

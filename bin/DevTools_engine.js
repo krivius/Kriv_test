@@ -10,5 +10,3 @@ function Get_Proc_Stat(){
         console.log(result);
     });
 }
-
-module.exports = Get_Proc_Stat;
