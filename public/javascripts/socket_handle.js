@@ -266,8 +266,8 @@ socket.on("w_console", function(data){
     $("#w_console").append('<p>'+ data + '</p>');
 });
 
-socket.on("w_memory",  function(data){
-    console.log(data);
+// socket.on("w_memory",  function(data){
+//     console.log(data);
     $('#w_memory').highcharts({
         chart: {
             zoomType: 'x'
@@ -289,6 +289,12 @@ socket.on("w_memory",  function(data){
         },
         legend: {
             enabled: true
+        },
+        events: {
+            socket.on("w_memory", function (data) {
+            
+        })
+            
         },
         plotOptions: {
             area: {
@@ -330,7 +336,7 @@ socket.on("w_memory",  function(data){
             }
         ]
     });
-});
+// });
 
 $("#run").on("click",  function(){
     console.log("iv_run");
