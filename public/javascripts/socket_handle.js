@@ -267,13 +267,12 @@ socket.on("w_console", function(data){
 });
 
 socket.on("w_memory",  function(data){
-    console.log(data );
     $('#w_memory').highcharts({
         chart: {
             zoomType: 'x'
         },
         title: {
-            text: 'Данные за день. График Кг/ч'
+            text: 'Memory'
         },
         subtitle: {
             text: document.ontouchstart === undefined ?
@@ -284,7 +283,7 @@ socket.on("w_memory",  function(data){
         },
         yAxis: {
             title: {
-                text: 'Килограммы'
+                text: 'Bytes'
             }
         },
         legend: {
@@ -295,13 +294,10 @@ socket.on("w_memory",  function(data){
                 fillColor: {
                     linearGradient: {
                         x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1
+                        y1: 0
                     },
                     stops: [
-                        [0, Highcharts.getOptions().colors[0]],
-                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        [0, Highcharts.getOptions().colors[0]]
                     ]
                 },
                 marker: {
@@ -320,7 +316,6 @@ socket.on("w_memory",  function(data){
         series: [
             {
                 type: 'area',
-                name: '3.5 Кг/ч',
                 data: data
             }
         ]
