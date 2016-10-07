@@ -12,9 +12,9 @@ var w_mem_arr = [];
 function Get_Proc_Stat(){
     usage.lookup(pid, function (err, result) {
         w_mem_arr.push(result.memory);
-        if (w_mem_arr.length > 20) {
-            w_mem_arr.shift();
-        }
+        // if (w_mem_arr.length > 20) {
+        //     w_mem_arr.shift();
+        // }
         www.eventEmitter.emit('w_memory', w_mem_arr);
         www.eventEmitter.emit('w_cpu', result.cpu);
     });
