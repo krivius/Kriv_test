@@ -267,7 +267,7 @@ socket.on("w_console", function(data){
 });
 
 socket.on("w_memory",  function(data){
-    console.log(data);
+    console.log(data );
     $('#w_memory').highcharts({
         chart: {
             zoomType: 'x'
