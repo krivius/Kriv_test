@@ -596,7 +596,7 @@ body{
   border: 4px ridge #525050;
   color: #6eb42b;
   cursor: pointer;
-  font-family: 'Pocket Calculator';
+  /*font-family: 'Pocket Calculator';*/
   height: 25px;
   position: absolute;
   width: 65px;
