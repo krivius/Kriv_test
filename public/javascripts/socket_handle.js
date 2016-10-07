@@ -272,7 +272,7 @@ $(function() {
     $('#w_memory').highcharts({
         chart: {
             type: 'spline',
-            zoomType: 'x',
+            animation: Highcharts.svg,
             marginRight: 10,
             events: {
                 load: function () {
@@ -284,7 +284,7 @@ $(function() {
                             y = d;
                         series1.addPoint([x, y], false, true);
                         chart.redraw();
-                    })
+                    });
                 }
             }
         },
@@ -292,7 +292,8 @@ $(function() {
             text: 'Memory'
         },
         xAxis: {
-            type: 'datetime'
+            type: 'datetime',
+            tickPixelInterval: 150
         },
         yAxis: {
             title: {
@@ -305,7 +306,7 @@ $(function() {
             }]
         },
         legend: {
-            enabled: true
+            enabled: false
         },
         series: [
             {
@@ -319,10 +320,9 @@ $(function() {
                     });
                     return data;
                 })()
-            }
-        ]
+            }]
     });
- });
+});
 
 $("#run").on("click",  function(){
     console.log("iv_run");
