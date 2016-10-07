@@ -297,7 +297,12 @@ $(function() {
         yAxis: {
             title: {
                 text: 'Bytes'
-            }
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
         },
         legend: {
             enabled: true
