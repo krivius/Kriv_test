@@ -17,7 +17,7 @@ var db  = require('./db_engine');
 var db_conn = db.connection();
 var CronJob = require('cron').CronJob;
 
-//var _ = require('underscore'); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+var _ = require('underscore');
 
 var report_mac_array = [];
 var scale_1_arr = [],  scale_2_arr = [];
