@@ -311,14 +311,14 @@ $(function() {
             {
                 type: 'area',
                 name: 'Mb',
-                data: []/*(function() {
+                data: (function() {
                     var data = [],
                         time = (new Date()).getTime();
                     socket.on('w_memory', function(d){
                         data.push({x: time, y: d});
                     });
                     return data;
-                })()*/
+                })()
             }
         ]
     });
