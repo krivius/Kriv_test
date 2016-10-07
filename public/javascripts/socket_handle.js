@@ -294,8 +294,8 @@ $(function() {
         events: {
             load: function () {
                 var chart = this;
-                socket.on("w_memory", function(data){
-                    series.addPoint(data);
+                socket.on("w_memory", function(d){
+                    series.addPoint([d]);
                 })
             }
         },
