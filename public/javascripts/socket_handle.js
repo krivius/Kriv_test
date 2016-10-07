@@ -311,7 +311,7 @@ $(function() {
                         time = (new Date()).getTime();
                     socket.on('w_memory', function(d){
                         data.push({x: time, y: d});
-                    })
+                    });
                     return data;
                 })
             }
