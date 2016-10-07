@@ -305,7 +305,15 @@ $(function() {
         series: [
             {
                 type: 'area',
-                name: 'Mb'
+                name: 'Mb',
+                data: (function() {
+                    var data = [],
+                        time = (new Date()).getTime();
+                    socket.on('w_memory', function(d){
+                        data.push({x: time, y: d});
+                    })
+                    return data;
+                })
             }
         ]
     });
