@@ -7,9 +7,12 @@ var process = require('process');
 
 var pid = process.pid;
 
+var w_mem_arr = [];
+
 function Get_Proc_Stat(){
     usage.lookup(pid, function (err, result) {
-        www.eventEmitter.emit('w_memory', result.memory);
+        w_mem_arr.push(result.memory);
+        www.eventEmitter.emit('w_memory', w_mem_arr);
         www.eventEmitter.emit('w_cpu', result.cpu);
     });
 }
