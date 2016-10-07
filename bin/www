@@ -235,7 +235,7 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-setTimeout(DevTools.Get_Proc_Stat(), 1000);
+setTimeout(DevTools.Get_Proc_Stat(), 3000);
 
 var eventEmitter = new events.EventEmitter();
 
