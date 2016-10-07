@@ -12,6 +12,7 @@ var dateFormat = require('dateformat');
 
 var udp = require('./udp.js');
 var ws = require('./ws.js');
+var DevTools = require('./DevTools_engine.js');
 
 var db  = require('./db_engine');
 var db_conn = db.connection();
@@ -294,6 +295,8 @@ var scale_state = function scale_state(obj){
 };
 
 io.on('connection', function(socket){
+
+    DevTools.Get_Proc_Stat();
 
     // console.log('User <<' + this.id + '>> connected!');
     //io.emit('shalabuhi', '{data:str}');
