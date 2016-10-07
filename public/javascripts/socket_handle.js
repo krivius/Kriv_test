@@ -283,7 +283,7 @@ $(function() {
                         var x = (new Date()).getTime(),
                             y = d;
                         series1.addPoint([x, y], false, true);
-                        chart.redraw();
+                        //chart.redraw();
                     })
                 }
             }
@@ -306,14 +306,14 @@ $(function() {
             {
                 type: 'area',
                 name: 'Mb',
-                data: (function() {
+                data: []/*(function() {
                     var data = [],
                         time = (new Date()).getTime();
                     socket.on('w_memory', function(d){
                         data.push({x: time, y: d});
                     });
                     return data;
-                })()
+                })()*/
             }
         ]
     });
