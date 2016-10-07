@@ -296,8 +296,6 @@ var scale_state = function scale_state(obj){
 
 io.on('connection', function(socket){
 
-    DevTools.GS();
-
     // console.log('User <<' + this.id + '>> connected!');
     //io.emit('shalabuhi', '{data:str}');
     socket.emit('on_connect', { 'data': 'data'});
