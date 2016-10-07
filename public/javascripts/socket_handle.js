@@ -268,6 +268,7 @@ socket.on("w_console", function(data){
 
 // socket.on("w_memory",  function(data){
 //     console.log(data);
+$(function() {
     $('#w_memory').highcharts({
         chart: {
             zoomType: 'x'
@@ -338,7 +339,7 @@ socket.on("w_console", function(data){
             }
         ]
     });
-// });
+ });
 
 $("#run").on("click",  function(){
     console.log("iv_run");
