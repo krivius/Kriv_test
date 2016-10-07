@@ -291,10 +291,12 @@ socket.on("w_console", function(data){
             enabled: true
         },
         events: {
-            socket.on("w_memory", function (data) {
-            
-        })
-            
+            load: function () {
+                var chart = this;
+                socket.on("w_memory", function(data){
+                    series.addPoint([data]);
+                })
+            }
         },
         plotOptions: {
             area: {
