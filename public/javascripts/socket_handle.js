@@ -266,9 +266,8 @@ socket.on("w_console", function(data){
     $("#w_console").append('<p>'+ data + '</p>');
 });
 
-// socket.on("w_memory",  function(data){
-//     console.log(data);
-$(function() {
+socket.on("w_memory",  function(d){
+    console.log(d);
     $('#w_memory').highcharts({
         chart: {
             zoomType: 'x'
@@ -290,16 +289,7 @@ $(function() {
         },
         legend: {
             enabled: true
-        },
-        events: {
-            load: function () {
-                var chart = this;
-                socket.on("w_memory", function(d){
-                    console.log(d);
-                    series.addPoint([d]);
-                })
-            }
-        },
+        }
         plotOptions: {
             area: {
                 fillColor: {
@@ -331,7 +321,7 @@ $(function() {
             {
                 type: 'area',
                 name: '3.5 Кг/ч',
-                data: [5555555, 66666666, 77777777]
+                data: d
             },
             {
                 type: 'area',
