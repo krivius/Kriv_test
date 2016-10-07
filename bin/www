@@ -271,6 +271,12 @@ var ws_clients = function ws_clients(str) {
 var w_console = function w_console(str) {
     io.emit('w_console', str)
 };
+var w_memory = function w_memory(str) {
+    io.emit('w_memory', str);
+};
+var w_cpu = function w_cpu(str) {
+    io.emit('w_cpu', str);
+};
 
 var scale_state = function scale_state(obj){
     console.log(obj);
@@ -507,5 +513,7 @@ eventEmitter.addListener('sys_log', sys_log);
 eventEmitter.addListener('change_state', change_state);
 eventEmitter.addListener('ws_clients', ws_clients);
 eventEmitter.addListener('w_console', w_console);
+eventEmitter.addListener('w_memory', w_memory);
+eventEmitter.addListener('w_cpu', w_cpu);
 
 exports.eventEmitter = eventEmitter;

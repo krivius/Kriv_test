@@ -9,7 +9,8 @@ var pid = process.pid;
 
 function Get_Proc_Stat(){
     usage.lookup(pid, function (err, result) {
-        www.eventEmitter.emit('w_console', result.memory);
+        www.eventEmitter.emit('w_memory', result.memory);
+        www.eventEmitter.emit('w_cpu', result.cpu);
     });
 }
 
