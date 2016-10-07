@@ -308,19 +308,11 @@ $(function() {
         legend: {
             enabled: false
         },
-        series: [
-            {
-                type: 'area',
-                name: 'Mb',
-                data: (function() {
-                    var data = [],
-                        time = (new Date()).getTime();
-                    socket.on('w_memory', function(d){
-                        data.push({x: time, y: d});
-                    });
-                    return data;
-                })()
-            }]
+        series: [{
+            type: 'area',
+            name: 'Mb',
+            data: []
+        }]
     });
 });
 
