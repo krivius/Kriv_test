@@ -235,6 +235,8 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
+setInterval(DevTools.Get_Proc_Stat, 1000);
+
 var eventEmitter = new events.EventEmitter();
 
 var emit_func = function emit_func(channel, str){
