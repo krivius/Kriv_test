@@ -333,7 +333,7 @@ $(function() {
             {
                 type: 'area',
                 name: '3.5 Кг/ч',
-                data: d
+                data: []
             },
             {
                 type: 'area',
