@@ -148,10 +148,6 @@ job.start();
 ////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-
 /**
  * Get port from environment and store in Express.
  */
@@ -239,6 +235,7 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
+setTimeout(DevTools.Get_Proc_Stat(), 1000);
 
 var eventEmitter = new events.EventEmitter();
 
