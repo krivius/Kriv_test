@@ -271,7 +271,9 @@ socket.on("w_console", function(data){
 $(function() {
     $('#w_memory').highcharts({
         chart: {
+            type: 'spline',
             zoomType: 'x',
+            marginRight: 10,
             events: {
                 load: function () {
                     var chart = this;
