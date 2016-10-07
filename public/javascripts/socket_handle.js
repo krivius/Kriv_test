@@ -289,7 +289,7 @@ socket.on("w_memory",  function(d){
         },
         legend: {
             enabled: true
-        }
+        },
         plotOptions: {
             area: {
                 fillColor: {
@@ -316,7 +316,6 @@ socket.on("w_memory",  function(d){
                 threshold: null
             }
         },
-
         series: [
             {
                 type: 'area',
