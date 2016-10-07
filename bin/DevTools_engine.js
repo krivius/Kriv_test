@@ -10,3 +10,5 @@ function Get_Proc_Stat(){
         console.log(result);
     });
 }
+
+exports.GS = Get_Proc_Stat;
