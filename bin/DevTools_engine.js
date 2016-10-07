@@ -1,3 +1,5 @@
+'use strict';
+
 var usage   = require('usage');
 var process = require('process');
 
