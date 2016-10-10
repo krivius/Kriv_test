@@ -318,6 +318,7 @@ $(function() {
                     var data = [];
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
+                        console.log(d);
                        d.forEach(function (item) {
                            data.push({
                                x: item.time,
