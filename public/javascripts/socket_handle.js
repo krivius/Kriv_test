@@ -267,69 +267,70 @@ socket.on("w_console", function(data){
 });
 
 $(function() {
-    $(document).ready(function() {
+    $(document).ready(function () {
         Highcharts.setOptions({
             global: {
                 useUTC: false
             }
         });
-    $('#w_memory').highcharts({
-        chart: {
-            type: 'spline',
-            animation: Highcharts.svg,
-            marginRight: 10,
-            events: {
-                load: function () {
-                    var chart = this;
-                    var series1 = this.series[0];
-                    socket.on('w_memory', function(d){
-                        console.log(d);
-                        var x = (new Date()).getTime(),
-                            y = d;
-                        series1.addPoint([x, y], false, true);
-                        chart.redraw();
-                    });
+        $('#w_memory').highcharts({
+            chart: {
+                type: 'spline',
+                animation: Highcharts.svg,
+                marginRight: 10,
+                events: {
+                    load: function () {
+                        var chart = this;
+                        var series1 = this.series[0];
+                        socket.on('w_memory', function (d) {
+                            console.log(d);
+                            var x = (new Date()).getTime(),
+                                y = d;
+                            series1.addPoint([x, y], false, true);
+                            chart.redraw();
+                        });
+                    }
                 }
-            }
-        },
-        title: {
-            text: 'Memory'
-        },
-        xAxis: {
-            type: 'datetime',
-            tickPixelInterval: 150
-        },
-        yAxis: {
-            title: {
-                text: 'Bytes'
             },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        legend: {
-            enabled: false
-        },
-        series: [{
-            type: 'area',
-            name: 'Mb',
-            data: (function() {
-                // generate an array of random data
-                var data = [],
-                    time = (new Date()).getTime(),
-                    i;
+            title: {
+                text: 'Memory'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: 'Bytes'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            legend: {
+                enabled: false
+            },
+            series: [{
+                type: 'area',
+                name: 'Mb',
+                data: (function () {
+                    // generate an array of random data
+                    var data = [],
+                        time = (new Date()).getTime(),
+                        i;
 
-                for (i = -19; i <= 0; i++) {
-                    data.push({
-                        x: time + i * 1000,
-                        y: Math.random()
-                    });
-                }
-                return data;
-            })()
-        }]
+                    for (i = -19; i <= 0; i++) {
+                        data.push({
+                            x: time + i * 1000,
+                            y: Math.random()
+                        });
+                    }
+                    return data;
+                })()
+            }]
+        });
     });
 });
 
