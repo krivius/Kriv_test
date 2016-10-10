@@ -266,9 +266,13 @@ socket.on("w_console", function(data){
     $("#w_console").append('<p>'+ data + '</p>');
 });
 
-// socket.on("w_memory",  function(d){
-//     console.log(d);
 $(function() {
+    $(document).ready(function() {
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
     $('#w_memory').highcharts({
         chart: {
             type: 'spline',
