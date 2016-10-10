@@ -315,6 +315,22 @@ $(function() {
                 type: 'area',
                 name: 'Mb',
                 data: (function () {
+
+                    var data = [],
+                     time = (new Date()).getTime(),
+                     i;
+                    socket.emit("get_system_state_history");
+                    socket.on("system_state_history", function (d) {
+
+                        for (i = -19; i <= 0; i++) {
+                            data.push({
+                                x: time + i * 1000,
+                                y: d.item.memory
+                        });
+                        }
+                    });
+                     return data;
+
 /*                    var data = [],
                         time = (new Date()).getTime();
                     socket.emit("get_system_state_history");
@@ -331,7 +347,7 @@ $(function() {
                     return data;*/
 
                     // generate an array of random data
-                    var data = [],
+/*                    var data = [],
                         time = (new Date()).getTime(),
                         i;
 
@@ -341,7 +357,7 @@ $(function() {
                             y: Math.random()
                         });
                     }
-                    return data;
+                    return data;*/
                 })()
             }]
         });
