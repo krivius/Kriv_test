@@ -292,7 +292,7 @@ $(function() {
                             var chart = this;
                             var series1 = this.series[0];
                             socket.on('w_memory', function (d) {
-                                var x = (new Date()).getTime(),
+                                var x = (new Date()).getTime() / 1000,
                                     y = d;
                                 series1.addPoint([x, y], false, true);
                                 chart.redraw();
