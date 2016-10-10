@@ -325,10 +325,10 @@ $(function() {
                            });
                        });
                         console.log(data);
+                        return data;
 
                     });
-                    console.log(data);
-                    return data;
+
                     // generate an array of random data
 /*                    var data = [],
                         time = (new Date()).getTime(),
