@@ -270,7 +270,7 @@ $(function() {
     $(document).ready(function () {
         Highcharts.setOptions({
             global: {
-                useUTC: false
+                useUTC: true
             }
         });
         $('#w_memory').highcharts({
