@@ -7,6 +7,11 @@
     border-style: ridge;
 }
 
+#sys_monitor_feeldset
+{
+    height: 500px;
+}
+
 #console_feeldset
 {
     float: left;
