@@ -498,7 +498,7 @@ io.on('connection', function(socket){
             rows.forEach(function (item) {
                 system_state_hystory.push({memory:item.dt_memory, cpu:item.dt_cpu});
             });
-            socket.emit("system_state_hystory", system_state_hystory);
+            socket.emit("system_state_history", system_state_hystory);
         });
     });
 });
