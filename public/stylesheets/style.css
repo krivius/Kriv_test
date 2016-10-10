@@ -699,3 +699,17 @@ body{
   margin-right: 100px;
   margin-top: 2%;
 }
+
+#chart_wrapper{
+  width: 1040px;
+  height: 520px;
+  display: block;
+  margin: 50px auto;
+}
+#stat fieldset{
+  display: inline-block;
+  height: 500px;
+  width: 500px;
+  margin: 10px;
+  background: #0b97c4;
+}
