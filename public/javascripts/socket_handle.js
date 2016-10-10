@@ -270,7 +270,7 @@ $(function() {
     $(document).ready(function () {
         Highcharts.setOptions({
             global: {
-                useUTC: true
+                useUTC: false
             }
         });
         $('#w_memory').highcharts({
@@ -315,12 +315,13 @@ $(function() {
                 type: 'area',
                 name: 'Mb',
                 data: (function () {
-                    var data = [];
+                    var data = [],
+                        time = (new Date()).getTime();
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
                        d.forEach(function (item) {
                            data.push({
-                               x: item.time,
+                               x: time,
                                y: item.memory
                            });
                        });
