@@ -315,11 +315,15 @@ $(function() {
                 type: 'area',
                 name: 'Mb',
                 data: (function () {
-                    console.log("data load");
+                    var data = [];
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
-                        console.log("try data");
-                       console.log(d);
+                       d.forEach(function (item) {
+                           data.push({
+                               x: item.time,
+                               y: item.memory
+                           });
+                       });
                     });
                     // generate an array of random data
 /*                    var data = [],
