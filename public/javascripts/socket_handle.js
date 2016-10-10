@@ -317,7 +317,7 @@ $(function() {
                 data: (function () {
 
 
-/*                    var data = [];
+                    var data = [];
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
                        d.forEach(function (item) {
@@ -329,10 +329,10 @@ $(function() {
                     });
                     console.log("Mydata");
                     console.log(data);
-                    return data;*/
+                    return data;
 
                     // generate an array of random data
-                    var data = [],
+/*                    var data = [],
                         time = (new Date()).getTime(),
                         i;
 
@@ -343,7 +343,7 @@ $(function() {
                         });
                     }
                     console.log(data);
-                    return data;
+                    return data;*/
                 })()
             }]
         });
