@@ -9,10 +9,16 @@
 
 #sys_monitor_feeldset
 {
-    height: 500px;
+    height: auto;
+    width: 602px;
 }
 
 #console_feeldset
 {
     float: left;
+}
+
+#dt_main_view fieldset div{
+    height: 245px;
+    margin-bottom: 10px;
 }
