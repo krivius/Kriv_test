@@ -331,37 +331,72 @@ $(function() {
                     type: 'area',
                     name: 'Mb',
                     data: data
-                    /*(function () {
-                     var data = [];
-                     socket.emit("get_system_state_history");
-                     socket.on("system_state_history", function (d) {
-                     d.forEach(function (item) {
-                     data.push({
-                     x: item.time,
-                     y: item.memory
-                     });
-                     });
-                     });
-                     console.log("Mydata");
-                     console.log(data);
-                     return data;
-
-                     // generate an array of random data
-                     /!*                    var data = [],
-                     time = (new Date()).getTime(),
-                     i;
-
-                     for (i = -19; i <= 0; i++) {
-                     data.push({
-                     x: time + i * 1000,
-                     y: Math.random()
-                     });
-                     }
-                     console.log(data);
-                     return data;*!/
-                     })()*/
                 }]
             });
+        });
+    });
+});
+
+$(function() {
+    var data = [];
+    socket.on("system_state_history", function (d) {
+        d.reverse();
+        d.forEach(function (item) {
+            data.push({
+                x: item.time,
+                y: item.cpu
+            });
+        });
+        $('#w_cpu').highcharts({
+            chart: {
+                type: 'spline',
+                animation: Highcharts.svg,
+                marginRight: 10,
+                events: {
+                    load: function () {
+                        var chart = this;
+                        var series1 = this.series[0];
+                        socket.on('w_cpu', function (d) {
+                            var x = (new Date()).getTime(),
+                                y = d;
+                            series1.addPoint([x, y], false, true);
+                            chart.redraw();
+                        });
+                    }
+                }
+            },
+            title: {
+                text: 'CPU'
+            },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: '%'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.series.name +'</b><br/>'+
+                        Highcharts.dateFormat('%H:%M:%S', this.x) +'<br/>'+
+                        Highcharts.numberFormat(this.y, 0);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            series: [{
+                type: 'area',
+                name: '%',
+                data: data
+            }]
         });
     });
 });
