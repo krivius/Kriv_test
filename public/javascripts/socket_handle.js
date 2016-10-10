@@ -315,8 +315,6 @@ $(function() {
                 type: 'area',
                 name: 'Mb',
                 data: (function () {
-
-
                     var data = [];
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
@@ -325,6 +323,7 @@ $(function() {
                                x: item.time,
                                y: item.memory
                            });
+                           series[0].addPoint([x, y], false, true);
                        });
                     });
                     console.log("Mydata");

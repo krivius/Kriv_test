@@ -491,7 +491,7 @@ io.on('connection', function(socket){
     });
 
     socket.on("get_system_state_history", function(){
-        var sql = 'SELECT * FROM dt_sys_monitor ORDER BY `id` DESC LIMIT 20;';
+        var sql = 'SELECT * FROM dt_sys_monitor ORDER BY id DESC LIMIT 20';
         var system_state_hystory = [];
         db_conn.query(sql, function (err, rows, fields) {
             rows.forEach(function (item) {
