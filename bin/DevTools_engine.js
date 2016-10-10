@@ -9,8 +9,6 @@ var process = require('process');
 
 var pid = process.pid;
 
-var w_mem_arr = [];
-
 function Get_Proc_Stat(){
     usage.lookup(pid, function (err, result) {
         db_conn.query('INSERT INTO dt_sys_monitor(dt_memory, dt_cpu) VALUES(' + (result.memory/1024) + ', ' + result.cpu + ');');

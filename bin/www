@@ -329,7 +329,6 @@ io.on('connection', function(socket){
         ws.event_command.emit("ev_command", data);
     });
 
-
     socket.on('disconnect', function(){
         try {
             console.log('User <<' + this.id + '>> disconnected!');
@@ -356,8 +355,6 @@ io.on('connection', function(socket){
         console.log(send_clients);
         console.log("[from www] ==================");
     });
-
-
 
     socket.on("get_device_info",  function(mac){
         var sql =  'SELECT log.message as message, log.system as system, log.time as time, hw.ip as ip, hw.state as state, hw.last_login as last_login, hw.role as role ' +
@@ -413,13 +410,10 @@ io.on('connection', function(socket){
 
     });
 
-
-
     socket.on("save_device_role",  function(data){
        var sql = 'UPDATE hw_table SET role="'+data.role+'" WHERE mac="'+data.mac+'"';
         db_conn.query(sql);
     });
-
 
     socket.on("get_templates",  function(){
         var sql =  'SELECT id, name, template, current FROM templates';
@@ -451,7 +445,6 @@ io.on('connection', function(socket){
         });
     });
 
-
     socket.on("delete_template",  function(data){
        db_conn.query('DELETE FROM templates WHERE id="'+data.id+'"');
        db_conn.query('UPDATE templates SET current="0" WHERE 1=1');
@@ -462,8 +455,6 @@ io.on('connection', function(socket){
                 db_conn.query('UPDATE templates SET current="1" WHERE id="'+min_id+'"');
             });
         });
-
-
 
         var sql =  'SELECT id, name, template, current FROM templates';
         var t_list = [];
@@ -488,7 +479,6 @@ io.on('connection', function(socket){
         });
     });
 
-
     socket.on("get_scales_avg", function(){
         var sql = 'SELECT zaslon_id as mac, count(*)*20 as total FROM scale_log WHERE date >= (NOW() - INTERVAL 1 HOUR) AND state=0 GROUP BY zaslon_id DESC LIMIT 2';
         var scale_data = [];
@@ -500,7 +490,16 @@ io.on('connection', function(socket){
         });
     });
 
-
+    socket.on("get_system_state_history", function(){
+        var sql = 'SELECT * FROM dt_sys_monitor ORDER BY `id` DESC LIMIT 20;';
+        var system_state_hystory = [];
+        db_conn.query(sql, function (err, rows, fields) {
+            rows.forEach(function (item) {
+                system_state_hystory.push({memory:item.dt_memory, cpu:item.dt_cpu});
+            });
+            socket.emit("system_state_hystory", system_state_hystory);
+        });
+    });
 });
 
 eventEmitter.addListener('scale_state',  scale_state);
