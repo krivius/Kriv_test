@@ -317,6 +317,7 @@ $(function() {
                 data: (function () {
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
+                        console.log("here");
                        console.log(d);
                     });
                     // generate an array of random data
