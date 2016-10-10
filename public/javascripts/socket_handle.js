@@ -325,6 +325,7 @@ $(function() {
                                y: item.memory
                            });
                        });
+                        return data;
                     });
                     // generate an array of random data
 /*                    var data = [],
