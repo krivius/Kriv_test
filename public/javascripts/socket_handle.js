@@ -282,7 +282,6 @@ $(function() {
                     y: item.memory
                 });
             });
-            console.log(data);
             $('#w_memory').highcharts({
                 chart: {
                     type: 'spline',
@@ -296,7 +295,6 @@ $(function() {
                                 var x = (new Date()).getTime(),
                                     y = d;
                                 series1.addPoint([x, y], false, true);
-                                console.log(x);
                                 chart.redraw();
                             });
                         }
