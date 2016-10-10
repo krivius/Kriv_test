@@ -8,6 +8,8 @@ var mac_arr = [];
 var interval_gspeed;
 var curr_freq = [];
 var curr_scale_state = [];
+var system_state_history_memory = [];
+var system_state_history_cpu = [];
 
 socket.emit("get_clients");
 socket.emit("get_templates");
@@ -266,6 +268,23 @@ socket.on("w_console", function(data){
     $("#w_console").append('<p>'+ data + '</p>');
 });
 
+socket.on("system_state_history", function (d) {
+    d.reverse();
+    d.forEach(function (item) {
+        /*data.push({
+            x: item.time,
+            y: item.memory
+        });*/
+        system_state_history_memory.push({
+            x: item.time,
+            y: item.memory
+        });
+        system_state_history_cpu.push({
+            x: item.time,
+            y: item.cpu
+        });
+    });
+
 $(function() {
     $(document).ready(function () {
         Highcharts.setOptions({
@@ -273,15 +292,6 @@ $(function() {
                 useUTC: false
             }
         });
-        var data = [];
-        socket.on("system_state_history", function (d) {
-            d.reverse();
-            d.forEach(function (item) {
-                data.push({
-                    x: item.time,
-                    y: item.memory
-                });
-            });
             $('#w_memory').highcharts({
                 chart: {
                     type: 'spline',
@@ -330,7 +340,7 @@ $(function() {
                 series: [{
                     type: 'area',
                     name: 'Mb',
-                    data: data
+                    data: system_state_history_memory
                 }]
             });
         });
@@ -338,15 +348,7 @@ $(function() {
 });
 
 $(function() {
-    var data = [];
-    socket.on("system_state_history", function (d) {
-        d.reverse();
-        d.forEach(function (item) {
-            data.push({
-                x: item.time,
-                y: item.cpu
-            });
-        });
+
         $('#w_cpu').highcharts({
             chart: {
                 type: 'spline',
@@ -395,10 +397,9 @@ $(function() {
             series: [{
                 type: 'area',
                 name: '%',
-                data: data
+                data: system_state_history_cpu
             }]
         });
-    });
 });
 
 $("#run").on("click",  function(){
