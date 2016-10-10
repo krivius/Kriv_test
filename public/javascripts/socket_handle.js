@@ -325,6 +325,7 @@ $(function() {
                            });
                        });
                     });
+                    console.log("Mydata");
                     console.log(data);
                     return data;
 
