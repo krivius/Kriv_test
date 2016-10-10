@@ -496,7 +496,7 @@ io.on('connection', function(socket){
         db_conn.query(sql, function (err, rows, fields) {
             rows.forEach(function (item) {
                 //var f_time = Date.UTC(dateFormat(item.dt_time, "yyyy"), dateFormat(item.dt_time, "mm"), dateFormat(item.dt_time, "dd"), dateFormat(item.dt_time, "HH"), dateFormat(item.dt_time, "MM"), dateFormat(item.dt_time, "ss"));
-                var f_time = item.dt_time;
+                var f_time = item.dt_time * 1000;
                 system_state_hystory.push({memory:item.dt_memory, cpu:item.dt_cpu, time:f_time});
             });
             socket.emit("system_state_history", system_state_hystory);
