@@ -24,8 +24,6 @@ var report_mac_array = [];
 var scale_1_arr = [],  scale_2_arr = [];
 
 
-
-
 var job;
 job = new CronJob({
     cronTime: '00 00 05 * * 1-7',
