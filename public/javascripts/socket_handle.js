@@ -292,9 +292,11 @@ $(function() {
                             var chart = this;
                             var series1 = this.series[0];
                             socket.on('w_memory', function (d) {
+                                console.log("w_m");
                                 var x = Math.floor((new Date()).getTime() / 1000),
                                     y = d;
                                 series1.addPoint([x, y], false, true);
+                                console.log(x);
                                 chart.redraw();
                             });
                         }
