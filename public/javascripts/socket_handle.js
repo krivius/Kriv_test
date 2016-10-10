@@ -317,8 +317,7 @@ $(function() {
                 data: (function () {
 
 
-                    var data = [],
-                        time = (new Date()).getTime();
+                    var data = [];
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
                        d.forEach(function (item) {
