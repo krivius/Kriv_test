@@ -315,9 +315,10 @@ $(function() {
                 type: 'area',
                 name: 'Mb',
                 data: (function () {
+                    console.log("data load");
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
-                        console.log("here");
+                        console.log("try data");
                        console.log(d);
                     });
                     // generate an array of random data
