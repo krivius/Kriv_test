@@ -275,6 +275,7 @@ $(function() {
         });
         var data = [];
         socket.on("system_state_history", function (d) {
+            d.reverse();
             d.forEach(function (item) {
                 data.push({
                     x: item.time,
