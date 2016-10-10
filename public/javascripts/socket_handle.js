@@ -323,7 +323,6 @@ $(function() {
                                x: item.time,
                                y: item.memory
                            });
-                           series[0].addPoint([x, y], false, true);
                        });
                     });
                     console.log("Mydata");
