@@ -495,8 +495,8 @@ io.on('connection', function(socket){
         var system_state_hystory = [];
         db_conn.query(sql, function (err, rows, fields) {
             rows.forEach(function (item) {
-                var f_time = Date.UTC(dateFormat(item.dt_time, "yyyy"), dateFormat(item.dt_time, "m"), dateFormat(item.dt_time, "dd"), dateFormat(item.dt_time, "HH"), dateFormat(item.dt_time, "MM"), dateFormat(item.dt_time, "ss"));
-                system_state_hystory.push({memory:item.dt_memory, cpu:item.dt_cpu, time:f_time});
+                //var f_time = Date.UTC(dateFormat(item.dt_time, "yyyy"), dateFormat(item.dt_time, "m"), dateFormat(item.dt_time, "dd"), dateFormat(item.dt_time, "HH"), dateFormat(item.dt_time, "MM"), dateFormat(item.dt_time, "ss"));
+                system_state_hystory.push({memory:item.dt_memory, cpu:item.dt_cpu, time:dateFormat(item.dt_time, 'dd.mm.yy HH:MM:ss'_});
             });
             socket.emit("system_state_history", system_state_hystory);
         });
