@@ -12,7 +12,7 @@ var curr_scale_state = [];
 socket.emit("get_clients");
 socket.emit("get_templates");
 socket.emit("get_scales_avg");
-
+socket.emit("get_system_state_history");
 
 function decimalToHex(d, padding) {
    var hex = Number(d).toString(16);
@@ -274,7 +274,6 @@ $(function() {
             }
         });
         var data = [];
-        socket.emit("get_system_state_history");
         socket.on("system_state_history", function (d) {
             d.forEach(function (item) {
                 data.push({
