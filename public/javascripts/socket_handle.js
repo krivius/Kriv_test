@@ -317,23 +317,23 @@ $(function() {
                 data: (function () {
 
 
-/*                    var data = [],
+                    var data = [],
                         time = (new Date()).getTime();
                     socket.emit("get_system_state_history");
                     socket.on("system_state_history", function (d) {
                        d.forEach(function (item) {
                            data.push({
-                               x: time,
+                               x: item.time,
                                y: item.memory
                            });
                        });
                     });
                     console.log("Mydata");
                     console.log(data);
-                    return data;*/
+                    return data;
 
                     // generate an array of random data
-                    var data = [],
+/*                    var data = [],
                         time = (new Date()).getTime(),
                         i;
 
@@ -344,7 +344,7 @@ $(function() {
                         });
                     }
                     console.log(data);
-                    return data;
+                    return data;*/
                 })()
             }]
         });
