@@ -51,7 +51,7 @@ body{
   padding: 0;
   z-index: 20;
 }
-#admin{
+#admin, #stat{
   display: none;
   width: 100%;
   height: 100%;
