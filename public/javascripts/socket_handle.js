@@ -324,7 +324,7 @@ $(function() {
                                y: item.memory
                            });
                        });
-
+                        console.log(data);
 
                     });
                     console.log(data);
