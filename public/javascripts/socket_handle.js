@@ -348,58 +348,57 @@ $(function() {
 });
 
 $(function() {
-
-        $('#w_cpu').highcharts({
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg,
-                marginRight: 10,
-                events: {
-                    load: function () {
-                        var chart = this;
-                        var series1 = this.series[0];
-                        socket.on('w_cpu', function (d) {
-                            var x = (new Date()).getTime(),
-                                y = d;
-                            series1.addPoint([x, y], false, true);
-                            chart.redraw();
-                        });
-                    }
+    $('#w_cpu').highcharts({
+        chart: {
+            type: 'spline',
+            animation: Highcharts.svg,
+            marginRight: 10,
+            events: {
+                load: function () {
+                    var chart = this;
+                    var series1 = this.series[0];
+                    socket.on('w_cpu', function (d) {
+                        var x = (new Date()).getTime(),
+                            y = d;
+                        series1.addPoint([x, y], false, true);
+                        chart.redraw();
+                    });
                 }
-            },
+            }
+        },
+        title: {
+            text: 'CPU'
+        },
+        xAxis: {
+            type: 'datetime',
+            tickPixelInterval: 150
+        },
+        yAxis: {
             title: {
-                text: 'CPU'
+                text: '%'
             },
-            xAxis: {
-                type: 'datetime',
-                tickPixelInterval: 150
-            },
-            yAxis: {
-                title: {
-                    text: '%'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                formatter: function() {
-                    return '<b>'+ this.series.name +'</b><br/>'+
-                        Highcharts.dateFormat('%H:%M:%S', this.x) +'<br/>'+
-                        Highcharts.numberFormat(this.y, 0);
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            series: [{
-                type: 'area',
-                name: '%',
-                data: system_state_history_cpu
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
             }]
-        });
+        },
+        tooltip: {
+            formatter: function() {
+                return '<b>'+ this.series.name +'</b><br/>'+
+                    Highcharts.dateFormat('%H:%M:%S', this.x) +'<br/>'+
+                    Highcharts.numberFormat(this.y, 0);
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            type: 'area',
+            name: '%',
+            data: system_state_history_cpu
+        }]
+    });
 });
 
 $("#run").on("click",  function(){
