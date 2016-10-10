@@ -282,6 +282,7 @@ $(function() {
                     y: item.memory
                 });
             });
+            console.log(data);
             $('#w_memory').highcharts({
                 chart: {
                     type: 'spline',
