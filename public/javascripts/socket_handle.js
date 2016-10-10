@@ -272,9 +272,9 @@ socket.on("system_state_history", function (d) {
     d.reverse();
     d.forEach(function (item) {
         /*data.push({
-            x: item.time,
-            y: item.memory
-        });*/
+         x: item.time,
+         y: item.memory
+         });*/
         system_state_history_memory.push({
             x: item.time,
             y: item.memory
@@ -345,7 +345,6 @@ $(function() {
             });
         });
     });
-});
 
 $(function() {
     $('#w_cpu').highcharts({
@@ -399,6 +398,7 @@ $(function() {
             data: system_state_history_cpu
         }]
     });
+});
 });
 
 $("#run").on("click",  function(){
