@@ -515,15 +515,15 @@ io.on('connection', function(socket){
                         'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR)'+
                         'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';
             db_conn.query(sql,  function(err, rows, fields){
-
+                setInterval(function(){
                     rows.forEach(function(item){
-                        console.log(item);
                        if(item.mac == '5C:CF:7F:19:47:7B'){
                            stats.scales_2_4.push({total:item.total, date:item.my_date});
                        }else if(item.mac == '5C:CF:7F:80:2D:45'){
                            stats.scales_3_5.push({total:item.total, date:item.my_date});
                        }
                     });
+                }, 1500);
             });
         }
         console.log(stats);
