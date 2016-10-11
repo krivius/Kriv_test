@@ -514,15 +514,13 @@ io.on('connection', function(socket){
                         'date_format((NOW() - INTERVAL '+i+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
                         'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR)'+
                         'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';
-            setImmediate(function(){
-                db_conn.query(sql,  function(err, rows, fields){
-                    rows.forEach(function(item){
-                        if(item.mac == '5C:CF:7F:19:47:7B'){
-                            stats.scales_2_4.push({total:item.total, date:item.date});
-                        }else if(item.mac == '5C:CF:7F:80:2D:45'){
-                            stats.scales_3_5.push({total:item.total, date:item.date});
-                        }
-                    });
+            db_conn.query(sql,  function(err, rows, fields){
+                rows.forEach(function(item){
+                   if(item.mac == '5C:CF:7F:19:47:7B'){
+                       stats.scales_2_4.push({total:item.total, date:item.date});
+                   }else if(item.mac == '5C:CF:7F:80:2D:45'){
+                       stats.scales_3_5.push({total:item.total, date:item.date});
+                   }
                 });
             });
         }
