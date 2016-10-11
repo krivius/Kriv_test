@@ -511,16 +511,15 @@ io.on('connection', function(socket){
         for(var i=72; i>1; i--){
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
-                        'date_format((NOW() - INTERVAL '+i+' HOUR), "%d.%m.%Y %H:%i:%s") as my_date  FROM scale_log'+
+                        'date_format((NOW() - INTERVAL '+i+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
                         'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR)'+
                         'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';
             db_conn.query(sql,  function(err, rows, fields){
                     rows.forEach(function(item){
-                        console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                        if(item.mac == '5C:CF:7F:19:47:7B'){
-                           stats.scales_2_4.push({total:item.total, date:item.my_date});
+                           stats.scales_2_4.push({total:item.total, date:item.date});
                        }else if(item.mac == '5C:CF:7F:80:2D:45'){
-                           stats.scales_3_5.push({total:item.total, date:item.my_date});
+                           stats.scales_3_5.push({total:item.total, date:item.date});
                        }
                     });
             });
