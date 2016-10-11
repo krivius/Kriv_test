@@ -516,6 +516,7 @@ io.on('connection', function(socket){
                         'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';
             db_conn.query(sql,  function(err, rows, fields){
                     rows.forEach(function(item){
+                        console.log({total:item.total, date:item.date});
                        if(item.mac == '5C:CF:7F:19:47:7B'){
                            stats.scales_2_4.push({total:item.total, date:item.date});
                        }else if(item.mac == '5C:CF:7F:80:2D:45'){
