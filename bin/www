@@ -521,6 +521,7 @@ io.on('connection', function(socket){
                 'date_format((NOW() - INTERVAL '+i+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log '+
                 'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR) '+
                 'AND state=0 ';
+            console.log(sql);
             db_conn.query(sql,  function(err, rows, fields){
                 if(rows){
                     rows.forEach(function (item) {
@@ -534,10 +535,9 @@ io.on('connection', function(socket){
                         }
                     });
                 }
+                console.log(rows);
             });
-            if(i<3){
-                console.log(stats);
-            }
+
         }
     });
 });
