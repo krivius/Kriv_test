@@ -510,7 +510,9 @@ io.on('connection', function(socket){
             scales_2_4:[],
             scales_3_5:[]
         };
+        var qwe = 0;
         for(var i=72; i>1; i--){
+
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
            /* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
                         'date_format((NOW() - INTERVAL '+(i-1)+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
@@ -535,6 +537,8 @@ io.on('connection', function(socket){
                         }
                     });
                 }
+                qwe++;
+                console.log(qwe);
                 console.log(rows);
             });
 
