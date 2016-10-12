@@ -26,12 +26,12 @@ var scale_1_arr = [],  scale_2_arr = [];
 
 var job;
 job = new CronJob({
-    cronTime: '00 00 05 * * 1-7',
+    cronTime: '00 35 11 * * 1-7',
     onTick: function () {
 
         /*
          * Runs every weekday (Monday through Friday)
-         * at 12:55:00
+         * at 07:00:00
          */
 
         //SELECT zaslon_id FROM scale_log WHERE date >= (CURDATE() - INTERVAL 1 DAY) GROUP BY zaslon_id ORDER BY count(*) DESC LIMIT 2;
@@ -110,9 +110,11 @@ job = new CronJob({
 
                  // setup e-mail data with unicode symbols
                  var mailOptions = {
+                     // from: '<mailbot@agroimpex.com>', // sender address
+                     // to: '<s.khaesh@agroimpex.com>, <m.khaesh@agroimpex.com>', // list of receivers
+                     // cc: '<s.korolev@agroimpex.com>, <d.krivitskiy@agroimpex.com>, <n.viaznikova@agroimpex.com>', //copy
                      from: '<mailbot@agroimpex.com>', // sender address
-                     to: '<s.khaesh@agroimpex.com>, <m.khaesh@agroimpex.com>', // list of receivers
-                     cc: '<s.korolev@agroimpex.com>, <d.krivitskiy@agroimpex.com>, <n.viaznikova@agroimpex.com>', //copy
+                     to: '<d.krivitskiy@agroimpex.com>', // list of receivers
                      subject: 'Ежедневный отчет', // Subject line
                      text: 'Отчет сгенерирован автоматически', // plaintext body
                      attachments: [
