@@ -518,8 +518,8 @@ io.on('connection', function(socket){
                         'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';*/
 
             var sql =  'SELECT zaslon_id as mac, if(count(*)*20>0, count(*)*20, 0) as total, '+
-                'date_format((NOW() - INTERVAL '+i+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
-                'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR)'+
+                'date_format((NOW() - INTERVAL '+i+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log '+
+                'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR) '+
                 'AND state=0 ';
             console.log(sql);
             db_conn.query(sql,  function(err, rows, fields){
