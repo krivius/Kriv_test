@@ -523,9 +523,9 @@ io.on('connection', function(socket){
                 'AND state=0 ';
             console.log(sql);
             db_conn.query(sql,  function(err, rows, fields){
+                console.log(rows);
                 if(rows){
                     rows.forEach(function (item) {
-                        console.log(item);
                         if (item.mac == '5C:CF:7F:19:47:7B') {
                             stats.scales_2_4.push({total: item.total, date: item.date});
                         }else if (item.mac == '5C:CF:7F:80:2D:45') {
