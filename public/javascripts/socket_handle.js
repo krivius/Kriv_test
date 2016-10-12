@@ -15,7 +15,7 @@ socket.emit("get_clients");
 socket.emit("get_templates");
 socket.emit("get_scales_avg");
 socket.emit("get_system_state_history");
-// socket.emit("get_3_day_scale_data");
+socket.emit("get_3_day_scale_data");
 
 function decimalToHex(d, padding) {
    var hex = Number(d).toString(16);
