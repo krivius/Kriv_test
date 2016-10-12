@@ -504,15 +504,19 @@ io.on('connection', function(socket){
         });
     });
 
-    
-
     socket.on("get_3_day_scale_data", function(){
         var stats = {
             scales_2_4:[],
             scales_3_5:[]
         };
-        for(var i=72; i>1; i--){
 
+        var itemsProcessed = 0;
+
+        function get_3_day_scale_data_callback(data) {
+            console.log(data);
+        }
+
+        for(var i=72; i>1; i--){
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
            /* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
                         'date_format((NOW() - INTERVAL '+(i-1)+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
@@ -525,7 +529,7 @@ io.on('connection', function(socket){
                 'AND state=0 ';
             db_conn.query(sql,  function(err, rows, fields){
                 if(rows){
-                    rows.forEach(function (item) {
+                    /*rows.forEach(function (item) {
                         if (item.mac == '5C:CF:7F:19:47:7B') {
                             stats.scales_2_4.push({total: item.total, date: item.date});
                         }else if (item.mac == '5C:CF:7F:80:2D:45') {
@@ -534,7 +538,15 @@ io.on('connection', function(socket){
                             stats.scales_2_4.push({total: item.total, date: item.date});
                             stats.scales_3_5.push({total: item.total, date: item.date});
                         }
-                    });
+                    });*/
+/*                    rows.forEach((item, index, array) => {
+                        asyncFunction(item, () => {
+                            itemsProcessed++;
+                        if(itemsProcessed === array.length) {
+                            get_3_day_scale_data_callback();
+                        }
+                        });
+                    });*/
                 }
             });
             if(stats.scales_2_4.length == 71) console.log(stats);
