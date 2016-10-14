@@ -538,9 +538,9 @@ io.on('connection', function(socket){
             });
         }
         while(stats.length != 71) {
-            setTimeout(function () {
+/*            setTimeout(function () {
                 if(stats.length > 70) {console.log("---------->YEAP!!!!!!!!!!!")}
-            }, 500);
+            }, 500);*/
         }
     });
 });
