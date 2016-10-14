@@ -513,7 +513,7 @@ io.on('connection', function(socket){
         var itemsProcessed = 0;
 
         function get_3_day_scale_data_callback(data) {
-            console.log(data);
+            console.log("get_3_day_scale_data_callback: " + data);
         }
 
         for(var i=72; i>1; i--){
