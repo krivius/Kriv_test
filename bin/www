@@ -537,6 +537,7 @@ io.on('connection', function(socket){
                 }
             });
         }
+        console.log("__________________STats: " + stats.length);
         while(stats.length != 71) {
 /*            setTimeout(function () {
                 if(stats.length > 70) {console.log("---------->YEAP!!!!!!!!!!!")}
