@@ -539,10 +539,10 @@ io.on('connection', function(socket){
                             stats.scales_3_5.push({total: item.total, date: item.date});
                         }
                     });*/
+                    console.log("rows len: " + rows.length);
                     rows.forEach(function (item, index, array) {
                         itemsProcessed++;
                         console.log("itemsProcessed -> " + itemsProcessed);
-                        console.log("rows: -> " + rows.length);
                         if(itemsProcessed === array.length) {
                             console.log("array length: " + array.length);
                             get_3_day_scale_data_callback();
