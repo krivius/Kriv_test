@@ -539,17 +539,15 @@ io.on('connection', function(socket){
                             stats.scales_3_5.push({total: item.total, date: item.date});
                         }
                     });*/
-/*                    rows.forEach((item, index, array) => {
-                        asyncFunction(item, () => {
-                            itemsProcessed++;
+                    rows.forEach(function (item, index, array) {
+                        itemsProcessed++;
                         if(itemsProcessed === array.length) {
                             get_3_day_scale_data_callback();
                         }
-                        });
-                    });*/
+                    });
                 }
             });
-            if(stats.scales_2_4.length == 71) console.log(stats);
+            //if(stats.scales_2_4.length == 71) console.log(stats);
         }
     });
 });
