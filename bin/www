@@ -510,6 +510,7 @@ io.on('connection', function(socket){
             scales_3_5:[]
         };
 
+        var i_count = 0;
         var itemsProcessed = 0;
 
         function get_3_day_scale_data_callback(data) {
@@ -517,6 +518,7 @@ io.on('connection', function(socket){
         }
 
         for(var i=72; i>1; i--){
+            i_count++;
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
            /* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
                         'date_format((NOW() - INTERVAL '+(i-1)+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
@@ -542,7 +544,6 @@ io.on('connection', function(socket){
                     console.log("rows len: " + rows.length);
                     rows.forEach(function (item, index, array) {
                         itemsProcessed++;
-                        console.log("itemsProcessed -> " + itemsProcessed);
                         if(itemsProcessed === array.length) {
                             console.log("array length: " + array.length);
                             get_3_day_scale_data_callback();
@@ -552,6 +553,7 @@ io.on('connection', function(socket){
             });
             //if(stats.scales_2_4.length == 71) console.log(stats);
         }
+        if(i_count == itemsProcessed) {console.log("DONE!!!!!!!!!!!!!!!!!!!!");}
     });
 });
 
