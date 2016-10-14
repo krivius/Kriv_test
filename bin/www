@@ -541,7 +541,8 @@ io.on('connection', function(socket){
                     });*/
                     rows.forEach(function (item, index, array) {
                         itemsProcessed++;
-                        console.log("items -> " + itemsProcessed);
+                        console.log("itemsProcessed -> " + itemsProcessed);
+                        console.log("rows: -> " + rows.length);
                         if(itemsProcessed === array.length) {
                             console.log("array length: " + array.length);
                             get_3_day_scale_data_callback();
