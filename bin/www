@@ -539,7 +539,7 @@ io.on('connection', function(socket){
         }
         //console.log("__________________STats: " + stats.length);
         while(stats.length != 71) {
-            console.log("__________________STats: " + stats.length);
+            console.log("__________________STats: " + stats.scales_2_4.length);
 /*            setTimeout(function () {
                 if(stats.length > 70) {console.log("---------->YEAP!!!!!!!!!!!")}
             }, 500);*/
