@@ -559,8 +559,8 @@ io.on('connection', function(socket){
                                 }
                             });
                         }
+                        resolve(result);
                     });
-                resolve(result);
                 });
             promiseArr.push(dbPromise);
         }
