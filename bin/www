@@ -560,7 +560,7 @@ io.on('connection', function(socket){
                             });
                         }
                     });
-                resolve('a');
+                resolve(result);
                 });
             promiseArr.push(dbPromise);
         }
