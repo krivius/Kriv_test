@@ -514,7 +514,15 @@ io.on('connection', function(socket){
 
         var promiseArr = [];
 
-        Promise.all([Promise.resolve('a'), Promise.resolve('b')]).then(function (res) {
+        var prom = function () {
+            return new Promise(function (resolve, reject) {
+                resolve('a')
+            })
+        };
+
+        promiseArr.push(prom);
+
+        Promise.all(promiseArr).then(function (res) {
             console.log(res);
         });
 
