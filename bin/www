@@ -547,15 +547,15 @@ io.on('connection', function(socket){
                             rows.forEach(function (item) {
                                 if (item.mac == '5C:CF:7F:19:47:7B') {
                                     //stats.scales_2_4.push({total: item.total, date: item.date});
-                                    result.scales_2_4.push({total: item.total, date: item.date});
+                                    result.scales_2_4 = {total: item.total, date: item.date};
                                 }else if (item.mac == '5C:CF:7F:80:2D:45') {
                                     //stats.scales_3_5.push({total: item.total, date: item.date});
-                                    result.scales_3_5.push({total: item.total, date: item.date});
+                                    result.scales_3_5 = {total: item.total, date: item.date};
                                 }else{
                                     //stats.scales_2_4.push({total: item.total, date: item.date});
                                     //stats.scales_3_5.push({total: item.total, date: item.date});
-                                    result.scales_2_4.push({total: item.total, date: item.date});
-                                    result.scales_3_5.push({total: item.total, date: item.date});
+                                    result.scales_2_4 = {total: item.total, date: item.date};
+                                    result.scales_3_5 = {total: item.total, date: item.date};
                                 }
                             });
                         }
