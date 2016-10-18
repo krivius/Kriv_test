@@ -514,7 +514,7 @@ io.on('connection', function(socket){
 
         var promiseArr = [];
 
-        var prom = new Promise(function (resolve, reject) {
+/*        var prom = new Promise(function (resolve, reject) {
             resolve('a');
         });
 
@@ -522,17 +522,16 @@ io.on('connection', function(socket){
 
         Promise.all(promiseArr).then(function (res) {
             console.log(res);
-        });
+        });*/
 
-/*        for(var i=72; i>1; i--){
+        for(var i=72; i>1; i--){
             
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-           /!* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
+           /* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
                         'date_format((NOW() - INTERVAL '+(i-1)+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
                         'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR)'+
-                        'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';*!/
-            var dbPromise = function(){
-                return new Promise(function(resolve, reject){
+                        'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';*/
+            var dbPromise = new Promise(function(resolve, reject){
                     var sql =  'SELECT zaslon_id as mac, if(count(*)*20>0, count(*)*20, 0) as total, '+
                         'date_format((NOW() - INTERVAL '+i+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log '+
                         'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR) '+
@@ -559,19 +558,16 @@ io.on('connection', function(socket){
                                     result.scales_3_5.push({total: item.total, date: item.date});
                                 }
                             });
-                            resolve('a');
                         }
                     });
+                resolve('a');
                 });
-            };
             promiseArr.push(dbPromise);
         }
         Promise.all(promiseArr).then(function(results) {
-            console.log(results[0]);
-        });*/
+            console.log(results);
+        });
     });
-
-
 });
 
 eventEmitter.addListener('scale_state',  scale_state);
