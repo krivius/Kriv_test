@@ -514,11 +514,9 @@ io.on('connection', function(socket){
 
         var promiseArr = [];
 
-        var prom = function () {
-            return new Promise(function (resolve, reject) {
-
-            }).resolve('a')
-        };
+        var prom = new Promise(function (resolve, reject) {
+            resolve('a');
+        });
 
         promiseArr.push(prom);
 
