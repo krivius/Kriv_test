@@ -549,10 +549,10 @@ io.on('connection', function(socket){
                                     result.scales_3_5.push({total: item.total, date: item.date});
                                 }
                             });
-                            resolve(result);
+
                         }
                     });
-                });
+                }).resolve(result);
             };
             promiseArr.push(dbPromise);
         }
