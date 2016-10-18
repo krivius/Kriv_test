@@ -514,13 +514,17 @@ io.on('connection', function(socket){
 
         var promiseArr = [];
 
-        for(var i=72; i>1; i--){
+        Promise.all([Promise.resolve('a'), Promise.resolve('b')]).then(function (res) {
+            console.log(res);
+        });
+
+/*        for(var i=72; i>1; i--){
             
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-           /* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
+           /!* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
                         'date_format((NOW() - INTERVAL '+(i-1)+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
                         'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR)'+
-                        'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';*/
+                        'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';*!/
             var dbPromise = function(){
                 return new Promise(function(resolve, reject){
                     var sql =  'SELECT zaslon_id as mac, if(count(*)*20>0, count(*)*20, 0) as total, '+
@@ -558,7 +562,7 @@ io.on('connection', function(socket){
         }
         Promise.all(promiseArr).then(function(results) {
             console.log(results[0]);
-        });
+        });*/
     });
 
 
