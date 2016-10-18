@@ -516,8 +516,8 @@ io.on('connection', function(socket){
 
         var prom = function () {
             return new Promise(function (resolve, reject) {
-                resolve('a')
-            })
+
+            }).resolve('a')
         };
 
         promiseArr.push(prom);
