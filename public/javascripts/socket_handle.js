@@ -506,13 +506,13 @@ socket.on("show_3_day_scale_data", function(data){
                 chart: {
                     type: 'line',
                     // animation: Highcharts.svg,
-                    marginRight: 10,
-                    events: {
-                        load: function () {
-                            var chart = this;
-                            chart.redraw();
-                        }
-                    }
+                    // marginRight: 10,
+                    // events: {
+                    //     load: function () {
+                    //         var chart = this;
+                    //         chart.redraw();
+                    //     }
+                    // }
                 },
                 title: {
                     text: 'Производительность весов'
