@@ -531,7 +531,10 @@ io.on('connection', function(socket){
                         if(err){
                             reject(err);
                         }else if(rows){
-                            var result = {};
+                            var result = {
+                                scales_2_4:{},
+                                scales_3_5:{}
+                            };
                             rows.forEach(function (item) {
                                 if (item.mac == '5C:CF:7F:19:47:7B') {
                                     result.scales_2_4 = {total: item.total, date: item.date};
@@ -551,8 +554,8 @@ io.on('connection', function(socket){
         Promise.all(promiseArr).then(function(results) {
             // console.log(results);
             results.forEach(function(res){
-                stats.scales_2_4.push(res.scales_2_4);
-                stats.scales_3_5.push(res.scales_3_5);
+                if(_.keys(res.scales_2_4).length)   stats.scales_2_4.push(res.scales_2_4);
+                if(_.keys(res.scales_3_5).length)   stats.scales_3_5.push(res.scales_3_5);
             });
             console.log(stats);
             socket.emit("show_3_day_scale_data", stats);
