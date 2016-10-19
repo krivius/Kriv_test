@@ -10,6 +10,8 @@ var curr_freq = [];
 var curr_scale_state = [];
 var system_state_history_memory = [];
 var system_state_history_cpu = [];
+var scale_2_4_chart_data = [];
+var scale_3_5_chart_data = [];
 
 socket.emit("get_clients");
 socket.emit("get_templates");
@@ -480,6 +482,85 @@ socket.on("system_state_history", function (d) {
     });
 });
 
+socket.on("show_3_day_scale_data", function(data){
+    data.scales_2_4.each(function(item){
+        scale_2_4_chart_data.push({
+            x:item.date,
+            y:item.total
+        });
+    });
+    data.scales_3_5.each(function(item){
+        scale_3_5_chart_data.push({
+            x:item.date,
+            y:item.total
+        });
+    });
+
+    $(function() {
+        $(document).ready(function () {
+            /*Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });*/
+            $('#scales_speed_chart').highcharts({
+                chart: {
+                    type: 'spline',
+                    animation: Highcharts.svg,
+                    marginRight: 10
+                    // events: {
+                    //     load: function () {
+                    //         var chart = this;
+                    //         var series1 = this.series[0];
+                    //         socket.on('w_memory', function (d) {
+                    //             var x = (new Date()).getTime(),
+                    //                 y = d;
+                    //             series1.addPoint([x, y], false, true);
+                    //             chart.redraw();
+                    //         });
+                    //     }
+                    // }
+                },
+                title: {
+                    text: 'Производительность весов'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150
+                },
+                yAxis: {
+                    title: {
+                        text: 'Кг/ч'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                /*tooltip: {
+                    formatter: function() {
+                        return '<b>'+ this.series.name +'</b><br/>'+
+                            Highcharts.dateFormat('%H:%M:%S', this.x) +'<br/>'+
+                            Highcharts.numberFormat(this.y, 0);
+                    }
+                },*/
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                        data: scale_2_4_chart_data
+                    },
+                    {
+                        data: scale_3_5_chart_data
+                    }
+                ]
+            });
+        });
+    });
+});
+
+
 $("#run").on("click",  function(){
     console.log("iv_run");
     var obj = {
@@ -687,9 +768,7 @@ socket.on("show_scale_avg",  function(data){
 });
 
 
-socket.on("show_3_day_scale_data", function(data){
-    console.log(data);
-});
+
 
 /*
 socket.on("realtime_scale_avg",  function(data){
