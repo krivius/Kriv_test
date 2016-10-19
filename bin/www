@@ -514,7 +514,7 @@ io.on('connection', function(socket){
 
         var promiseArr = [];
 
-        for(var i=72; i>1; i--){
+        for(var i=48; i>1; i--){
             
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
            /* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
