@@ -686,6 +686,11 @@ socket.on("show_scale_avg",  function(data){
     });
 });
 
+
+socket.on("show_3_day_scale_data", function(data){
+    console.log(data);
+});
+
 /*
 socket.on("realtime_scale_avg",  function(data){
    console.log(data);

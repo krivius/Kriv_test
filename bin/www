@@ -514,16 +514,6 @@ io.on('connection', function(socket){
 
         var promiseArr = [];
 
-/*        var prom = new Promise(function (resolve, reject) {
-            resolve('a');
-        });
-
-        promiseArr.push(prom);
-
-        Promise.all(promiseArr).then(function (res) {
-            console.log(res);
-        });*/
-
         for(var i=72; i>1; i--){
             
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -546,14 +536,10 @@ io.on('connection', function(socket){
                             };
                             rows.forEach(function (item) {
                                 if (item.mac == '5C:CF:7F:19:47:7B') {
-                                    //stats.scales_2_4.push({total: item.total, date: item.date});
                                     result.scales_2_4 = {total: item.total, date: item.date};
                                 }else if (item.mac == '5C:CF:7F:80:2D:45') {
-                                    //stats.scales_3_5.push({total: item.total, date: item.date});
                                     result.scales_3_5 = {total: item.total, date: item.date};
                                 }else{
-                                    //stats.scales_2_4.push({total: item.total, date: item.date});
-                                    //stats.scales_3_5.push({total: item.total, date: item.date});
                                     result.scales_2_4 = {total: item.total, date: item.date};
                                     result.scales_3_5 = {total: item.total, date: item.date};
                                 }
@@ -571,6 +557,7 @@ io.on('connection', function(socket){
                 stats.scales_3_5.push(res.scales_3_5);
             });
             console.log(stats);
+            socket.emit("show_3_day_scale_data", stats);
         });
     });
 });
