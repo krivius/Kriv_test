@@ -483,13 +483,13 @@ socket.on("system_state_history", function (d) {
 });
 
 socket.on("show_3_day_scale_data", function(data){
-    data.scales_2_4.each(function(item){
+    data.scales_2_4.forEach(function(item){
         scale_2_4_chart_data.push({
             x:item.date,
             y:item.total
         });
     });
-    data.scales_3_5.each(function(item){
+    data.scales_3_5.forEach(function(item){
         scale_3_5_chart_data.push({
             x:item.date,
             y:item.total
