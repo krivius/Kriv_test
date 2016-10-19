@@ -506,19 +506,13 @@ socket.on("show_3_day_scale_data", function(data){
                 chart: {
                     type: 'spline',
                     animation: Highcharts.svg,
-                    marginRight: 10
-                    // events: {
-                    //     load: function () {
-                    //         var chart = this;
-                    //         var series1 = this.series[0];
-                    //         socket.on('w_memory', function (d) {
-                    //             var x = (new Date()).getTime(),
-                    //                 y = d;
-                    //             series1.addPoint([x, y], false, true);
-                    //             chart.redraw();
-                    //         });
-                    //     }
-                    // }
+                    marginRight: 10,
+                    events: {
+                        load: function () {
+                            var chart = this;
+                            chart.redraw();
+                        }
+                    }
                 },
                 title: {
                     text: 'Производительность весов'
@@ -537,22 +531,22 @@ socket.on("show_3_day_scale_data", function(data){
                         color: '#808080'
                     }]
                 },
-                /*tooltip: {
+                tooltip: {
                     formatter: function() {
                         return '<b>'+ this.series.name +'</b><br/>'+
                             Highcharts.dateFormat('%H:%M:%S', this.x) +'<br/>'+
                             Highcharts.numberFormat(this.y, 0);
                     }
-                },*/
+                },
                 legend: {
                     enabled: true
                 },
                 series: [{
-                        name:"scales_2_4",
+                        name:"Фракция 2-4",
                         data: scale_2_4_chart_data
                     },
                     {
-                        name:"scales_3_5",
+                        name:"Фракция 3-5",
                         data: scale_3_5_chart_data
                     }
                 ]
