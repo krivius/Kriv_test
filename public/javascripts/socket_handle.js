@@ -495,7 +495,7 @@ socket.on("show_3_day_scale_data", function(data){
             y:item.total
         });
     });
-    // $(function() {
+    $(function() {
         $(document).ready(function () {
             Highcharts.setOptions({
                 global: {
@@ -504,8 +504,8 @@ socket.on("show_3_day_scale_data", function(data){
             });
             $('#scales_speed_chart').highcharts({
                 chart: {
-                    type: 'spline',
-                    animation: Highcharts.svg,
+                    type: 'line',
+                    // animation: Highcharts.svg,
                     marginRight: 10,
                     events: {
                         load: function () {
@@ -538,6 +538,13 @@ socket.on("show_3_day_scale_data", function(data){
                             Highcharts.numberFormat(this.y, 0);
                     }
                 },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
                 legend: {
                     enabled: true
                 },
@@ -552,7 +559,7 @@ socket.on("show_3_day_scale_data", function(data){
                 ]
             });
         });
-    // });
+    });
 });
 
 
