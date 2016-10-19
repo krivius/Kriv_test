@@ -502,9 +502,9 @@ socket.on("show_3_day_scale_data", function(data){
                     useUTC: false
                 }
             });
-            $('#scales_speed_chart').highcharts('StockChart', {
+            $('#scales_speed_chart').highcharts({
                 chart: {
-                    // type: 'line', 
+                    type: 'line'
                     // animation: Highcharts.svg,
                     // marginRight: 10,
                     // events: {
