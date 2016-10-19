@@ -531,10 +531,7 @@ io.on('connection', function(socket){
                         if(err){
                             reject(err);
                         }else if(rows){
-                            var result = {
-                                scales_2_4:{},
-                                scales_3_5:{}
-                            };
+                            var result = {};
                             rows.forEach(function (item) {
                                 if (item.mac == '5C:CF:7F:19:47:7B') {
                                     result.scales_2_4 = {total: item.total, date: item.date};
