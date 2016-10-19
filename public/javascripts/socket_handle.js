@@ -502,7 +502,7 @@ socket.on("show_3_day_scale_data", function(data){
                     useUTC: false
                 }
             });
-            var myChart = new Highcharts.Chart('#scales_speed_chart', {
+            $('#scales_speed_chart').highcharts({
                 chart: {
                     type: 'line',
                     // animation: Highcharts.svg,
