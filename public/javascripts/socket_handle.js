@@ -497,11 +497,11 @@ socket.on("show_3_day_scale_data", function(data){
     });
     // $(function() {
         $(document).ready(function () {
-            /*Highcharts.setOptions({
+            Highcharts.setOptions({
                 global: {
                     useUTC: false
                 }
-            });*/
+            });
             $('#scales_speed_chart').highcharts({
                 chart: {
                     type: 'spline',
@@ -545,12 +545,14 @@ socket.on("show_3_day_scale_data", function(data){
                     }
                 },*/
                 legend: {
-                    enabled: false
+                    enabled: true
                 },
                 series: [{
+                        name:"scales_2_4",
                         data: scale_2_4_chart_data
                     },
                     {
+                        name:"scales_3_5",
                         data: scale_3_5_chart_data
                     }
                 ]
