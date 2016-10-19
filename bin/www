@@ -528,8 +528,9 @@ io.on('connection', function(socket){
                         'AND state=0 ';
                     db_conn.query(sql,  function(err, rows, fields){
                         // console.log(rows);
-                        if(err) reject(err);
-                        if(rows){
+                        if(err){
+                            reject(err);
+                        }else if(rows){
                             var result = {
                                 scales_2_4:{},
                                 scales_3_5:{}
