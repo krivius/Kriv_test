@@ -495,7 +495,7 @@ socket.on("show_3_day_scale_data", function(data){
             y:item.total
         });
     });
-
+    console.log(scale_2_4_chart_data);
     $(function() {
         $(document).ready(function () {
             /*Highcharts.setOptions({
