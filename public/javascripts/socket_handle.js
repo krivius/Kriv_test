@@ -505,15 +505,17 @@ socket.on("show_3_day_scale_data", function(data){
             });
             $('#scales_speed_chart').highcharts({
                 chart: {
-                    type: 'line'
+                    type: 'line',
                     // animation: Highcharts.svg,
-                    // marginRight: 10,
-                    // events: {
-                    //     load: function () {
-                    //         var chart = this;
-                    //         chart.redraw();
-                    //     }
-                    // }
+                    marginRight: 10,
+                    events: {
+                        load: function () {
+                            var chart = this;
+                            chart.series[0].data =  scale_2_4_chart_data;
+                            chart.series[1].data =  scale_2_4_chart_data;
+                            chart.redraw();
+                        }
+                    }
                 },
                 title: {
                     text: 'Производительность весов'
@@ -528,7 +530,7 @@ socket.on("show_3_day_scale_data", function(data){
                 yAxis: {
                     title: {
                         text: 'Кг/ч'
-                    },
+                    }
                    /* plotLines: [{
                         value: 0,
                         width: 1,
