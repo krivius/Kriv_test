@@ -495,6 +495,7 @@ socket.on("show_3_day_scale_data", function(data){
             y:item.total
         });
     });*/
+    data.reverse();
     data.scales_2_4.forEach(function(item){
         scale_2_4_chart_data.push([item.date, item.total]);
     });
@@ -511,7 +512,7 @@ socket.on("show_3_day_scale_data", function(data){
             });
             $('#scales_speed_chart').highcharts({
                 chart: {
-                    type: 'line',
+                    type: 'spline',
                     animation: Highcharts.svg,
                     marginRight: 10,
                     events: {
