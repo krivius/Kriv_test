@@ -495,14 +495,16 @@ socket.on("show_3_day_scale_data", function(data){
             y:item.total
         });
     });*/
-    data.reverse();
+
     data.scales_2_4.forEach(function(item){
         scale_2_4_chart_data.push([item.date, item.total]);
     });
     data.scales_3_5.forEach(function(item){
         scale_3_5_chart_data.push([item.date, item.total]);
     });
-    console.log(scale_2_4_chart_data);
+    // console.log(scale_2_4_chart_data);
+    scale_2_4_chart_data.reverse();
+    scale_3_5_chart_data.reverse();
     $(function() {
         //$(document).ready(function () {
             Highcharts.setOptions({
@@ -515,15 +517,15 @@ socket.on("show_3_day_scale_data", function(data){
                     type: 'spline',
                     animation: Highcharts.svg,
                     marginRight: 10,
-                    events: {
-                        load: function () {
-                            var chart = this;
-                            chart.series[0].update({data: scale_2_4_chart_data});
-                            chart.series[1].update({data: scale_3_5_chart_data});
-                            // chart.series[1].data =  scale_3_5_chart_data;
-                            chart.redraw();
-                        }
-                    }
+                    // events: {
+                    //     load: function () {
+                    //         var chart = this;
+                    //         chart.series[0].update({data: scale_2_4_chart_data});
+                    //         chart.series[1].update({data: scale_3_5_chart_data});
+                    //         // chart.series[1].data =  scale_3_5_chart_data;
+                    //         chart.redraw();
+                    //     }
+                    // }
                 },
                 title: {
                     text: 'Производительность весов'
