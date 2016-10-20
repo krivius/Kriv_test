@@ -503,21 +503,24 @@ socket.on("show_3_day_scale_data", function(data){
                 marginRight: 120
             },
 
-            legend: {
-                align: 'right',
-                verticalAlign: 'top',
-                layout: 'vertical',
-                x: 0,
-                y: 100
-            },
+            // legend: {
+            //     align: 'right',
+            //     verticalAlign: 'top',
+            //     layout: 'vertical',
+            //     x: 0,
+            //     y: 100
+            // },
 
-            xAxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            },
+            // xAxis: {
+            //     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            // },
 
             series: [{
-                data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-            }]
+                data: scale_2_4_chart_data
+            },
+                {
+                    data: scale_3_5_chart_data
+                }]
         });
     });
 });
