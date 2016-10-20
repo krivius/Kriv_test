@@ -508,14 +508,15 @@ socket.on("show_3_day_scale_data", function(data){
                     type: 'line',
                     // animation: Highcharts.svg,
                     marginRight: 10,
-                    // events: {
-                    //     load: function () {
-                    //         var chart = this;
-                    //         chart.series[0].data =  scale_2_4_chart_data;
-                    //         chart.series[1].data =  scale_3_5_chart_data;
-                    //         chart.redraw();
-                    //     }
-                    // }
+                    events: {
+                        load: function () {
+                            var chart = this;
+                            chart.series[0].update({data: scale_2_4_chart_data});
+                            chart.series[1].update({data: scale_3_5_chart_data});
+                            // chart.series[1].data =  scale_3_5_chart_data;
+                            // chart.redraw();
+                        }
+                    }
                 },
                 title: {
                     text: 'Производительность весов'
