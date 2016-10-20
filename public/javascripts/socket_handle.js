@@ -496,69 +496,28 @@ socket.on("show_3_day_scale_data", function(data){
         });
     });
     console.log(scale_2_4_chart_data);
-    $(function() {
-        $(document).ready(function () {
-            Highcharts.setOptions({
-                global: {
-                    useUTC: false
-                }
-            });
-            $('#scales_speed_chart').highcharts({
-                chart: {
-                    type: 'line'
-                    // animation: Highcharts.svg,
-                    // marginRight: 10,
-                    // events: {
-                    //     load: function () {
-                    //         var chart = this;
-                    //         chart.redraw();
-                    //     }
-                    // }
-                },
-                title: {
-                    text: 'Производительность весов'
-                },
-                xAxis: {
-                    type: 'datetime',
-                    tickPixelInterval: 150
-                },
-                yAxis: {
-                    title: {
-                        text: 'Кг/ч'
-                    },
-                    plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
-                },
-                tooltip: {
-                    formatter: function() {
-                        return '<b>'+ this.series.name +'</b><br/>'+
-                            Highcharts.dateFormat('%H:%M:%S', this.x) +'<br/>'+
-                            Highcharts.numberFormat(this.y, 0);
-                    }
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                    enabled: true
-                },
-                series: [{
-                        name:"Фракция 2-4",
-                        data: scale_2_4_chart_data
-                    },
-                    {
-                        name:"Фракция 3-5",
-                        data: scale_3_5_chart_data
-                    }
-                ]
-            });
+    $(function () {
+        $('#scales_speed_chart').highcharts({
+
+            chart: {
+                marginRight: 120
+            },
+
+            legend: {
+                align: 'right',
+                verticalAlign: 'top',
+                layout: 'vertical',
+                x: 0,
+                y: 100
+            },
+
+            xAxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            },
+
+            series: [{
+                data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+            }]
         });
     });
 });
