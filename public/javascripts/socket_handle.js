@@ -536,12 +536,20 @@ socket.on("show_3_day_scale_data", function(data){
                 series: [{
                         name:"Фракция 2-4",
                         type:"line",
-                        data: scale_2_4_chart_data
+                        data: scale_2_4_chart_data,
+                        dataLabels:{
+                            enabled:true,
+                            shadow:true
+                        }
                     },
                     {
                         name:"Фракция 3-5",
                         type:"line",
-                        data: scale_3_5_chart_data
+                        data: scale_3_5_chart_data,
+                        dataLabels:{
+                            enabled:true,
+                            shadow:true
+                        }
                     }
                 ]
             });
