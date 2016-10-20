@@ -12,6 +12,7 @@ var system_state_history_memory = [];
 var system_state_history_cpu = [];
 var scale_2_4_chart_data = [];
 var scale_3_5_chart_data = [];
+var scale_chart_x_axis = [];
 
 socket.emit("get_clients");
 socket.emit("get_templates");
@@ -483,28 +484,14 @@ socket.on("system_state_history", function (d) {
 });
 
 socket.on("show_3_day_scale_data", function(data){
-   /* data.scales_2_4.forEach(function(item){
-        scale_2_4_chart_data.push({
-            x:item.date,
-            y:item.total
-        });
-    });
-    data.scales_3_5.forEach(function(item){
-        scale_3_5_chart_data.push({
-            x:item.date,
-            y:item.total
-        });
-    });*/
-
     data.scales_2_4.forEach(function(item){
         scale_2_4_chart_data.push([item.date, item.total]);
+        scale_chart_x_axis.push(item.date);
     });
     data.scales_3_5.forEach(function(item){
         scale_3_5_chart_data.push([item.date, item.total]);
     });
-    // console.log(scale_2_4_chart_data);
-    scale_2_4_chart_data.reverse();
-    scale_3_5_chart_data.reverse();
+
     $(function() {
         //$(document).ready(function () {
             Highcharts.setOptions({
@@ -532,6 +519,9 @@ socket.on("show_3_day_scale_data", function(data){
                 },
                 legend: {
                     enabled: true
+                },
+                xAxis:{
+                    categories: scale_chart_x_axis
                 },
                 series: [{
                         name:"Фракция 2-4",
