@@ -483,7 +483,7 @@ socket.on("system_state_history", function (d) {
 });
 
 socket.on("show_3_day_scale_data", function(data){
-    data.scales_2_4.forEach(function(item){
+   /* data.scales_2_4.forEach(function(item){
         scale_2_4_chart_data.push({
             x:item.date,
             y:item.total
@@ -494,6 +494,12 @@ socket.on("show_3_day_scale_data", function(data){
             x:item.date,
             y:item.total
         });
+    });*/
+    data.scales_2_4.forEach(function(item){
+        scale_2_4_chart_data.push([item.date, item.total]);
+    });
+    data.scales_3_5.forEach(function(item){
+        scale_3_5_chart_data.push([item.date, item.total]);
     });
     console.log(scale_2_4_chart_data);
     $(function() {
@@ -514,7 +520,7 @@ socket.on("show_3_day_scale_data", function(data){
                             chart.series[0].update({data: scale_2_4_chart_data});
                             chart.series[1].update({data: scale_3_5_chart_data});
                             // chart.series[1].data =  scale_3_5_chart_data;
-                            // chart.redraw();
+                            chart.redraw();
                         }
                     }
                 },
@@ -526,10 +532,12 @@ socket.on("show_3_day_scale_data", function(data){
                 },
                 series: [{
                         name:"Фракция 2-4",
+                        type:"line",
                         data: scale_2_4_chart_data
                     },
                     {
                         name:"Фракция 3-5",
+                        type:"line",
                         data: scale_3_5_chart_data
                     }
                 ]
