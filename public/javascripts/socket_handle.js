@@ -497,7 +497,7 @@ socket.on("show_3_day_scale_data", function(data){
     });
     console.log(scale_2_4_chart_data);
     $(function() {
-        // $(document).ready(function () {
+        $(document).ready(function () {
             Highcharts.setOptions({
                 global: {
                     useUTC: false
@@ -559,7 +559,7 @@ socket.on("show_3_day_scale_data", function(data){
                     }
                 ]
             });
-        // });
+        });
     });
 });
 
