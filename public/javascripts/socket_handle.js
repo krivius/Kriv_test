@@ -508,15 +508,15 @@ socket.on("show_3_day_scale_data", function(data){
     $(function() {
         //$(document).ready(function () {
             Highcharts.setOptions({
-                global: {
-                    useUTC: false
-                }
+                // global: {
+                //     useUTC: false
+                // }
             });
             $('#scales_speed_chart').highcharts({
                 chart: {
                     type: 'spline',
                     animation: Highcharts.svg,
-                    marginRight: 10,
+                    marginRight: 10
                     // events: {
                     //     load: function () {
                     //         var chart = this;
@@ -536,20 +536,12 @@ socket.on("show_3_day_scale_data", function(data){
                 series: [{
                         name:"Фракция 2-4",
                         type:"line",
-                        data: scale_2_4_chart_data,
-                        dataLabels:{
-                            enabled:true,
-                            shadow:true
-                        }
+                        data: scale_2_4_chart_data
                     },
                     {
                         name:"Фракция 3-5",
                         type:"line",
-                        data: scale_3_5_chart_data,
-                        dataLabels:{
-                            enabled:true,
-                            shadow:true
-                        }
+                        data: scale_3_5_chart_data
                     }
                 ]
             });
