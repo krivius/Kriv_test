@@ -506,7 +506,7 @@ socket.on("show_3_day_scale_data", function(data){
             $('#scales_speed_chart').highcharts({
                 chart: {
                     type: 'line',
-                    // animation: Highcharts.svg,
+                    animation: Highcharts.svg,
                     marginRight: 10,
                     events: {
                         load: function () {
@@ -520,37 +520,6 @@ socket.on("show_3_day_scale_data", function(data){
                 },
                 title: {
                     text: 'Производительность весов'
-                },
-                xAxis: {
-                    // type: 'datetime',
-                    // tickPixelInterval: 150,
-                    title: {
-                        text: 'Время'
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: 'Кг/ч'
-                    }
-                   /* plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]*/
-                },
-                tooltip: {
-                    formatter: function() {
-                        return '<b>'+ this.series.name +'</b><br/>'+
-                            Highcharts.dateFormat('%H:%M:%S', this.x) +'<br/>'+
-                            Highcharts.numberFormat(this.y, 0);
-                    }
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
                 },
                 legend: {
                     enabled: true
