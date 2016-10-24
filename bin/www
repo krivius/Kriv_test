@@ -28,7 +28,7 @@ var scale_1_arr = [],  scale_2_arr = [];
 
 var job;
 job = new CronJob({
-    cronTime: '00 20 12 * * 1-7',
+    cronTime: '00 00 07 * * 1-7',
     onTick: function () {
 
         /*
@@ -112,11 +112,9 @@ job = new CronJob({
 
                  // setup e-mail data with unicode symbols
                  var mailOptions = {
-                     // from: '<mailbot@agroimpex.com>', // sender address
-                     // to: '<s.khaesh@agroimpex.com>, <m.khaesh@agroimpex.com>', // list of receivers
-                     // cc: '<s.korolev@agroimpex.com>, <d.krivitskiy@agroimpex.com>, <n.viaznikova@agroimpex.com>', //copy
                      from: '<mailbot@agroimpex.com>', // sender address
-                     to: '<d.krivitskiy@agroimpex.com>', // list of receivers
+                     to: '<s.khaesh@agroimpex.com>, <m.khaesh@agroimpex.com>', // list of receivers
+                     cc: '<s.korolev@agroimpex.com>, <d.krivitskiy@agroimpex.com>, <n.viaznikova@agroimpex.com>', //copy
                      subject: 'Ежедневный отчет', // Subject line
                      text: 'Отчет сгенерирован автоматически', // plaintext body
                      attachments: [
