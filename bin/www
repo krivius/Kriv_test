@@ -28,7 +28,7 @@ var scale_1_arr = [],  scale_2_arr = [];
 
 var job;
 job = new CronJob({
-    cronTime: '00 35 11 * * 1-7',
+    cronTime: '00 20 12 * * 1-7',
     onTick: function () {
 
         /*
@@ -78,8 +78,8 @@ job = new CronJob({
                  var excelbuilder = require('msexcel-builder');
                  // Create a new workbook file in current working-path
                  var sheet_name = 'report_' + dateFormat(new Date(), 'dd_mm_yy') + '___' + dateFormat(new Date(), 'HH_MM') + '.xlsx';
-                 // var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
-                 var workbook = excelbuilder.createWorkbook('./', sheet_name);
+                 var workbook = excelbuilder.createWorkbook('/var/www/html/zaslon/reports/', sheet_name);
+                 // var workbook = excelbuilder.createWorkbook('./', sheet_name);
 
 
                  var sheet1 = workbook.createSheet('sheet1', 2, sheet_rows);
@@ -121,7 +121,7 @@ job = new CronJob({
                      text: 'Отчет сгенерирован автоматически', // plaintext body
                      attachments: [
                          {
-                             path: './reports/'+sheet_name
+                             path: '/var/www/html/zaslon/reports/'+sheet_name
                              // path: './'+sheet_name
                          }
                      ]
