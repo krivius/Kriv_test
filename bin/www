@@ -13,6 +13,7 @@ var dateFormat = require('dateformat');
 var udp = require('./udp.js');
 var ws = require('./ws.js');
 var DevTools = require('./DevTools_engine.js');
+var GraphHistory = require('./GraphHistory_engine');
 
 var db  = require('./db_engine');
 var db_conn = db.connection();
@@ -236,6 +237,7 @@ function onListening() {
 }
 
 setInterval(DevTools.Get_Proc_Stat, 5000);
+setInterval(GraphHistory.Get_global_history, 1000*60*60);
 
 var eventEmitter = new events.EventEmitter();
 
@@ -505,7 +507,8 @@ io.on('connection', function(socket){
     });
 
     socket.on("get_3_day_scale_data", function(){
-        var stats = {
+        console.log(GraphHistory.Get_Global_Stats());
+        /*var stats = {
             scales_2_4:[],
             scales_3_5:[]
         };
@@ -515,10 +518,10 @@ io.on('connection', function(socket){
         for(var i=48; i>1; i--){
             
             // console.log("<<<<<<<<<<<<<<<<<<<< i = "+i+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-           /* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
+           /!* var sql =  'SELECT zaslon_id as mac, count(*)*20 as total, '+
                         'date_format((NOW() - INTERVAL '+(i-1)+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log'+
                         'WHERE date >= (NOW() - INTERVAL '+i+' HOUR) AND date <= (NOW() - INTERVAL '+(i-1)+' HOUR)'+
-                        'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';*/
+                        'AND state=0 GROUP BY zaslon_id DESC LIMIT 2 ';*!/
             var dbPromise = new Promise(function(resolve, reject){
                     var sql =  'SELECT zaslon_id as mac, if(count(*)*20>0, count(*)*20, 0) as total, '+
                         'date_format((NOW() - INTERVAL '+i+' HOUR), "%d.%m.%Y %H:%i:%s") as date  FROM scale_log '+
@@ -557,7 +560,7 @@ io.on('connection', function(socket){
             });
             console.log(stats);
             socket.emit("show_3_day_scale_data", stats);
-        });
+        });*/
     });
 });
 
