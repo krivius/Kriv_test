@@ -509,8 +509,7 @@ io.on('connection', function(socket){
     });
 
     socket.on("get_3_day_scale_data", function(){
-        console.log("get_3_day_scale_data");
-        console.log(GraphHistory.Get_Global_Stats());
+        socket.emit("show_3_day_scale_data", GraphHistory.Get_Global_Stats());
         /*var stats = {
             scales_2_4:[],
             scales_3_5:[]
