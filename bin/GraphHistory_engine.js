@@ -19,6 +19,10 @@ function Get_Global_Stats() {
 }
 
 function Get_global_history(){
+    global_stats = {
+        scales_2_4:[],
+        scales_3_5:[]
+    };
     var promiseArr = [];
     for(var i=48; i>1; i--){
         var dbPromise = new Promise(function(resolve, reject){
